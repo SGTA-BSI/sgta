@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<session version="1.0">
+<refactoring comment="Delete resource &apos;sgta/wbp-meta&apos;" deleteContents="false" description="Delete resource &apos;sgta/wbp-meta&apos;" element1="/sgta/wbp-meta" flags="7" id="org.eclipse.ltk.core.refactoring.delete.resources" resources="1" stamp="1417870429665"/>
+</session>
