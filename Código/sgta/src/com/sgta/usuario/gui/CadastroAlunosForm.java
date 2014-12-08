@@ -6,11 +6,21 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 import javax.swing.JLabel;
+
 import java.awt.Font;
+
+import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 import javax.swing.JComboBox;
 import javax.swing.JButton;
+
+import com.sgta.usuario.dominio.Pessoa;
+import com.sgta.usuario.dominio.Usuario;
+import com.sgta.usuario.negocio.UsuarioBusiness;
+
 import java.awt.Component;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 public class CadastroAlunosForm extends JFrame {
 
@@ -203,9 +213,48 @@ public class CadastroAlunosForm extends JFrame {
 		JButton btnCadastrar = new JButton("Cadastrar");
 		btnCadastrar.setBounds(158, 400, 126, 23);
 		contentPane.add(btnCadastrar);
+		btnCadastrar.addActionListener(new ActionListener(){
+			public void actionPerformed(ActionEvent e) {
+				cadastrar();
+				JOptionPane.showMessageDialog(null,"Aluno Cadastrado com sucesso!","Sucesso",JOptionPane.DEFAULT_OPTION);  
+				
+			}	
+		});
 		
 		JButton btnCancelar = new JButton("Cancelar");
 		btnCancelar.setBounds(310, 400, 121, 23);
 		contentPane.add(btnCancelar);
+		btnCancelar.addActionListener(new ActionListener(){
+			public void actionPerformed(ActionEvent e){
+				dispose();
+			}
+		});
+	}
+	
+	private void cadastrar(){
+		Usuario usuario = new Usuario();
+		Pessoa pessoa = new Pessoa();
+		
+		pessoa.setBairro(bairro.getText());
+		pessoa.setCelular(celular.getText());
+		pessoa.setCidade(cidade.getText());
+		pessoa.setComplemento(complemento.getText());
+		pessoa.setCpf(cpf.getText());
+		pessoa.setDataDeNascimento(data.getText());
+		pessoa.setEmail(email.getText());
+		pessoa.setEndereco(endereco.getText());
+		pessoa.setEstado(estado.getText());
+		pessoa.setIdentidade(identidade.getText());
+		pessoa.setNome(nome.getText());
+		pessoa.setNumero(numero.getText());
+		pessoa.setObservacoes(observacoes.getText());
+		// pessoa.setSexo(sexo); // Falta recuperar o valor de Sexo!!!
+		pessoa.setTelefone(telefone.getText());
+		pessoa.setUsuario(usuario);
+		
+		UsuarioBusiness business = UsuarioBusiness.getInstancia();
+		business.inserirAluno(pessoa);
+		
+		
 	}
 }
