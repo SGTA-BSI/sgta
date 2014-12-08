@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: 07-Dez-2014 às 18:51
+-- Generation Time: 08-Dez-2014 às 13:30
 -- Versão do servidor: 5.6.21
 -- PHP Version: 5.6.3
 
@@ -27,7 +27,7 @@ SET time_zone = "+00:00";
 --
 
 CREATE TABLE IF NOT EXISTS `administrador` (
-  `id` int(11) NOT NULL DEFAULT '0',
+`id` int(11) NOT NULL,
   `nome` text NOT NULL,
   `data` date NOT NULL,
   `sexo` text NOT NULL,
@@ -43,8 +43,8 @@ CREATE TABLE IF NOT EXISTS `administrador` (
   `celular` int(11) NOT NULL,
   `email` varchar(30) NOT NULL,
   `observacao` text NOT NULL,
-  `login` varchar(12) NOT NULL,
-  `senha` varchar(12) NOT NULL
+  `login` varchar(25) NOT NULL,
+  `senha` varchar(25) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
@@ -80,7 +80,7 @@ CREATE TABLE IF NOT EXISTS `aluno` (
 -- Indexes for table `administrador`
 --
 ALTER TABLE `administrador`
- ADD UNIQUE KEY `login` (`login`), ADD KEY `senha` (`senha`);
+ ADD PRIMARY KEY (`id`), ADD UNIQUE KEY `login` (`login`), ADD KEY `senha` (`senha`);
 
 --
 -- Indexes for table `aluno`
@@ -92,6 +92,11 @@ ALTER TABLE `aluno`
 -- AUTO_INCREMENT for dumped tables
 --
 
+--
+-- AUTO_INCREMENT for table `administrador`
+--
+ALTER TABLE `administrador`
+MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 --
 -- AUTO_INCREMENT for table `aluno`
 --
