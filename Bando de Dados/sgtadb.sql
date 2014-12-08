@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: 08-Dez-2014 às 14:48
+-- Generation Time: 08-Dez-2014 às 18:45
 -- Versão do servidor: 5.6.21
 -- PHP Version: 5.6.3
 
@@ -28,6 +28,7 @@ SET time_zone = "+00:00";
 
 CREATE TABLE IF NOT EXISTS `admin` (
 `id` int(11) NOT NULL,
+  `nome` text NOT NULL,
   `data_nasc` date NOT NULL,
   `sexo` text NOT NULL,
   `cpf` varchar(14) NOT NULL,
@@ -54,6 +55,7 @@ CREATE TABLE IF NOT EXISTS `admin` (
 
 CREATE TABLE IF NOT EXISTS `aluno` (
 `id` int(11) NOT NULL,
+  `nome` text NOT NULL,
   `data_nasc` date NOT NULL,
   `sexo` text NOT NULL,
   `cpf` varchar(14) NOT NULL,
