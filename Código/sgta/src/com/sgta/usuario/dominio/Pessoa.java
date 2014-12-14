@@ -17,6 +17,8 @@ public class Pessoa {
 	private String celular;
 	private String email;
 	private String observacoes;
+	private String cargo;
+	
 	public Usuario getUsuario() {
 		return usuario;
 	}
@@ -112,6 +114,12 @@ public class Pessoa {
 	}
 	public void setObservacoes(String observacoes) {
 		this.observacoes = observacoes;
+	}
+	public String getCargo() {
+		return this.cargo;
+	}
+	public void setCargo(String cargo) {
+		this.cargo = cargo;
 	}
 	
 	

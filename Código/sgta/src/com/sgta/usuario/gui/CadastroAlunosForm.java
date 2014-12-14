@@ -329,7 +329,7 @@ public class CadastroAlunosForm extends JFrame {
 			JOptionPane.showMessageDialog(null,"PREENCHA O CAMPO DE DATA DE NASCIMENTO","ATENÇÃO!!",JOptionPane.WARNING_MESSAGE);
 			return false;
 		}
-		else if(sexo == null || sexo.equals(" ")){
+		else if(sexo == null || sexo.equals("")){
 			JOptionPane.showMessageDialog(null,"SELECIONE O SEXO","ATENÇÃO!!",JOptionPane.WARNING_MESSAGE);
 			return false;
 		}

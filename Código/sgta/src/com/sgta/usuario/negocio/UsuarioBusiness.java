@@ -32,5 +32,9 @@ public class UsuarioBusiness {
 	public void  inserirFuncionario(Pessoa pessoa){
 		dao.inserirFuncionario(pessoa);
 	}
+	
+	public boolean consultaLoginFuncionario(String login) throws SQLException{
+		return dao.consultaLoginFuncionario(login);
+	}
 
 }

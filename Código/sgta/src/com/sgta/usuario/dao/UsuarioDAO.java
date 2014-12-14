@@ -52,12 +52,13 @@ public class UsuarioDAO {
 			e.printStackTrace();
 		}
 	}
+
 	public void inserirFuncionario(Pessoa pessoa) {
 		try {
 			Connection con = bd.getConnection();
 			PreparedStatement prepared = con
 					.prepareStatement("INSERT INTO func (nome,data_nasc,sexo,cpf,identidade,endereco,"
-							+ "numero, complemento, cidade, estado, bairro, telefone, celular, email, observacao, login,senha) VALUES (?,?,?,?,?,?,?,?,"
+							+ "numero, complemento, cidade, estado, bairro, telefone, celular, email,cargo,login,senha) VALUES (?,?,?,?,?,?,?,?,"
 							+ "?,?,?,?,?,?,?,?,?)");
 			prepared.setString(1, pessoa.getNome());
 			prepared.setString(2, pessoa.getDataDeNascimento());
@@ -73,7 +74,7 @@ public class UsuarioDAO {
 			prepared.setString(12, pessoa.getTelefone());
 			prepared.setString(13, pessoa.getCelular());
 			prepared.setString(14, pessoa.getEmail());
-			prepared.setString(15, pessoa.getObservacoes());
+			prepared.setString(15, pessoa.getCargo());
 			prepared.setString(16, pessoa.getUsuario().getUsername());
 			prepared.setString(17, pessoa.getUsuario().getSenha());
 
@@ -86,7 +87,7 @@ public class UsuarioDAO {
 	}
 
 	public boolean consultaCpfAluno(String cpf) throws SQLException {
-		
+
 		Connection con = bd.getConnection();
 
 		PreparedStatement prepared = con
@@ -94,18 +95,18 @@ public class UsuarioDAO {
 		prepared.setString(1, cpf);
 
 		ResultSet resultSet = prepared.executeQuery();
-		
-		
+
 		if (resultSet.next()) {
 			bd.fecharConecaoMySQL();
 			return false;
 		} else {
 			return true;
 		}
-		
+
 	}
-public boolean consultaCpfFuncionario(String cpf) throws SQLException {
-		
+
+	public boolean consultaCpfFuncionario(String cpf) throws SQLException {
+
 		Connection con = bd.getConnection();
 
 		PreparedStatement prepared = con
@@ -113,15 +114,33 @@ public boolean consultaCpfFuncionario(String cpf) throws SQLException {
 		prepared.setString(1, cpf);
 
 		ResultSet resultSet = prepared.executeQuery();
-		
-		
+
 		if (resultSet.next()) {
 			bd.fecharConecaoMySQL();
 			return false;
 		} else {
 			return true;
 		}
-		
+
+	}
+
+	public boolean consultaLoginFuncionario(String login) throws SQLException {
+
+		Connection con = bd.getConnection();
+
+		PreparedStatement prepared = con
+				.prepareStatement("SELECT login FROM func WHERE login = ?");
+		prepared.setString(1, login);
+
+		ResultSet resultSet = prepared.executeQuery();
+
+		if (resultSet.next()) {
+			bd.fecharConecaoMySQL();
+			return false;
+		} else {
+			return true;
+		}
+
 	}
 
 }
