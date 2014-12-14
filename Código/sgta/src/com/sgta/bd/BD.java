@@ -21,22 +21,7 @@ public class BD {
 	}
 	
 	private static Connection con;
-	/*public static Connection getConnection() throws SQLException {
-		Class.forName("com.mysql.jdbc.Driver");
-		con = null;
-		con = DriverManager.getConnection("https://localhost/sgtadb","root","");//?user=postgres&password=postgres");
-		return con;
-	}
-
-	public void closeConnnection(Connection con) {
-		try {
-			con.close();
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-	}
-
-*/
+	
 	private static Connection conexao = null;
 	private static Statement statement;
 	private static ResultSet resultSet = null;
@@ -57,7 +42,7 @@ public class BD {
 		try {
 			Class.forName("com.mysql.jdbc.Driver");
 			return conexao = DriverManager.getConnection(
-					"jdbc:mysql://localhost/sgtabd", "root", "UhEvnYbTPDQ6ae72");//POE O NOME DO SEU PROJTO NO LUGAR abrace_um_pet 
+					"jdbc:mysql://localhost/sgtabd", "root", ""); 
 		}  catch (ClassNotFoundException e) {    
             throw new SQLException(e.getMessage());  
 		}
