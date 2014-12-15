@@ -258,12 +258,17 @@ public class CadastroAlunosForm extends JFrame {
 		btnCadastrar.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e) {
 				UsuarioBusiness business = UsuarioBusiness.getInstancia();
+				MenuAtendente tela;
 				if(validacaoPreenchimento()){
 					try {
 						if (business.consultaCpfAluno(cpf.getText())){
 							cadastrar();
+							tela = new MenuAtendente();
+							tela.setVisible(true);
+							setVisible(false);
+							MenuAtendente.getLblInfo("Aluno Cadastrado com Sucesso!!");
 						
-						lblInfo.setText("Usuario Cadastrado com sucesso");
+						//lblInfo.setText("Usuario Cadastrado com sucesso");
 
 						}
 						else{
@@ -284,7 +289,10 @@ public class CadastroAlunosForm extends JFrame {
 		
 		btnCancelar.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e){
-				dispose();
+				MenuAtendente tela;
+				tela = new MenuAtendente();
+				tela.setVisible(true);
+				setVisible(false);
 			}
 		});
 		lblInfo = new JLabel("");

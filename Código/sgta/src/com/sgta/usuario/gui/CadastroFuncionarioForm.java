@@ -254,6 +254,7 @@ public class CadastroFuncionarioForm extends JFrame {
 				UsuarioBusiness business = UsuarioBusiness.getInstancia();
 				String password = new String(campoSenha.getPassword());
 				String confirmPassword = new String(campoConfSenha.getPassword());
+				MenuAdm tela;
 				if (validacaoPreenchimento()) {
 					try {
 						if (business.consultaCpfFuncionario(cpf.getText())) {
@@ -261,7 +262,11 @@ public class CadastroFuncionarioForm extends JFrame {
 								if (password.equals(confirmPassword)) {
 							
 								cadastrar();
-								lblInfo.setText("Funcion·rio Cadastrado com sucesso");
+								tela = new MenuAdm();
+								tela.setVisible(true);
+								setVisible(false);
+								MenuAdm.getLblInfo("Funcion·rio Cadastrado com Sucesso!!");
+								//lblInfo.setText("Funcion·rio Cadastrado com sucesso");
 								
 								}else{
 									JOptionPane.showMessageDialog(null,"SENHAS DIFERENTES! INFORME SENHAS IGUAIS","ATENÁ√O",JOptionPane.WARNING_MESSAGE);
@@ -289,7 +294,10 @@ public class CadastroFuncionarioForm extends JFrame {
 
 		btnCancelar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				dispose();
+				MenuAdm tela;
+				tela = new MenuAdm();
+				tela.setVisible(true);
+				setVisible(false);
 			}
 		});
 		lblInfo = new JLabel("");
