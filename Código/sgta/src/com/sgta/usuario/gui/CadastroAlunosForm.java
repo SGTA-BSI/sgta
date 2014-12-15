@@ -289,8 +289,8 @@ public class CadastroAlunosForm extends JFrame {
 		
 		btnCancelar.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e){
-				MenuAtendente tela;
-				tela = new MenuAtendente();
+				MenuProfessor tela;
+				tela = new MenuProfessor();
 				tela.setVisible(true);
 				setVisible(false);
 			}
