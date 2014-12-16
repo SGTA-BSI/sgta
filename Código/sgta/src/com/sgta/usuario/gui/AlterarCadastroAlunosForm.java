@@ -31,6 +31,8 @@ import java.util.regex.Pattern;
 import javax.swing.JFormattedTextField;
 
 public class AlterarCadastroAlunosForm extends JFrame {
+	
+	Pessoa aluno;
 
 	private JPanel contentPane;
 	private JTextField nome;
@@ -262,17 +264,31 @@ public class AlterarCadastroAlunosForm extends JFrame {
 				MenuAtendente tela;
 				if(validacaoPreenchimento()){
 					try {
-							cadastrar();
-							tela = new MenuAtendente();
-							tela.setVisible(true);
-							setVisible(false);
-							MenuAtendente.getLblInfo("Alterado Cadastrado com Sucesso!!");
+							alterarCadastro();
+							JOptionPane.showMessageDialog(null,
+									"Cadastro alterado.");
+							aluno = null;
+							nome.setText("");
+							data.setText("");
+							cpf.setText("");
+							identidade.setText("");
+							endereco.setText("");
+							numero.setText("");
+							complemento.setText("");
+							cidade.setText("");
+							estado.setText("");
+							bairro.setText("");
+							telefone.setText("");
+							celular.setText("");
+							email.setText("");
+							observacoes.setText("");
+							
+							
 						
-						//lblInfo.setText("Usuario Cadastrado com sucesso");
 
 					} catch (HeadlessException e1) {
-						// TODO Auto-generated catch block
-						e1.printStackTrace();
+						JOptionPane.showMessageDialog(null,
+								"Erro");
 					}
 					
 				}
@@ -313,10 +329,15 @@ public class AlterarCadastroAlunosForm extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				UsuarioBusiness business = UsuarioBusiness.getInstancia();
 				try {
-					Pessoa aluno = business.buscarAluno(textField.getText().toString());
+					aluno = business.buscarAluno(textField.getText().toString());
 					if (aluno.getNome() == null){
 						JOptionPane.showMessageDialog(null,
 								"CPF não cadastrado.");
+						aluno = null;
+						nome.setText("");
+						data.setText("");
+						cpf.setText("");
+						identidade.setText("");
 					}else{
 						nome.setText(aluno.getNome());
 						data.setText(aluno.getDataDeNascimento());
@@ -332,9 +353,12 @@ public class AlterarCadastroAlunosForm extends JFrame {
 		
 	}
 	
-	private void cadastrar(){
+	private void alterarCadastro(){
 		Usuario usuario = new Usuario();
 		Pessoa pessoa = new Pessoa();
+		
+		pessoa.setUsuario(aluno.getUsuario());
+		pessoa.getUsuario().setId(aluno.getUsuario().getId());
 		
 		pessoa.setBairro(bairro.getText());
 		pessoa.setCelular(celular.getText());

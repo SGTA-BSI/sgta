@@ -253,9 +253,10 @@ public class UsuarioDAO {
 		try {
 			Connection con = bd.getConnection();
 			PreparedStatement prepared = con
-					.prepareStatement("DROP INTO aluno (nome,data_nasc,sexo,cpf,identidade,endereco,"
-							+ "numero, complemento, cidade, estado, bairro, telefone, celular, email, observacao) VALUES (?,?,?,?,?,?,?,?,"
-							+ "?,?,?,?,?,?,?)");
+					.prepareStatement("UPDATE aluno SET nome=?, data_nasc=?, sexo=?, cpf=?,"
+							+ " identidade=?, endereco=?, numero=?, complemento=?, cidade=?"
+							+ " estado=?, bairro=?, telefone=?, celular=?, email=?, observacao=?"
+							+ " WHERE id=?");
 			prepared.setString(1, pessoa.getNome());
 			prepared.setString(2, pessoa.getDataDeNascimento());
 			prepared.setString(3, pessoa.getSexo());
@@ -271,6 +272,7 @@ public class UsuarioDAO {
 			prepared.setString(13, pessoa.getCelular());
 			prepared.setString(14, pessoa.getEmail());
 			prepared.setString(15, pessoa.getObservacoes());
+			prepared.setInt(16, pessoa.getUsuario().getId());
 
 			prepared.execute();
 
