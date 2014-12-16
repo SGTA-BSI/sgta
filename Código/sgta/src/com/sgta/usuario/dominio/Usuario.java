@@ -4,6 +4,7 @@ public class Usuario {
 	private int id;
 	private String username;
 	private String senha;
+	private String cargo;
 	
 	public int getId() {
 		return this.id;
@@ -22,6 +23,12 @@ public class Usuario {
 	}
 	public void setSenha(String senha) {
 		this.senha = senha;
+	}
+	public String getCargo() {
+		return cargo;
+	}
+	public void setCargo(String cargo) {
+		this.cargo = cargo;
 	}
 	
 	

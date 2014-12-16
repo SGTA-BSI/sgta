@@ -143,4 +143,64 @@ public class UsuarioDAO {
 
 	}
 
+	public Usuario findAdminByLogin(String login) throws SQLException {
+
+		Connection connection = null;
+		PreparedStatement statement = null;
+		ResultSet resultSet = null;
+		Usuario user = new Usuario();
+
+		try {
+			connection = bd.getConnection();
+			statement = connection
+					.prepareStatement("SELECT * FROM admin WHERE login = ?");
+			statement.setString(1, login);
+			resultSet = statement.executeQuery();
+			while (resultSet.next()) {
+				user.setId(resultSet.getInt("id"));
+				user.setSenha(resultSet.getString("senha"));
+				user.setUsername(resultSet.getString("login"));
+			}
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			resultSet.close();
+			bd.fecharConecaoMySQL();
+		}
+
+		return user;
+	}
+	
+	public Usuario findFuncionarioByLogin(String login) throws SQLException {
+
+		Connection connection = null;
+		PreparedStatement statement = null;
+		ResultSet resultSet = null;
+		Usuario user = new Usuario();
+
+		try {
+			connection = bd.getConnection();
+			statement = connection
+					.prepareStatement("SELECT * FROM func WHERE login = ?");
+			statement.setString(1, login);
+			resultSet = statement.executeQuery();
+			while (resultSet.next()) {
+				user.setId(resultSet.getInt("id"));
+				user.setSenha(resultSet.getString("senha"));
+				user.setUsername(resultSet.getString("login"));
+				user.setCargo(resultSet.getString("cargo"));
+			}
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			resultSet.close();
+			bd.fecharConecaoMySQL();
+		}
+
+		return user;
+	}
+
+
 }

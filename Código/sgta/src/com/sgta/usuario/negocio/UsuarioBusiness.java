@@ -4,6 +4,7 @@ import java.sql.SQLException;
 
 import com.sgta.usuario.dao.UsuarioDAO;
 import com.sgta.usuario.dominio.Pessoa;
+import com.sgta.usuario.dominio.Usuario;
 
 public class UsuarioBusiness {
 	private UsuarioDAO dao = UsuarioDAO.getInstancia();
@@ -36,5 +37,44 @@ public class UsuarioBusiness {
 	public boolean consultaLoginFuncionario(String login) throws SQLException{
 		return dao.consultaLoginFuncionario(login);
 	}
+	
+	public boolean validaAdminLogin(String usuario, String senha)
+			throws SQLException {
+
+		Usuario user = dao.findAdminByLogin(usuario);
+		
+		if (user == null){
+			return false;
+		}
+
+		String informado = usuario + senha;
+		String esperado = user.getUsername() + user.getSenha();
+		if (informado.equals(esperado)) {
+			return true;
+		} else {
+			return false;
+		}
+
+	}
+	
+	public boolean validaFuncionarioLogin(String usuario, String senha, String cargo)
+			throws SQLException {
+
+		Usuario user = dao.findFuncionarioByLogin(usuario);
+		
+		if (user == null){
+			return false;
+		}
+
+		String informado = usuario + senha + cargo;
+		String esperado = user.getUsername() + user.getSenha() + user.getCargo();
+		if (informado.equals(esperado)) {
+			return true;
+		} else {
+			return false;
+		}
+
+	}
 
 }
+
