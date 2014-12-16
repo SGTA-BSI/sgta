@@ -75,6 +75,14 @@ public class UsuarioBusiness {
 		}
 
 	}
+	
+	public Pessoa buscarAluno(String cpf) throws SQLException{
+		return dao.retornaAluno(cpf);
+	}
+	
+	public void alterarAluno(Pessoa aluno) throws SQLException{
+		dao.alterarAluno(aluno);
+	}
 
 }
 

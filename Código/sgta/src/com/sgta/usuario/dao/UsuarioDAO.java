@@ -201,6 +201,85 @@ public class UsuarioDAO {
 
 		return user;
 	}
+	
+	public Pessoa retornaAluno(String cpf) throws SQLException {
+
+		Connection connection = null;
+		PreparedStatement statement = null;
+		ResultSet resultSet = null;
+		Usuario user = new Usuario();
+		Pessoa pessoa = new Pessoa();
+
+		try {
+			connection = bd.getConnection();
+			statement = connection
+					.prepareStatement("SELECT * FROM aluno WHERE cpf = ?");
+			statement.setString(1, cpf);
+			resultSet = statement.executeQuery();
+			while (resultSet.next()) {
+				user.setId(resultSet.getInt("id"));
+				
+				pessoa.setUsuario(user);
+				pessoa.setNome(resultSet.getString("nome"));
+				pessoa.setDataDeNascimento(resultSet.getString("data_nasc"));
+				pessoa.setSexo(resultSet.getString("sexo"));
+				pessoa.setCpf(resultSet.getString("cpf"));
+				pessoa.setIdentidade(resultSet.getString("identidade"));
+				pessoa.setEndereco(resultSet.getString("endereco"));
+				pessoa.setNumero(resultSet.getString("numero"));
+				pessoa.setComplemento(resultSet.getString("complemento"));
+				pessoa.setCidade(resultSet.getString("cidade"));
+				pessoa.setEstado(resultSet.getString("estado"));
+				pessoa.setBairro(resultSet.getString("bairro"));
+				pessoa.setTelefone(resultSet.getString("telefone"));
+				pessoa.setCelular(resultSet.getString("celular"));
+				pessoa.setEmail(resultSet.getString("email"));
+				pessoa.setObservacoes(resultSet.getString("observacao"));
+				
+				
+			}
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			resultSet.close();
+			bd.fecharConecaoMySQL();
+		}
+
+		return pessoa;
+	}
+	
+	public void alterarAluno(Pessoa pessoa) {
+		try {
+			Connection con = bd.getConnection();
+			PreparedStatement prepared = con
+					.prepareStatement("DROP INTO aluno (nome,data_nasc,sexo,cpf,identidade,endereco,"
+							+ "numero, complemento, cidade, estado, bairro, telefone, celular, email, observacao) VALUES (?,?,?,?,?,?,?,?,"
+							+ "?,?,?,?,?,?,?)");
+			prepared.setString(1, pessoa.getNome());
+			prepared.setString(2, pessoa.getDataDeNascimento());
+			prepared.setString(3, pessoa.getSexo());
+			prepared.setString(4, pessoa.getCpf());
+			prepared.setString(5, pessoa.getIdentidade());
+			prepared.setString(6, pessoa.getEndereco());
+			prepared.setString(7, pessoa.getNumero());
+			prepared.setString(8, pessoa.getComplemento());
+			prepared.setString(9, pessoa.getCidade());
+			prepared.setString(10, pessoa.getEstado());
+			prepared.setString(11, pessoa.getBairro());
+			prepared.setString(12, pessoa.getTelefone());
+			prepared.setString(13, pessoa.getCelular());
+			prepared.setString(14, pessoa.getEmail());
+			prepared.setString(15, pessoa.getObservacoes());
+
+			prepared.execute();
+
+			bd.fecharConecaoMySQL();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
+
 
 
 }
