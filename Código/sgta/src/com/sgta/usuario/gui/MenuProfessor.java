@@ -96,6 +96,25 @@ public class MenuProfessor extends JFrame {
 		JButton btnCriarTreino = new JButton("Criar Treino");
 		btnCriarTreino.setBounds(261, 75, 177, 84);
 		contentPane.add(btnCriarTreino);
+		
+		JButton btnAlterarAluno = new JButton("Alterar Cadastro Aluno");
+		btnAlterarAluno.setBounds(261, 172, 177, 84);
+		contentPane.add(btnAlterarAluno);
+		btnAlterarAluno.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				try {
+					AlterarCadastroAlunosForm tela = new AlterarCadastroAlunosForm();
+					tela.setVisible(true);
+					setVisible(false);
+				} catch (ParseException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+				
+			}
+		});
 	}
 	public static void getLblInfo(String mensagem){
 		lblInfo.setText(mensagem);

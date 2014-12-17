@@ -254,7 +254,7 @@ public class UsuarioDAO {
 			Connection con = bd.getConnection();
 			PreparedStatement prepared = con
 					.prepareStatement("UPDATE aluno SET nome=?, data_nasc=?, sexo=?, cpf=?,"
-							+ " identidade=?, endereco=?, numero=?, complemento=?, cidade=?"
+							+ " identidade=?, endereco=?, numero=?, complemento=?, cidade=?,"
 							+ " estado=?, bairro=?, telefone=?, celular=?, email=?, observacao=?"
 							+ " WHERE id=?");
 			prepared.setString(1, pessoa.getNome());

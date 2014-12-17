@@ -80,7 +80,7 @@ public class UsuarioBusiness {
 		return dao.retornaAluno(cpf);
 	}
 	
-	public void alterarAluno(Pessoa aluno) throws SQLException{
+	public void alterarAluno(Pessoa aluno){
 		dao.alterarAluno(aluno);
 	}
 

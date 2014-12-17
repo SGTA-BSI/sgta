@@ -354,7 +354,6 @@ public class AlterarCadastroAlunosForm extends JFrame {
 	}
 	
 	private void alterarCadastro(){
-		Usuario usuario = new Usuario();
 		Pessoa pessoa = new Pessoa();
 		
 		pessoa.setUsuario(aluno.getUsuario());
@@ -375,10 +374,9 @@ public class AlterarCadastroAlunosForm extends JFrame {
 		pessoa.setObservacoes(observacoes.getText());
 		pessoa.setSexo(sexo); // Falta recuperar o valor de Sexo!!!
 		pessoa.setTelefone(telefone.getText());
-		pessoa.setUsuario(usuario);
 		
 		UsuarioBusiness business = UsuarioBusiness.getInstancia();
-		business.inserirAluno(pessoa);
+		business.alterarAluno(pessoa);
 		
 		
 	}
