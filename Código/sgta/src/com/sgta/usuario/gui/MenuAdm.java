@@ -90,6 +90,7 @@ public class MenuAdm extends JFrame {
 		btnLogout.setBounds(419, 17, 89, 23);
 		contentPane.add(btnLogout);
 		
+		
 		lblInfo = new JLabel("");
 		lblInfo.setBounds(22, 385, 539, 14);
 		contentPane.add(lblInfo);

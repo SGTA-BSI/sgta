@@ -92,6 +92,24 @@ public class MenuAtendente extends JFrame {
 		lblInfo = new JLabel("");
 		lblInfo.setBounds(10, 386, 581, 14);
 		contentPane.add(lblInfo);
+		
+		JButton button = new JButton("Alterar Cadastro Aluno");
+		button.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				AlterarCadastroAlunosForm tela;
+				try {
+					tela = new AlterarCadastroAlunosForm();
+					tela.setVisible(true);
+					setVisible(false);
+				} catch (ParseException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+				
+			}
+		});
+		button.setBounds(267, 75, 177, 84);
+		contentPane.add(button);
 	}
 	public static void getLblInfo(String mensagem){
 		lblInfo.setText(mensagem);

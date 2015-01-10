@@ -32,7 +32,7 @@ public class Usuario {
 		this.cargo = cargo;
 	}
 	public String getAtivo() {
-		return ativo;
+		return this.ativo;
 	}
 	public void setAtivo(String ativo) {
 		this.ativo = ativo;

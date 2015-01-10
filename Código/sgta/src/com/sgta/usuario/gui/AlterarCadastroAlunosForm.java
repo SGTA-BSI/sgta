@@ -256,8 +256,7 @@ public class AlterarCadastroAlunosForm extends JFrame {
 		JButton btnCadastrar = new JButton("Alterar Cadastro");
 		btnCadastrar.setBounds(205, 578, 138, 23);
 		contentPane.add(btnCadastrar);
-		
-		
+
 		btnCadastrar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				UsuarioBusiness business = UsuarioBusiness.getInstancia();
@@ -297,8 +296,8 @@ public class AlterarCadastroAlunosForm extends JFrame {
 
 		btnCancelar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				MenuProfessor tela;
-				tela = new MenuProfessor();
+				MenuAtendente tela;
+				tela = new MenuAtendente();
 				tela.setVisible(true);
 				setVisible(false);
 			}
@@ -316,16 +315,16 @@ public class AlterarCadastroAlunosForm extends JFrame {
 		JButton btnBuscar = new JButton("Buscar");
 		btnBuscar.setBounds(205, 52, 88, 23);
 		contentPane.add(btnBuscar);
-		
+
 		JSeparator separator = new JSeparator();
 		separator.setBounds(10, 85, 464, 9);
 		contentPane.add(separator);
-		
+
 		JLabel label = new JLabel("Ativar/Desativar Usu\u00E1rio");
 		label.setBounds(325, 38, 138, 14);
 		contentPane.add(label);
-		
-		String[] ativoItems = {"Selecione uma opção", "Ativar", "Desativar"};
+
+		String[] ativoItems = { "Selecione uma opção", "Ativar", "Desativar" };
 		JComboBox comboBoxAtivar = new JComboBox();
 		comboBoxAtivar.setBounds(325, 53, 149, 20);
 		contentPane.add(comboBoxAtivar);
@@ -340,7 +339,7 @@ public class AlterarCadastroAlunosForm extends JFrame {
 				}
 			}
 		});
-		
+
 		btnBuscar.addActionListener(new ActionListener() {
 
 			@Override
@@ -489,12 +488,12 @@ public class AlterarCadastroAlunosForm extends JFrame {
 					"PREENCHA O CAMPO DE EMAIL NO FORMATO email@email.com",
 					"ATENÇÃO!!", JOptionPane.WARNING_MESSAGE);
 			return false;
-		} else if(ativo == null || ativo.equals("")){
+		} else if (ativo == null || ativo.equals("")) {
 			JOptionPane.showMessageDialog(null,
-					"INFORME SE DESEJA ATIVAR O USUÁRIO",
-					"ATENÇÃO!!", JOptionPane.WARNING_MESSAGE);
+					"INFORME SE DESEJA ATIVAR O USUÁRIO", "ATENÇÃO!!",
+					JOptionPane.WARNING_MESSAGE);
 			return false;
-		}else {
+		} else {
 			return true;
 		}
 	}
