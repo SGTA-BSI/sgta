@@ -325,7 +325,7 @@ public class AlterarCadastroAlunosForm extends JFrame {
 		contentPane.add(label);
 
 		String[] ativoItems = { "Selecione uma opção", "Ativar", "Desativar" };
-		JComboBox comboBoxAtivar = new JComboBox();
+		JComboBox comboBoxAtivar = new JComboBox(ativoItems);
 		comboBoxAtivar.setBounds(325, 53, 149, 20);
 		contentPane.add(comboBoxAtivar);
 		comboBoxAtivar.addActionListener(new ActionListener() {
