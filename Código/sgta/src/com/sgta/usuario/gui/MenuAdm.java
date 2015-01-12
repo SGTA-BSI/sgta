@@ -94,6 +94,23 @@ public class MenuAdm extends JFrame {
 		lblInfo = new JLabel("");
 		lblInfo.setBounds(22, 385, 539, 14);
 		contentPane.add(lblInfo);
+		
+		JButton btnAlterarCadastroFuncionrio = new JButton("Alterar Cadastro Funcion\u00E1rio");
+		btnAlterarCadastroFuncionrio.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				try {
+					AlterarCadastroFuncionarioForm tela = new AlterarCadastroFuncionarioForm();
+					tela.setVisible(true);
+					setVisible(false);
+				} catch (ParseException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+				
+			}
+		});
+		btnAlterarCadastroFuncionrio.setBounds(248, 75, 213, 84);
+		contentPane.add(btnAlterarCadastroFuncionrio);
 	}
 	public static void getLblInfo(String mensagem){
 		lblInfo.setText(mensagem);

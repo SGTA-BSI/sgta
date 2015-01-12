@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 4.2.11
+-- version 4.1.6
 -- http://www.phpmyadmin.net
 --
--- Host: localhost
--- Generation Time: 10-Jan-2015 às 18:59
--- Versão do servidor: 5.6.21
--- PHP Version: 5.6.3
+-- Host: 127.0.0.1
+-- Generation Time: 13-Jan-2015 às 00:06
+-- Versão do servidor: 5.6.16
+-- PHP Version: 5.5.9
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET time_zone = "+00:00";
@@ -27,7 +27,7 @@ SET time_zone = "+00:00";
 --
 
 CREATE TABLE IF NOT EXISTS `admin` (
-`id` int(11) NOT NULL,
+  `id` int(11) NOT NULL AUTO_INCREMENT,
   `nome` varchar(200) NOT NULL,
   `data_nasc` varchar(11) NOT NULL,
   `sexo` varchar(25) NOT NULL,
@@ -43,8 +43,17 @@ CREATE TABLE IF NOT EXISTS `admin` (
   `celular` varchar(25) NOT NULL,
   `email` varchar(30) NOT NULL,
   `login` varchar(15) NOT NULL,
-  `senha` varchar(15) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+  `senha` varchar(15) NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `login` (`login`)
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=2 ;
+
+--
+-- Extraindo dados da tabela `admin`
+--
+
+INSERT INTO `admin` (`id`, `nome`, `data_nasc`, `sexo`, `cpf`, `identidade`, `endereco`, `numero`, `complemento`, `cidade`, `estado`, `bairro`, `telefone`, `celular`, `email`, `login`, `senha`) VALUES
+(1, 'adm', '11/11/1970', 'Masculino', '777.777.777-77', '78787', 'Teste', '123', '', 'Teste', 'Teste', 'Teste', '(87)3434-4343', '(87)8787-7878', 'teste@teste.com', 'adm', '1234');
 
 -- --------------------------------------------------------
 
@@ -53,7 +62,7 @@ CREATE TABLE IF NOT EXISTS `admin` (
 --
 
 CREATE TABLE IF NOT EXISTS `aluno` (
-`id` int(11) NOT NULL,
+  `id` int(11) NOT NULL AUTO_INCREMENT,
   `nome` varchar(250) NOT NULL,
   `data_nasc` varchar(250) NOT NULL,
   `sexo` varchar(250) NOT NULL,
@@ -69,15 +78,16 @@ CREATE TABLE IF NOT EXISTS `aluno` (
   `celular` varchar(20) NOT NULL,
   `email` varchar(30) NOT NULL,
   `observacao` varchar(250) NOT NULL,
-  `status` varchar(25) NOT NULL
-) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=latin1;
+  `status` varchar(25) NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `cpf` (`cpf`,`identidade`,`email`)
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=10 ;
 
 --
 -- Extraindo dados da tabela `aluno`
 --
 
 INSERT INTO `aluno` (`id`, `nome`, `data_nasc`, `sexo`, `cpf`, `identidade`, `endereco`, `numero`, `complemento`, `cidade`, `estado`, `bairro`, `telefone`, `celular`, `email`, `observacao`, `status`) VALUES
-(2, 'Antonio Jorge Ferreira Delgado Filho', '11/06/1993', 'Sexo', '101.376.344-04', '1000000', 'Rua São Benedito', '215', 'Casa A', 'Recife ', 'Pernambuco', 'Pina', '3216-9874', '9874-8587', 'bsi@bsi.com.br', 'Teste bem sucedido!!!', ''),
 (3, 'Edvan Joaquim Soares Junior', '12/12/12', 'Sexo', '123456789-78', '12354', 'Rua Bsi', '123', '', 'Recife', 'Pernambuco', 'Dois Irmãos', '1234-7898', '9874-7895', 'teste@hotmail.com', 'Teste', ''),
 (4, 'teste', '12/12/1212', 'Masculino', '111.111.111-11', '111111', '1111', '111', '111', '111', '111', '1111', '(11)1111-1111', '(11)1111-1111', '1111@1111.com', '', ''),
 (5, 'teste1', '12/12/1212', 'Masculino', '111.111.111-12', '1111112', '1111', '111', '111', '111', '111', '1111', '(11)1111-1111', '(11)1111-1111', '1111@1111.com', '', ''),
@@ -93,7 +103,7 @@ INSERT INTO `aluno` (`id`, `nome`, `data_nasc`, `sexo`, `cpf`, `identidade`, `en
 --
 
 CREATE TABLE IF NOT EXISTS `func` (
-`id` int(11) NOT NULL,
+  `id` int(11) NOT NULL AUTO_INCREMENT,
   `nome` varchar(250) NOT NULL,
   `data_nasc` varchar(250) NOT NULL,
   `sexo` varchar(250) NOT NULL,
@@ -111,61 +121,22 @@ CREATE TABLE IF NOT EXISTS `func` (
   `login` varchar(25) NOT NULL,
   `senha` varchar(25) NOT NULL,
   `cargo` varchar(50) NOT NULL,
-  `status` varchar(25) NOT NULL
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=latin1;
+  `status` varchar(25) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=7 ;
 
 --
 -- Extraindo dados da tabela `func`
 --
 
 INSERT INTO `func` (`id`, `nome`, `data_nasc`, `sexo`, `cpf`, `identidade`, `endereco`, `numero`, `complemento`, `cidade`, `estado`, `bairro`, `telefone`, `celular`, `email`, `login`, `senha`, `cargo`, `status`) VALUES
-(1, 'Teste 1', '11/11/1987', 'Masculino', '111.111.111-11', '11111', 'Rua Teste', '111', '', 'Teste', 'Teste', 'Teste', '(81)7888-7878', '(78)7878-7878', 'teste@teste.com', '', '', 'Professor', ''),
+(1, 'Teste 1', '11/11/1987', 'Masculino', '111.111.111-11', '11111', 'Rua Teste', '111', '', 'Teste', 'Teste', 'Teste', '(81)7888-7878', '(78)7878-7878', 'teste@teste.com', '', '', 'Professor', 'Desativo'),
 (2, 'Teste 2', '21/21/1999', 'Feminino', '   .   .   -  ', '14545', 'Teste', '111', '', 'Teste', 'Teste', 'Teste', '(  )    -    ', '(  )    -    ', 'teste@teste.com', 'teste', '123', 'Professor', ''),
 (3, 'ad', '12/12/2012', 'Masculino', '111.111.111-12', '111', '1111', '1111', '1111', '1111', '111', '111', '(11)1111-1111', '(77)7777-7777', 'teste@teste.com', 'teste', '123', 'Atendente', ''),
 (4, 'teste', '  /  /    ', 'Masculino', '222.222.222-22', '2222', '2222', '222', '222', '222', '2222', '222', '(22)2222-2222', '(22)2222-2222', '222@222.com', 'teste', '123', 'Professor', ''),
-(5, 'Teste Final', '12/11/1121', 'Feminino', '111.111.111-33', '1111', 'teste final', '333', '', 'final teste', 'Final', 'Teste', '(21)5887-8787', '(31)7878-7878', 'teste@teste.com', 'teste1', '321', 'Atendente', '');
+(5, 'Teste Final', '12/11/1121', 'Feminino', '111.111.111-33', '1111', 'teste final', '333', '', 'final teste', 'Final', 'Teste', '(21)5887-8787', '(31)7878-7878', 'teste@teste.com', 'teste1', '321', 'Atendente', ''),
+(6, 'Teste1201', '10/10/1010', 'Feminino', '121.212.121-22', '1212', 'Rua', '12', '', 'Recife', 'PE', 'BSI', '(12)1212-1212', '(12)2121-2121', 'teste1201@teste.com', 'teste1201', '1234', 'Atendente', 'Ativo');
 
---
--- Indexes for dumped tables
---
-
---
--- Indexes for table `admin`
---
-ALTER TABLE `admin`
- ADD PRIMARY KEY (`id`), ADD UNIQUE KEY `login` (`login`);
-
---
--- Indexes for table `aluno`
---
-ALTER TABLE `aluno`
- ADD PRIMARY KEY (`id`), ADD UNIQUE KEY `cpf` (`cpf`,`identidade`,`email`);
-
---
--- Indexes for table `func`
---
-ALTER TABLE `func`
- ADD PRIMARY KEY (`id`);
-
---
--- AUTO_INCREMENT for dumped tables
---
-
---
--- AUTO_INCREMENT for table `admin`
---
-ALTER TABLE `admin`
-MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
---
--- AUTO_INCREMENT for table `aluno`
---
-ALTER TABLE `aluno`
-MODIFY `id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=10;
---
--- AUTO_INCREMENT for table `func`
---
-ALTER TABLE `func`
-MODIFY `id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=6;
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;

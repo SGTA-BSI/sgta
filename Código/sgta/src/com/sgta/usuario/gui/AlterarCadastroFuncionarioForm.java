@@ -45,14 +45,12 @@ public class AlterarCadastroFuncionarioForm extends JFrame {
 	private JTextField estado;
 	private JTextField bairro;
 	private JTextField email;
-	private JTextField login;
-	private JPasswordField campoConfSenha;
-	private JPasswordField campoSenha;
 
 	private JFormattedTextField data;
 	private JFormattedTextField celular;
 	private JFormattedTextField cpf;
 	private JFormattedTextField telefone;
+	private JFormattedTextField cpf2;
 
 	private MaskFormatter ftmData;
 	private MaskFormatter ftmCpf;
@@ -63,7 +61,8 @@ public class AlterarCadastroFuncionarioForm extends JFrame {
 
 	private String sexo;
 	private String cargo;
-	private JTextField textField;
+	private String status;
+	private Pessoa funcionario;
 
 	/**
 	 * Launch the application.
@@ -89,7 +88,7 @@ public class AlterarCadastroFuncionarioForm extends JFrame {
 	public AlterarCadastroFuncionarioForm() throws ParseException {
 		setTitle("SGTA - <Nome da Academia>");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 500, 776);
+		setBounds(100, 100, 593, 776);
 		contentPane = new JPanel();
 		contentPane.setAlignmentX(Component.LEFT_ALIGNMENT);
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
@@ -111,7 +110,7 @@ public class AlterarCadastroFuncionarioForm extends JFrame {
 		contentPane.add(nome);
 		nome.setColumns(10);
 
-		// Formatação da data
+		// FormataÃ§Ã£o da data
 		ftmData = new MaskFormatter("##/##/####");
 
 		data = new JFormattedTextField(ftmData);
@@ -229,61 +228,54 @@ public class AlterarCadastroFuncionarioForm extends JFrame {
 		contentPane.add(email);
 		email.setColumns(10);
 
-		// Formatação do cpf
+		// FormataÃ§Ã£o do cpf
 		ftmCpf = new MaskFormatter("###.###.###-##");
 
 		cpf = new JFormattedTextField(ftmCpf);
 		cpf.setBounds(10, 282, 202, 20);
 		contentPane.add(cpf);
 
-		// Formatação do telefone
+		// FormataÃ§Ã£o do telefone
 		ftmTelefone = new MaskFormatter("(##)####-####");
 		telefone = new JFormattedTextField(ftmTelefone);
 		telefone.setBounds(9, 506, 202, 20);
 		contentPane.add(telefone);
 
-		// Formatação do celular
+		// FormataÃ§Ã£o do celular
 		ftmCelular = new MaskFormatter("(##)####-####");
 		celular = new JFormattedTextField(ftmCelular);
 		celular.setBounds(233, 506, 241, 20);
 		contentPane.add(celular);
 
-		JButton btnCadastrar = new JButton("Cadastrar");
-		btnCadastrar.setBounds(217, 704, 126, 23);
+		JButton btnCadastrar = new JButton("Alterar");
+		btnCadastrar.setBounds(246, 653, 126, 23);
 		contentPane.add(btnCadastrar);
 		btnCadastrar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				UsuarioBusiness business = UsuarioBusiness.getInstancia();
-				String password = new String(campoSenha.getPassword());
-				String confirmPassword = new String(campoConfSenha.getPassword());
-				MenuAdm tela;
+				MenuAtendente tela;
 				if (validacaoPreenchimento()) {
 					try {
-						if (business.consultaCpfFuncionario(cpf.getText())) {
-							if(business.consultaLoginFuncionario(login.getText())){
-								if (password.equals(confirmPassword)) {
-							
-								cadastrar();
-								tela = new MenuAdm();
-								tela.setVisible(true);
-								setVisible(false);
-								MenuAdm.getLblInfo("Funcionário Cadastrado com Sucesso!!");
-								//lblInfo.setText("Funcionário Cadastrado com sucesso");
-								
-								}else{
-									JOptionPane.showMessageDialog(null,"SENHAS DIFERENTES! INFORME SENHAS IGUAIS","ATENçÃO",JOptionPane.WARNING_MESSAGE);
-								}
+						alterarCadastro();
+						JOptionPane.showMessageDialog(null,
+								"Cadastro alterado.");
+						funcionario = null;
+						nome.setText("");
+						data.setText("");
+						cpf.setText("");
+						identidade.setText("");
+						endereco.setText("");
+						numero.setText("");
+						complemento.setText("");
+						cidade.setText("");
+						estado.setText("");
+						bairro.setText("");
+						telefone.setText("");
+						celular.setText("");
+						email.setText("");
 
-							} else {
-								JOptionPane.showMessageDialog(null,"LOGIN JÁ EXISTENTE! ESCOLHA OUTRO!","ATENçÃO",JOptionPane.WARNING_MESSAGE);
-							}
-
-						} else {
-							JOptionPane.showMessageDialog(null,"CPF JÁ CADASTRADO", "ATENçÃO",JOptionPane.WARNING_MESSAGE);
-						}
-					} catch (HeadlessException | SQLException e1) {
-						// TODO Auto-generated catch block
-						e1.printStackTrace();
+					} catch (HeadlessException e1) {
+						JOptionPane.showMessageDialog(null, "Erro");
 					}
 
 				}
@@ -291,7 +283,7 @@ public class AlterarCadastroFuncionarioForm extends JFrame {
 		});
 
 		JButton btnCancelar = new JButton("Cancelar");
-		btnCancelar.setBounds(353, 704, 121, 23);
+		btnCancelar.setBounds(382, 653, 121, 23);
 		contentPane.add(btnCancelar);
 
 		btnCancelar.addActionListener(new ActionListener() {
@@ -306,23 +298,14 @@ public class AlterarCadastroFuncionarioForm extends JFrame {
 		lblInfo.setBounds(15, 375, 547, 14);
 		contentPane.add(lblInfo);
 
-		JLabel lblLogin = new JLabel("Login");
-		lblLogin.setBounds(10, 595, 46, 14);
-		contentPane.add(lblLogin);
-
-		login = new JTextField();
-		login.setBounds(10, 620, 138, 20);
-		contentPane.add(login);
-		login.setColumns(10);
-
 		JLabel lblCargo = new JLabel("Cargo");
-		lblCargo.setBounds(10, 651, 46, 14);
+		lblCargo.setBounds(10, 593, 46, 14);
 		contentPane.add(lblCargo);
 
 		// ---- Atribuindo valores ao ComboBox cargo
 		String[] itemsCargo = { "Selecione o Cargo", "Professor", "Atendente" };
 		JComboBox comboBoxCargo = new JComboBox(itemsCargo);
-		comboBoxCargo.setBounds(10, 676, 182, 20);
+		comboBoxCargo.setBounds(10, 618, 182, 20);
 		contentPane.add(comboBoxCargo);
 		comboBoxCargo.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -335,28 +318,6 @@ public class AlterarCadastroFuncionarioForm extends JFrame {
 				}
 			}
 		});
-
-		JLabel lblSenha = new JLabel("Senha");
-		lblSenha.setBounds(158, 595, 46, 14);
-		contentPane.add(lblSenha);
-
-		campoConfSenha = new JPasswordField();
-		campoConfSenha.setBounds(310, 620, 149, 20);
-		contentPane.add(campoConfSenha);
-
-		JLabel lblConfirmarSenha = new JLabel("Confirmar Senha");
-		lblConfirmarSenha.setBounds(314, 595, 99, 14);
-		contentPane.add(lblConfirmarSenha);
-
-		campoSenha = new JPasswordField();
-		campoSenha.setBounds(158, 620, 142, 20);
-		contentPane.add(campoSenha);
-		
-		textField = new JTextField();
-		textField.setText("   .   .   -  ");
-		textField.setBounds(10, 87, 222, 20);
-		contentPane.add(textField);
-		textField.setColumns(10);
 		
 		JSeparator separator = new JSeparator();
 		separator.setBounds(10, 132, 464, 2);
@@ -367,53 +328,81 @@ public class AlterarCadastroFuncionarioForm extends JFrame {
 		contentPane.add(lblInformeOCpf);
 		
 		JButton btnBuscar = new JButton("Buscar");
-		btnBuscar.setBounds(242, 86, 89, 23);
 		contentPane.add(btnBuscar);
-		
-		JComboBox comboBox = new JComboBox();
-		comboBox.setModel(new DefaultComboBoxModel(new String[] {"Selecione uma op\u00E7\u00E3o", "Sim", "N\u00E3o"}));
-		comboBox.setToolTipText("");
+		btnBuscar.setBounds(242, 86, 89, 23);
+		btnBuscar.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				UsuarioBusiness business = UsuarioBusiness.getInstancia();
+				try {
+					funcionario = business
+							.buscarFuncionario(cpf2.getText().toString());
+					if (funcionario.getNome() == null) {
+						JOptionPane.showMessageDialog(null,
+								"CPF não cadastrado.");
+						funcionario = null;
+						nome.setText("");
+						data.setText("");
+						cpf.setText("");
+						identidade.setText("");
+						endereco.setText("");
+						numero.setText("");
+						complemento.setText("");
+						cidade.setText("");
+						estado.setText("");
+						bairro.setText("");
+						telefone.setText("");
+						celular.setText("");
+						email.setText("");
+					} else {
+						nome.setText(funcionario.getNome());
+						data.setText(funcionario.getDataDeNascimento());
+						cpf.setText(funcionario.getCpf());
+						identidade.setText(funcionario.getIdentidade());
+						endereco.setText(funcionario.getEndereco());
+						numero.setText(funcionario.getNumero());
+						complemento.setText(funcionario.getComplemento());
+						cidade.setText(funcionario.getCidade());
+						estado.setText(funcionario.getEstado());
+						bairro.setText(funcionario.getBairro());
+						telefone.setText(funcionario.getTelefone());
+						celular.setText(funcionario.getCelular());
+						email.setText(funcionario.getEmail());
+
+					}
+				} catch (SQLException e1) {
+					e1.printStackTrace();
+				}
+			}
+		});
+		String[] ativoItems = { "Selecione uma opção", "Ativar", "Desativar" };
+		JComboBox comboBox = new JComboBox(ativoItems);
 		comboBox.setBounds(341, 84, 133, 23);
 		contentPane.add(comboBox);
+		comboBox.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				if (comboBox.getSelectedItem() == "Selecione uma opção") {
+					status = "";
+				} else if (comboBox.getSelectedItem() == "Ativar") {
+					status = "Ativo";
+				} else if (comboBox.getSelectedItem() == "Desativar") {
+					status = "Desativo";
+				}
+			}
+		});
 		
 		JLabel lblFuncionrioAtivo = new JLabel("Funcion\u00E1rio Ativo?");
 		lblFuncionrioAtivo.setBounds(341, 51, 118, 19);
 		contentPane.add(lblFuncionrioAtivo);
+		
+		cpf2 = new JFormattedTextField(ftmCpf);
+		cpf2.setBounds(15, 87, 177, 20);
+		contentPane.add(cpf2);
 
 	}
 
-	private void cadastrar() {
-		Usuario usuario = new Usuario();
-		Pessoa pessoa = new Pessoa();
-
-		String password = new String(campoSenha.getPassword());
-
-		usuario.setSenha(password);
-		usuario.setUsername(login.getText());
-		pessoa.setBairro(bairro.getText());
-		pessoa.setCelular(celular.getText());
-		pessoa.setCidade(cidade.getText());
-		pessoa.setComplemento(complemento.getText());
-		pessoa.setCpf(cpf.getText());
-		pessoa.setDataDeNascimento(data.getText());
-		pessoa.setEmail(email.getText());
-		pessoa.setEndereco(endereco.getText());
-		pessoa.setEstado(estado.getText());
-		pessoa.setIdentidade(identidade.getText());
-		pessoa.setNome(nome.getText());
-		pessoa.setNumero(numero.getText());
-		pessoa.setSexo(sexo);
-		pessoa.setTelefone(telefone.getText());
-		pessoa.setUsuario(usuario);
-		pessoa.setCargo(cargo);
-		pessoa.getUsuario().setAtivo("Ativo");
-		UsuarioBusiness business = UsuarioBusiness.getInstancia();
-		business.inserirFuncionario(pessoa);
-
-	}
+	
 
 	public boolean validacaoPreenchimento() {
-		String password = new String(campoSenha.getPassword());
 		
 		
 		if (nome.getText().length() == 0 || nome.getText().equals(" ")) {
@@ -422,7 +411,7 @@ public class AlterarCadastroFuncionarioForm extends JFrame {
 			return false;
 		}
 		else if (data.getText().length() == 0 || data.getText().equals(" ")) {
-			JOptionPane.showMessageDialog(null,"PREENCHA O CAMPO DE DATA DE NASCIMENTO", "ATENÇÃO!!",JOptionPane.WARNING_MESSAGE);
+			JOptionPane.showMessageDialog(null,"PREENCHA O CAMPO DE DATA DE NASCIMENTO","ATENÇÃO!!",JOptionPane.WARNING_MESSAGE);
 			return false;
 		} 
 		else if (sexo == null || sexo.equals("")) {
@@ -438,7 +427,7 @@ public class AlterarCadastroFuncionarioForm extends JFrame {
 			return false;
 		} 
 		else if (endereco.getText().length() == 0 || endereco.getText().equals(" ")) {
-			JOptionPane.showMessageDialog(null, "PREENCHA O CAMPO DE ENDEREçO","ATENÇÃO!!", JOptionPane.WARNING_MESSAGE);
+			JOptionPane.showMessageDialog(null, "PREENCHA O CAMPO DE ENDEREÃ§O","ATENÇÃO!!", JOptionPane.WARNING_MESSAGE);
 			return false;
 		}
 		else if (numero.getText().length() == 0	|| numero.getText().equals(" ")) {
@@ -473,13 +462,11 @@ public class AlterarCadastroFuncionarioForm extends JFrame {
 		} else if (cargo == null || cargo.equals("")) {
 			JOptionPane.showMessageDialog(null, "SELECIONE UM CARGO","ATENÇÃO!!", JOptionPane.WARNING_MESSAGE);
 			return false;
-		} else if (login.getText().length() == 0 || login.getText().equals(" ")) {
-			JOptionPane.showMessageDialog(null, "PREENCHA O CAMPO DE LOGIN","ATENÇÃO!!", JOptionPane.WARNING_MESSAGE);
+		
+		} else if (status == null || status.equals("")) {
+			JOptionPane.showMessageDialog(null, "INFORME SE O FUNCIONÁRIO ESTÁ ATIVO","ATENÇÃO!!", JOptionPane.WARNING_MESSAGE);
 			return false;
-		} else if (password == null || password.equals("") || password.length() == 0) {
-			JOptionPane.showMessageDialog(null, "PREENCHA O CAMPO SENHA","ATENÇÃO!!", JOptionPane.WARNING_MESSAGE);
-			return false;
-		}
+		} 
 		else {
 			return true;
 		}
@@ -497,5 +484,32 @@ public class AlterarCadastroFuncionarioForm extends JFrame {
 			}
 		}
 		return isEmailIdValid;
+	}
+	private void alterarCadastro() {
+		Pessoa pessoa = new Pessoa();
+
+		pessoa.setUsuario(funcionario.getUsuario());
+		pessoa.getUsuario().setId(funcionario.getUsuario().getId());
+		pessoa.getUsuario().setAtivo(status);
+
+		pessoa.setBairro(bairro.getText());
+		pessoa.setCelular(celular.getText());
+		pessoa.setCidade(cidade.getText());
+		pessoa.setComplemento(complemento.getText());
+		pessoa.setCpf(cpf.getText());
+		pessoa.setDataDeNascimento(data.getText());
+		pessoa.setEmail(email.getText());
+		pessoa.setEndereco(endereco.getText());
+		pessoa.setEstado(estado.getText());
+		pessoa.setIdentidade(identidade.getText());
+		pessoa.setNome(nome.getText());
+		pessoa.setNumero(numero.getText());
+		pessoa.setSexo(sexo); 
+		pessoa.setTelefone(telefone.getText());
+		
+
+		UsuarioBusiness business = UsuarioBusiness.getInstancia();
+		business.alterarFuncionario(pessoa);
+
 	}
 }

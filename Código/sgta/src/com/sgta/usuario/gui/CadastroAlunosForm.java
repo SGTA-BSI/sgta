@@ -318,7 +318,7 @@ public class CadastroAlunosForm extends JFrame {
 		pessoa.setNome(nome.getText());
 		pessoa.setNumero(numero.getText());
 		pessoa.setObservacoes(observacoes.getText());
-		pessoa.setSexo(sexo); // Falta recuperar o valor de Sexo!!!
+		pessoa.setSexo(sexo); 
 		pessoa.setTelefone(telefone.getText());
 		pessoa.setUsuario(usuario);
 		pessoa.getUsuario().setAtivo("Ativo");

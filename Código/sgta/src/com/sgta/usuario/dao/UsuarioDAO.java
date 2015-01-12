@@ -27,8 +27,8 @@ public class UsuarioDAO {
 			Connection con = bd.getConnection();
 			PreparedStatement prepared = con
 					.prepareStatement("INSERT INTO aluno (nome,data_nasc,sexo,cpf,identidade,endereco,"
-							+ "numero, complemento, cidade, estado, bairro, telefone, celular, email, observacao) VALUES (?,?,?,?,?,?,?,?,"
-							+ "?,?,?,?,?,?,?)");
+							+ "numero, complemento, cidade, estado, bairro, telefone, celular, email, observacao,status) VALUES (?,?,?,?,?,?,?,?,"
+							+ "?,?,?,?,?,?,?,?)");
 			prepared.setString(1, pessoa.getNome());
 			prepared.setString(2, pessoa.getDataDeNascimento());
 			prepared.setString(3, pessoa.getSexo());
@@ -44,6 +44,7 @@ public class UsuarioDAO {
 			prepared.setString(13, pessoa.getCelular());
 			prepared.setString(14, pessoa.getEmail());
 			prepared.setString(15, pessoa.getObservacoes());
+			prepared.setString(16, pessoa.getUsuario().getAtivo());
 
 			prepared.execute();
 
@@ -58,8 +59,8 @@ public class UsuarioDAO {
 			Connection con = bd.getConnection();
 			PreparedStatement prepared = con
 					.prepareStatement("INSERT INTO func (nome,data_nasc,sexo,cpf,identidade,endereco,"
-							+ "numero, complemento, cidade, estado, bairro, telefone, celular, email,cargo,login,senha) VALUES (?,?,?,?,?,?,?,?,"
-							+ "?,?,?,?,?,?,?,?,?)");
+							+ "numero, complemento, cidade, estado, bairro, telefone, celular, email,cargo,login,senha,status) VALUES (?,?,?,?,?,?,?,?,"
+							+ "?,?,?,?,?,?,?,?,?,?)");
 			prepared.setString(1, pessoa.getNome());
 			prepared.setString(2, pessoa.getDataDeNascimento());
 			prepared.setString(3, pessoa.getSexo());
@@ -77,6 +78,7 @@ public class UsuarioDAO {
 			prepared.setString(15, pessoa.getCargo());
 			prepared.setString(16, pessoa.getUsuario().getUsername());
 			prepared.setString(17, pessoa.getUsuario().getSenha());
+			prepared.setString(18, pessoa.getUsuario().getAtivo());
 
 			prepared.execute();
 
@@ -255,7 +257,7 @@ public class UsuarioDAO {
 			PreparedStatement prepared = con
 					.prepareStatement("UPDATE aluno SET nome=?, data_nasc=?, sexo=?, cpf=?,"
 							+ " identidade=?, endereco=?, numero=?, complemento=?, cidade=?,"
-							+ " estado=?, bairro=?, telefone=?, celular=?, email=?, observacao=?"
+							+ " estado=?, bairro=?, telefone=?, celular=?, email=?, observacao=?,status = ?"
 							+ " WHERE id=?");
 			prepared.setString(1, pessoa.getNome());
 			prepared.setString(2, pessoa.getDataDeNascimento());
@@ -272,6 +274,85 @@ public class UsuarioDAO {
 			prepared.setString(13, pessoa.getCelular());
 			prepared.setString(14, pessoa.getEmail());
 			prepared.setString(15, pessoa.getObservacoes());
+			prepared.setString(16, pessoa.getUsuario().getAtivo());
+			prepared.setInt(17, pessoa.getUsuario().getId());
+
+			prepared.execute();
+
+			bd.fecharConecaoMySQL();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
+	public Pessoa retornaFuncionario(String cpf) throws SQLException {
+
+		Connection connection = null;
+		PreparedStatement statement = null;
+		ResultSet resultSet = null;
+		Usuario user = new Usuario();
+		Pessoa pessoa = new Pessoa();
+
+		try {
+			connection = bd.getConnection();
+			statement = connection
+					.prepareStatement("SELECT * FROM func WHERE cpf = ?");
+			statement.setString(1, cpf);
+			resultSet = statement.executeQuery();
+			while (resultSet.next()) {
+				user.setId(resultSet.getInt("id"));
+				
+				pessoa.setUsuario(user);
+				pessoa.setNome(resultSet.getString("nome"));
+				pessoa.setDataDeNascimento(resultSet.getString("data_nasc"));
+				pessoa.setSexo(resultSet.getString("sexo"));
+				pessoa.setCpf(resultSet.getString("cpf"));
+				pessoa.setIdentidade(resultSet.getString("identidade"));
+				pessoa.setEndereco(resultSet.getString("endereco"));
+				pessoa.setNumero(resultSet.getString("numero"));
+				pessoa.setComplemento(resultSet.getString("complemento"));
+				pessoa.setCidade(resultSet.getString("cidade"));
+				pessoa.setEstado(resultSet.getString("estado"));
+				pessoa.setBairro(resultSet.getString("bairro"));
+				pessoa.setTelefone(resultSet.getString("telefone"));
+				pessoa.setCelular(resultSet.getString("celular"));
+				pessoa.setEmail(resultSet.getString("email"));
+				
+				
+			}
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			resultSet.close();
+			bd.fecharConecaoMySQL();
+		}
+
+		return pessoa;
+	}
+
+	public void alterarFuncionario(Pessoa pessoa) {
+		try {
+			Connection con = bd.getConnection();
+			PreparedStatement prepared = con
+					.prepareStatement("UPDATE func SET nome=?, data_nasc=?, sexo=?, cpf=?,"
+							+ " identidade=?, endereco=?, numero=?, complemento=?, cidade=?,"
+							+ " estado=?, bairro=?, telefone=?, celular=?, email=?,status = ?"
+							+ " WHERE id=?");
+			prepared.setString(1, pessoa.getNome());
+			prepared.setString(2, pessoa.getDataDeNascimento());
+			prepared.setString(3, pessoa.getSexo());
+			prepared.setString(4, pessoa.getCpf());
+			prepared.setString(5, pessoa.getIdentidade());
+			prepared.setString(6, pessoa.getEndereco());
+			prepared.setString(7, pessoa.getNumero());
+			prepared.setString(8, pessoa.getComplemento());
+			prepared.setString(9, pessoa.getCidade());
+			prepared.setString(10, pessoa.getEstado());
+			prepared.setString(11, pessoa.getBairro());
+			prepared.setString(12, pessoa.getTelefone());
+			prepared.setString(13, pessoa.getCelular());
+			prepared.setString(14, pessoa.getEmail());
+			prepared.setString(15, pessoa.getUsuario().getAtivo());
 			prepared.setInt(16, pessoa.getUsuario().getId());
 
 			prepared.execute();
@@ -281,7 +362,5 @@ public class UsuarioDAO {
 			e.printStackTrace();
 		}
 	}
-
-
 
 }
