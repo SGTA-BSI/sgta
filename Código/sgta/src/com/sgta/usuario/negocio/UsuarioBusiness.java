@@ -71,9 +71,10 @@ public class UsuarioBusiness {
 		if (pessoa == null) {
 			return false;
 		}
-
 		String informado = usuario + senha + cargo;
-		String esperado = pessoa.getUsuario().getUsername() + pessoa.getUsuario().getSenha() + pessoa.getCargo();
+		String esperado = pessoa.getUsuario().getUsername()
+				+ pessoa.getUsuario().getSenha()
+				+ pessoa.getUsuario().getCargo();
 		if (informado.equals(esperado)) {
 			return true;
 		} else {
@@ -85,8 +86,9 @@ public class UsuarioBusiness {
 	public Pessoa buscarAluno(String cpf) throws SQLException {
 		return dao.retornaAluno(cpf);
 	}
-	
-	public List<Pessoa> alunosByProfessor(String usernameProfessor) throws SQLException{
+
+	public List<Pessoa> alunosByProfessor(String usernameProfessor)
+			throws SQLException {
 		return dao.findAlunosByProfessor(usernameProfessor);
 	}
 

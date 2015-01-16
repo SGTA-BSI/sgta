@@ -192,9 +192,9 @@ public class UsuarioDAO {
 			resultSet = statement.executeQuery();
 			while (resultSet.next()) {
 				user.setId(resultSet.getInt("id"));
-				user.setCargo(resultSet.getString("cargo"));
 				user.setAtivo(resultSet.getString("status"));
 				user.setSenha(resultSet.getString("senha"));
+				user.setCargo(resultSet.getString("cargo"));
 				user.setUsername(resultSet.getString("login"));
 
 				pessoa.setUsuario(user);
