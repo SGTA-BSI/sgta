@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Generation Time: 16-Jan-2015 às 18:39
+-- Generation Time: 16-Jan-2015 às 22:31
 -- Versão do servidor: 5.6.21
 -- PHP Version: 5.6.3
 
@@ -155,15 +155,15 @@ CREATE TABLE IF NOT EXISTS `medidas` (
 `id` int(11) NOT NULL,
   `id_aluno` int(11) NOT NULL,
   `altura` double(3,2) NOT NULL,
-  `peso` double(3,2) NOT NULL,
-  `bracos` double(3,2) NOT NULL,
-  `peito` double(3,2) NOT NULL,
-  `coxas` double(3,2) NOT NULL,
-  `costas` double(3,2) NOT NULL,
-  `panturilhas` double(3,2) NOT NULL,
-  `trapezio` double(3,2) NOT NULL,
-  `antebracos` double(3,2) NOT NULL,
-  `cintura` double(3,2) NOT NULL
+  `peso` double(4,2) NOT NULL,
+  `bracos` double(2,0) NOT NULL,
+  `peito` double(2,0) NOT NULL,
+  `coxas` double(2,0) NOT NULL,
+  `costas` double(2,0) NOT NULL,
+  `panturilhas` double(2,0) NOT NULL,
+  `trapezio` double(2,0) NOT NULL,
+  `antebracos` double(2,0) NOT NULL,
+  `cintura` double(2,0) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
