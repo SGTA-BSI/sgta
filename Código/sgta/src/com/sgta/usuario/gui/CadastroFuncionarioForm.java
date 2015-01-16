@@ -88,6 +88,8 @@ public class CadastroFuncionarioForm extends JFrame {
 		setTitle("SGTA - <Nome da Academia>");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 500, 595);
+		setLocationRelativeTo(null);
+		setResizable(false);
 		contentPane = new JPanel();
 		contentPane.setAlignmentX(Component.LEFT_ALIGNMENT);
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
