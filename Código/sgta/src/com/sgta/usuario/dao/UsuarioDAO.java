@@ -9,6 +9,8 @@ import com.sgta.usuario.dominio.Pessoa;
 import com.sgta.usuario.dominio.Usuario;
 
 import java.sql.PreparedStatement;
+import java.util.ArrayList;
+import java.util.List;
 
 public class UsuarioDAO {
 	private static UsuarioDAO instancia = new UsuarioDAO();
@@ -173,7 +175,7 @@ public class UsuarioDAO {
 
 		return user;
 	}
-	
+
 	public Usuario findFuncionarioByLogin(String login) throws SQLException {
 
 		Connection connection = null;
@@ -192,6 +194,7 @@ public class UsuarioDAO {
 				user.setSenha(resultSet.getString("senha"));
 				user.setUsername(resultSet.getString("login"));
 				user.setCargo(resultSet.getString("cargo"));
+				user.setAtivo(resultSet.getString("status"));
 			}
 
 		} catch (Exception e) {
@@ -203,7 +206,7 @@ public class UsuarioDAO {
 
 		return user;
 	}
-	
+
 	public Pessoa retornaAluno(String cpf) throws SQLException {
 
 		Connection connection = null;
@@ -220,7 +223,7 @@ public class UsuarioDAO {
 			resultSet = statement.executeQuery();
 			while (resultSet.next()) {
 				user.setId(resultSet.getInt("id"));
-				
+
 				pessoa.setUsuario(user);
 				pessoa.setNome(resultSet.getString("nome"));
 				pessoa.setDataDeNascimento(resultSet.getString("data_nasc"));
@@ -237,8 +240,7 @@ public class UsuarioDAO {
 				pessoa.setCelular(resultSet.getString("celular"));
 				pessoa.setEmail(resultSet.getString("email"));
 				pessoa.setObservacoes(resultSet.getString("observacao"));
-				
-				
+
 			}
 
 		} catch (Exception e) {
@@ -250,7 +252,7 @@ public class UsuarioDAO {
 
 		return pessoa;
 	}
-	
+
 	public void alterarAluno(Pessoa pessoa) {
 		try {
 			Connection con = bd.getConnection();
@@ -284,6 +286,7 @@ public class UsuarioDAO {
 			e.printStackTrace();
 		}
 	}
+
 	public Pessoa retornaFuncionario(String cpf) throws SQLException {
 
 		Connection connection = null;
@@ -300,7 +303,7 @@ public class UsuarioDAO {
 			resultSet = statement.executeQuery();
 			while (resultSet.next()) {
 				user.setId(resultSet.getInt("id"));
-				
+
 				pessoa.setUsuario(user);
 				pessoa.setNome(resultSet.getString("nome"));
 				pessoa.setDataDeNascimento(resultSet.getString("data_nasc"));
@@ -316,8 +319,7 @@ public class UsuarioDAO {
 				pessoa.setTelefone(resultSet.getString("telefone"));
 				pessoa.setCelular(resultSet.getString("celular"));
 				pessoa.setEmail(resultSet.getString("email"));
-				
-				
+
 			}
 
 		} catch (Exception e) {
@@ -361,6 +363,55 @@ public class UsuarioDAO {
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
+	}
+
+	public List<Pessoa> findAlunosByProfessor(String usernameProfessor)
+			throws SQLException {
+		Connection connection = null;
+		PreparedStatement statement = null;
+		ResultSet resultSet = null;
+		Usuario user = new Usuario();
+		Pessoa pessoa = new Pessoa();
+		List<Pessoa> listaAlunos = new ArrayList<Pessoa>();
+
+		try {
+			connection = bd.getConnection();
+			statement = connection
+					.prepareStatement("SELECT * FROM aluno WHERE professor = ?");
+			statement.setString(1, usernameProfessor);
+			resultSet = statement.executeQuery();
+			while (resultSet.next()) {
+				user.setId(resultSet.getInt("id"));
+
+				pessoa.setUsuario(user);
+				pessoa.setNome(resultSet.getString("nome"));
+				pessoa.setDataDeNascimento(resultSet.getString("data_nasc"));
+				pessoa.setSexo(resultSet.getString("sexo"));
+				pessoa.setCpf(resultSet.getString("cpf"));
+				pessoa.setIdentidade(resultSet.getString("identidade"));
+				pessoa.setEndereco(resultSet.getString("endereco"));
+				pessoa.setNumero(resultSet.getString("numero"));
+				pessoa.setComplemento(resultSet.getString("complemento"));
+				pessoa.setCidade(resultSet.getString("cidade"));
+				pessoa.setEstado(resultSet.getString("estado"));
+				pessoa.setBairro(resultSet.getString("bairro"));
+				pessoa.setTelefone(resultSet.getString("telefone"));
+				pessoa.setCelular(resultSet.getString("celular"));
+				pessoa.setEmail(resultSet.getString("email"));
+				pessoa.setObservacoes(resultSet.getString("observacao"));
+				listaAlunos.add(pessoa);
+				pessoa = new Pessoa();
+
+			}
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			resultSet.close();
+			bd.fecharConecaoMySQL();
+		}
+
+		return listaAlunos;
 	}
 
 }

@@ -18,6 +18,7 @@ public class Pessoa {
 	private String email;
 	private String observacoes;
 	private String cargo;
+	private String professorDoAluno;
 	
 	public Usuario getUsuario() {
 		return usuario;
@@ -120,6 +121,12 @@ public class Pessoa {
 	}
 	public void setCargo(String cargo) {
 		this.cargo = cargo;
+	}
+	public String getProfessorDoAluno() {
+		return professorDoAluno;
+	}
+	public void setProfessorDoAluno(String professorDoAluno) {
+		this.professorDoAluno = professorDoAluno;
 	}
 	
 	

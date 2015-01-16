@@ -58,26 +58,26 @@ public class Login extends JFrame {
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
-		
+
 		JLabel lblSejaBemVindo = new JLabel("Seja Bem Vindo");
 		lblSejaBemVindo.setFont(new Font("Vijaya", Font.BOLD, 36));
 		lblSejaBemVindo.setBounds(29, 11, 336, 78);
 		contentPane.add(lblSejaBemVindo);
-		
+
 		JLabel lblLogin = new JLabel("Login");
 		lblLogin.setFont(new Font("Constantia", Font.BOLD, 18));
 		lblLogin.setBounds(29, 106, 105, 23);
 		contentPane.add(lblLogin);
-		
+
 		textField = new JTextField();
 		textField.setFont(new Font("Arial", Font.PLAIN, 14));
 		textField.setBounds(29, 140, 184, 32);
 		contentPane.add(textField);
 		textField.setColumns(10);
-		
+
 		String[] items = { "Informe o tipo de usuário:", "Administrador",
 				"Atendente", "Professor" };
-		
+
 		JComboBox comboBoxUsuario = new JComboBox(items);
 		comboBoxUsuario.setBounds(248, 140, 184, 32);
 		contentPane.add(comboBoxUsuario);
@@ -99,16 +99,15 @@ public class Login extends JFrame {
 			}
 		});
 
-		
 		JLabel lblSenha = new JLabel("Senha");
 		lblSenha.setFont(new Font("Constantia", Font.BOLD, 14));
 		lblSenha.setBounds(29, 206, 87, 23);
 		contentPane.add(lblSenha);
-		
+
 		passwordField = new JPasswordField();
 		passwordField.setBounds(29, 238, 184, 32);
 		contentPane.add(passwordField);
-		
+
 		JButton btnEntrar = new JButton("Entrar");
 		btnEntrar.setFont(new Font("Tahoma", Font.BOLD, 12));
 		btnEntrar.setBounds(27, 305, 107, 32);
@@ -117,43 +116,64 @@ public class Login extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				UsuarioBusiness business = UsuarioBusiness.getInstancia();
 				String password = new String(passwordField.getPassword());
-				
+
 				try {
 					if (cargoUsuario == "Administrador") {
 						if (business.validaAdminLogin(textField.getText()
-								.toString(),password)) {
+								.toString(), password)) {
 							MenuAdm tela = new MenuAdm();
 							tela.setVisible(true);
 							setVisible(false);
-							
-						}else {
-							JOptionPane.showMessageDialog(null,
-									"Verifique o login ou senha do administrador.");
+
+						} else {
+							JOptionPane
+									.showMessageDialog(null,
+											"Verifique o login ou senha do administrador.");
 						}
 					} else if (cargoUsuario == "Atendente") {
 						if (business.validaFuncionarioLogin(textField.getText()
-								.toString(), password,
-								cargoUsuario)) {
-							MenuAtendente tela = new MenuAtendente();
-							tela.setVisible(true);
-							setVisible(false);
-							
+								.toString(), password, cargoUsuario)) {
+							if (business
+									.getDao()
+									.findFuncionarioByLogin(
+											textField.getText().toString())
+									.getAtivo().equals("Ativo")) {
+								MenuAtendente tela = new MenuAtendente();
+								tela.setVisible(true);
+								setVisible(false);
+
+							} else {
+								JOptionPane
+										.showMessageDialog(null,
+												"O usuário informado está inativo. Contate o administrador do sistema.");
+							}
+
 						} else {
 							JOptionPane.showMessageDialog(null,
 									"Verifique o login ou senha do atendente.");
 						}
 					} else if (cargoUsuario == "Professor") {
 						if (business.validaFuncionarioLogin(textField.getText()
-								.toString(), password,
-								cargoUsuario)) {
-							MenuProfessor tela = new MenuProfessor();
-							tela.setVisible(true);
-							setVisible(false);
+								.toString(), password, cargoUsuario)) {
+							if (business
+									.getDao()
+									.findFuncionarioByLogin(
+											textField.getText().toString())
+									.getAtivo().equals("Ativo")) {
+								MenuProfessor tela = new MenuProfessor();
+								tela.setVisible(true);
+								setVisible(false);
+
+							} else {
+								JOptionPane
+										.showMessageDialog(null,
+												"O usuário informado está inativo. Contate o administrador do sistema.");
+							}
 						} else {
 							JOptionPane.showMessageDialog(null,
-									"Verifique professor.");
+									"Verifique o login ou senha do professor.");
 						}
-					}else{
+					} else {
 						JOptionPane.showMessageDialog(null,
 								"Informe o tipo de usuário.");
 					}
@@ -163,9 +183,8 @@ public class Login extends JFrame {
 				}
 
 			}
-			
+
 		});
-		
 
 		JButton btnSair = new JButton("Sair");
 		btnSair.setFont(new Font("Tahoma", Font.BOLD, 12));
