@@ -66,15 +66,14 @@ public class UsuarioBusiness {
 	public boolean validaFuncionarioLogin(String usuario, String senha,
 			String cargo) throws SQLException {
 
-		Usuario user = dao.findFuncionarioByLogin(usuario);
+		Pessoa pessoa = dao.findFuncionarioByLogin(usuario);
 
-		if (user == null) {
+		if (pessoa == null) {
 			return false;
 		}
 
 		String informado = usuario + senha + cargo;
-		String esperado = user.getUsername() + user.getSenha()
-				+ user.getCargo();
+		String esperado = pessoa.getUsuario().getUsername() + pessoa.getUsuario().getSenha() + pessoa.getCargo();
 		if (informado.equals(esperado)) {
 			return true;
 		} else {

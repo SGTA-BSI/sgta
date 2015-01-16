@@ -22,6 +22,7 @@ import javax.swing.JButton;
 import com.sgta.usuario.gui.MenuAdm;
 import com.sgta.usuario.gui.MenuAtendente;
 import com.sgta.usuario.gui.MenuProfessor;
+import com.sgta.usuario.negocio.SessaoUsuario;
 import com.sgta.usuario.negocio.UsuarioBusiness;
 
 public class Login extends JFrame {
@@ -137,7 +138,12 @@ public class Login extends JFrame {
 									.getDao()
 									.findFuncionarioByLogin(
 											textField.getText().toString())
-									.getAtivo().equals("Ativo")) {
+									.getUsuario().getAtivo().equals("Ativo")) {
+								SessaoUsuario.getInstancia().setUsuarioLogado(
+										business.getDao()
+												.findFuncionarioByLogin(
+														textField.getText()
+																.toString()));
 								MenuAtendente tela = new MenuAtendente();
 								tela.setVisible(true);
 								setVisible(false);
@@ -159,7 +165,12 @@ public class Login extends JFrame {
 									.getDao()
 									.findFuncionarioByLogin(
 											textField.getText().toString())
-									.getAtivo().equals("Ativo")) {
+									.getUsuario().getAtivo().equals("Ativo")) {
+								SessaoUsuario.getInstancia().setUsuarioLogado(
+										business.getDao()
+												.findFuncionarioByLogin(
+														textField.getText()
+																.toString()));
 								MenuProfessor tela = new MenuProfessor();
 								tela.setVisible(true);
 								setVisible(false);

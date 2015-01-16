@@ -176,12 +176,13 @@ public class UsuarioDAO {
 		return user;
 	}
 
-	public Usuario findFuncionarioByLogin(String login) throws SQLException {
+	public Pessoa findFuncionarioByLogin(String login) throws SQLException {
 
 		Connection connection = null;
 		PreparedStatement statement = null;
 		ResultSet resultSet = null;
 		Usuario user = new Usuario();
+		Pessoa pessoa = new Pessoa();
 
 		try {
 			connection = bd.getConnection();
@@ -191,10 +192,27 @@ public class UsuarioDAO {
 			resultSet = statement.executeQuery();
 			while (resultSet.next()) {
 				user.setId(resultSet.getInt("id"));
-				user.setSenha(resultSet.getString("senha"));
-				user.setUsername(resultSet.getString("login"));
 				user.setCargo(resultSet.getString("cargo"));
 				user.setAtivo(resultSet.getString("status"));
+				user.setSenha(resultSet.getString("senha"));
+				user.setUsername(resultSet.getString("login"));
+
+				pessoa.setUsuario(user);
+				pessoa.setNome(resultSet.getString("nome"));
+				pessoa.setDataDeNascimento(resultSet.getString("data_nasc"));
+				pessoa.setSexo(resultSet.getString("sexo"));
+				pessoa.setCpf(resultSet.getString("cpf"));
+				pessoa.setIdentidade(resultSet.getString("identidade"));
+				pessoa.setEndereco(resultSet.getString("endereco"));
+				pessoa.setNumero(resultSet.getString("numero"));
+				pessoa.setComplemento(resultSet.getString("complemento"));
+				pessoa.setCidade(resultSet.getString("cidade"));
+				pessoa.setEstado(resultSet.getString("estado"));
+				pessoa.setBairro(resultSet.getString("bairro"));
+				pessoa.setTelefone(resultSet.getString("telefone"));
+				pessoa.setCelular(resultSet.getString("celular"));
+				pessoa.setEmail(resultSet.getString("email"));
+
 			}
 
 		} catch (Exception e) {
@@ -204,7 +222,7 @@ public class UsuarioDAO {
 			bd.fecharConecaoMySQL();
 		}
 
-		return user;
+		return pessoa;
 	}
 
 	public Pessoa retornaAluno(String cpf) throws SQLException {
@@ -303,6 +321,10 @@ public class UsuarioDAO {
 			resultSet = statement.executeQuery();
 			while (resultSet.next()) {
 				user.setId(resultSet.getInt("id"));
+				user.setCargo(resultSet.getString("cargo"));
+				user.setAtivo(resultSet.getString("status"));
+				user.setSenha(resultSet.getString("senha"));
+				user.setUsername(resultSet.getString("login"));
 
 				pessoa.setUsuario(user);
 				pessoa.setNome(resultSet.getString("nome"));
