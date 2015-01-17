@@ -47,6 +47,8 @@ public class PerfilUsuario extends JFrame {
 	private JLabel lblEmail;
 	private JLabel lblObs;
 
+	private static JLabel lblInfo;
+
 	/**
 	 * Launch the application.
 	 */
@@ -163,6 +165,8 @@ public class PerfilUsuario extends JFrame {
 							aluno = null;
 
 						} else {
+							SessaoUsuario.getInstancia().setAlunoSelecionado(
+									aluno);
 							lblNome.setText(aluno.getNome());
 							lblData.setText(aluno.getDataDeNascimento());
 							lblSexo.setText(aluno.getSexo());
@@ -232,15 +236,15 @@ public class PerfilUsuario extends JFrame {
 		contentPane.add(label_15);
 
 		JButton btnCriarTreino = new JButton("Criar Treino");
-		btnCriarTreino.setBounds(10, 416, 101, 23);
+		btnCriarTreino.setBounds(10, 403, 101, 23);
 		contentPane.add(btnCriarTreino);
 
 		JButton btnVisualizarTreinos = new JButton("Visualizar Treinos");
-		btnVisualizarTreinos.setBounds(139, 416, 150, 23);
+		btnVisualizarTreinos.setBounds(139, 403, 150, 23);
 		contentPane.add(btnVisualizarTreinos);
 
 		JButton btnFechar = new JButton("Fechar");
-		btnFechar.setBounds(475, 416, 89, 23);
+		btnFechar.setBounds(473, 403, 89, 23);
 		contentPane.add(btnFechar);
 		btnFechar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -255,6 +259,7 @@ public class PerfilUsuario extends JFrame {
 					tela = new MenuProfessor();
 					tela.setVisible(true);
 				}
+				SessaoUsuario.getInstancia().setAlunoSelecionado(null);
 				dispose();
 			}
 		});
@@ -338,16 +343,44 @@ public class PerfilUsuario extends JFrame {
 		lblAtivo.setFont(new Font("Tahoma", Font.BOLD, 11));
 		lblAtivo.setBounds(405, 111, 86, 14);
 		contentPane.add(lblAtivo);
-		
+
 		JButton btnInserirMedidas = new JButton("Inserir Medidas");
-		btnInserirMedidas.setBounds(302, 416, 137, 23);
+		btnInserirMedidas.setBounds(302, 403, 137, 23);
 		contentPane.add(btnInserirMedidas);
+
 		btnInserirMedidas.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				MenuMedidas tela = new MenuMedidas();
-				tela.setVisible(true);
-				setVisible(false);
+				if (SessaoUsuario.getInstancia().getAlunoSelecionado() == null) {
+					JOptionPane
+					.showMessageDialog(
+							null,
+							"FAÇA UMA BUSCA DE PERFIL",
+							"ATENÇÃO!!",
+							JOptionPane.WARNING_MESSAGE);
+				} else {
+					if (SessaoUsuario.getInstancia().getUsuarioLogado()
+							.getUsuario().getCargo().equals("Atendente")) {
+						JOptionPane
+								.showMessageDialog(
+										null,
+										"VOCÊ NÃO TEM AUTORIZAÇÃO PRA EXECUTAR ESSA FUNÇÃO",
+										"ATENÇÃO!!",
+										JOptionPane.WARNING_MESSAGE);
+					} else {
+						MenuMedidas tela = new MenuMedidas();
+						tela.setVisible(true);
+						setVisible(false);
+
+					}
+				}
 			}
 		});
+		lblInfo = new JLabel("");
+		lblInfo.setBounds(10, 446, 530, 14);
+		contentPane.add(lblInfo);
+	}
+
+	public static void getLabelInfo(String mensagem) {
+		lblInfo.setText(mensagem);
 	}
 }

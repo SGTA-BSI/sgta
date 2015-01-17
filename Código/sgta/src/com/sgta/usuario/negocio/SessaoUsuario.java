@@ -3,6 +3,7 @@ import com.sgta.usuario.dominio.Pessoa;
 
 public class SessaoUsuario {
 	private Pessoa usuarioLogado;
+	private Pessoa alunoSelecionado;
 	private static SessaoUsuario instancia = new SessaoUsuario();
 	/** Método construtor da Classe.
 	 */
@@ -19,6 +20,12 @@ public class SessaoUsuario {
 	}
 	public void setUsuarioLogado(Pessoa usuarioLogado) {
 		this.usuarioLogado = usuarioLogado;
+	}
+	public Pessoa getAlunoSelecionado() {
+		return this.alunoSelecionado;
+	}
+	public void setAlunoSelecionado(Pessoa alunoSelecionado) {
+		this.alunoSelecionado = alunoSelecionado;
 	}
 
 	

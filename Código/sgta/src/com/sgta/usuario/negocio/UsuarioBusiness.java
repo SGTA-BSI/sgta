@@ -68,18 +68,17 @@ public class UsuarioBusiness {
 
 		Pessoa pessoa = dao.findFuncionarioByLogin(usuario);
 
-		if (pessoa.getNome() == null) {
+		if (pessoa == null) {
 			return false;
+		}
+		String informado = usuario + senha + cargo;
+		String esperado = pessoa.getUsuario().getUsername()
+				+ pessoa.getUsuario().getSenha()
+				+ pessoa.getUsuario().getCargo();
+		if (informado.equals(esperado)) {
+			return true;
 		} else {
-			String informado = usuario + senha + cargo;
-			String esperado = pessoa.getUsuario().getUsername()
-					+ pessoa.getUsuario().getSenha()
-					+ pessoa.getUsuario().getCargo();
-			if (informado.equals(esperado)) {
-				return true;
-			} else {
-				return false;
-			}
+			return false;
 		}
 
 	}
