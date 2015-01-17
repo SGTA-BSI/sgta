@@ -10,6 +10,7 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.SwingUtilities;
 import javax.swing.border.EmptyBorder;
 
 import com.sgta.Login;
@@ -20,17 +21,16 @@ public class MenuAtendente extends JFrame {
 
 	private JPanel contentPane;
 	private static JLabel lblInfo;
-	static MenuAtendente frame;
+	final static MenuAtendente frame = new MenuAtendente();
 
 	/**
 	 * Launch the application.
 	 */
-	
+
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					frame = new MenuAtendente();
 					frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -45,6 +45,7 @@ public class MenuAtendente extends JFrame {
 	public MenuAtendente() {
 		setTitle("SGTA - <Nome da Academia>");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		JFrame teste = frame;
 		setBounds(100, 100, 663, 449);
 		setLocationRelativeTo(null);
 		setResizable(false);
@@ -126,14 +127,9 @@ public class MenuAtendente extends JFrame {
 		button.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				AlterarCadastroAlunosForm tela;
-				try {
-					tela = new AlterarCadastroAlunosForm();
-					tela.setVisible(true);
-					dispose();
-				} catch (ParseException e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
-				}
+				tela = new AlterarCadastroAlunosForm();
+				tela.setVisible(true);
+				dispose();
 
 			}
 		});

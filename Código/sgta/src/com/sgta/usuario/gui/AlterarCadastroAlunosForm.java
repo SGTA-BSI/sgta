@@ -6,11 +6,8 @@ import java.awt.Font;
 import java.awt.HeadlessException;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
 import java.sql.SQLException;
 import java.text.ParseException;
-import java.util.logging.Handler;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -60,7 +57,7 @@ public class AlterarCadastroAlunosForm extends JFrame {
 	private String sexo;
 	private String ativo;
 	private JTextField textField;
-	static AlterarCadastroAlunosForm frameAlterarAluno;
+	final static AlterarCadastroAlunosForm frame = new AlterarCadastroAlunosForm();
 
 	/**
 	 * Launch the application.
@@ -69,8 +66,7 @@ public class AlterarCadastroAlunosForm extends JFrame {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					frameAlterarAluno = new AlterarCadastroAlunosForm();
-					frameAlterarAluno.setVisible(true);
+					frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
@@ -83,7 +79,7 @@ public class AlterarCadastroAlunosForm extends JFrame {
 	 * 
 	 * @throws ParseException
 	 */
-	public AlterarCadastroAlunosForm() throws ParseException {
+	public AlterarCadastroAlunosForm() {
 		setTitle("SGTA - <Nome da Academia>");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 500, 650);
@@ -128,7 +124,12 @@ public class AlterarCadastroAlunosForm extends JFrame {
 		nome.setColumns(10);
 
 		// Formatação da data
-		ftmData = new MaskFormatter("##/##/####");
+		try {
+			ftmData = new MaskFormatter("##/##/####");
+		} catch (ParseException e2) {
+			// TODO Auto-generated catch block
+			e2.printStackTrace();
+		}
 
 		data = new JFormattedTextField(ftmData);
 		data.setBounds(10, 159, 202, 20);
@@ -255,20 +256,35 @@ public class AlterarCadastroAlunosForm extends JFrame {
 		observacoes.setColumns(10);
 
 		// Formatação do cpf
-		ftmCpf = new MaskFormatter("###.###.###-##");
+		try {
+			ftmCpf = new MaskFormatter("###.###.###-##");
+		} catch (ParseException e2) {
+			// TODO Auto-generated catch block
+			e2.printStackTrace();
+		}
 
 		cpf = new JFormattedTextField(ftmCpf);
 		cpf.setBounds(10, 206, 202, 20);
 		contentPane.add(cpf);
 
 		// Formatação do telefone
-		ftmTelefone = new MaskFormatter("(##)####-####");
+		try {
+			ftmTelefone = new MaskFormatter("(##)####-####");
+		} catch (ParseException e2) {
+			// TODO Auto-generated catch block
+			e2.printStackTrace();
+		}
 		telefone = new JFormattedTextField(ftmTelefone);
 		telefone.setBounds(10, 388, 202, 20);
 		contentPane.add(telefone);
 
 		// Formatação do celular
-		ftmCelular = new MaskFormatter("(##)####-####");
+		try {
+			ftmCelular = new MaskFormatter("(##)####-####");
+		} catch (ParseException e2) {
+			// TODO Auto-generated catch block
+			e2.printStackTrace();
+		}
 		celular = new JFormattedTextField(ftmCelular);
 		celular.setBounds(233, 389, 251, 20);
 		contentPane.add(celular);
@@ -284,8 +300,7 @@ public class AlterarCadastroAlunosForm extends JFrame {
 				if (validacaoPreenchimento()) {
 					try {
 						alterarCadastro();
-						JOptionPane.showMessageDialog(null,
-								"Cadastro alterado.");
+						Toast.makeText(frame, "Cadastro alterado com sucesso.", 2000, Style.SUCCESS).display();
 						aluno = null;
 						nome.setText("");
 						data.setText("");
@@ -450,76 +465,58 @@ public class AlterarCadastroAlunosForm extends JFrame {
 
 	public boolean validacaoPreenchimento() {
 		if (nome.getText().length() == 0 || nome.getText().equals(" ")) {
-			this.msgToast(frameAlterarAluno, "Preencha o campo nome.", 2000, Toast.Style.ERROR);
+			Toast.makeText(frame, "Preencha o campo nome.", 2000, Style.ERROR).display();
 			nome.requestFocus();
 			return false;
 		} else if (data.getText().length() == 0 || data.getText().equals(" ")) {
-			JOptionPane.showMessageDialog(null,
-					"PREENCHA O CAMPO DE DATA DE NASCIMENTO", "ATENÇÃO!!",
-					JOptionPane.WARNING_MESSAGE);
+			Toast.makeText(frame, "Preencha o campo data de nascimento.", 2000, Style.ERROR).display();
 			return false;
 		} else if (sexo == null || sexo.equals("")) {
-			JOptionPane.showMessageDialog(null, "SELECIONE O SEXO",
-					"ATENÇÃO!!", JOptionPane.WARNING_MESSAGE);
+			Toast.makeText(frame, "Selecione o sexo.", 2000, Style.ERROR).display();
 			return false;
 		} else if (cpf.getText().length() == 0 || cpf.getText().equals(" ")) {
-			JOptionPane.showMessageDialog(null, "PREENCHA O CAMPO DE CPF",
-					"ATENÇÃO!!", JOptionPane.WARNING_MESSAGE);
+			Toast.makeText(frame, "Preencha o campo cpf.", 2000, Style.ERROR).display();
 			return false;
 		} else if (identidade.getText().length() == 0
 				|| identidade.getText().equals(" ")) {
-			JOptionPane.showMessageDialog(null,
-					"PREENCHA O CAMPO DE IDENTIDADE", "ATENÇÃO!!",
-					JOptionPane.WARNING_MESSAGE);
+			Toast.makeText(frame, "Preencha o campo identidade.", 2000, Style.ERROR).display();
 			return false;
 		} else if (endereco.getText().length() == 0
 				|| endereco.getText().equals(" ")) {
-			JOptionPane.showMessageDialog(null, "PREENCHA O CAMPO DE ENDEREçO",
-					"ATENÇÃO!!", JOptionPane.WARNING_MESSAGE);
+			Toast.makeText(frame, "Preencha o campo endereço.", 2000, Style.ERROR).display();
 			return false;
 		} else if (numero.getText().length() == 0
 				|| numero.getText().equals(" ")) {
-			JOptionPane.showMessageDialog(null, "PREENCHA O CAMPO DE NUMERO",
-					"ATENÇÃO!!", JOptionPane.WARNING_MESSAGE);
+			Toast.makeText(frame, "Preencha o campo número.", 2000, Style.ERROR).display();
 			return false;
 		} else if (cidade.getText().length() == 0
 				|| cidade.getText().equals(" ")) {
-			JOptionPane.showMessageDialog(null, "PREENCHA O CAMPO DE CIDADE",
-					"ATENÇÃO!!", JOptionPane.WARNING_MESSAGE);
+			Toast.makeText(frame, "Preencha o campo cidade.", 2000, Style.ERROR).display();
 			return false;
 		} else if (estado.getText().length() == 0
 				|| estado.getText().equals(" ")) {
-			JOptionPane.showMessageDialog(null, "PREENCHA O CAMPO DE ESTADO",
-					"ATENÇÃO!!", JOptionPane.WARNING_MESSAGE);
+			Toast.makeText(frame, "Preencha o campo estado.", 2000, Style.ERROR).display();
 			return false;
 		} else if (bairro.getText().length() == 0
 				|| bairro.getText().equals(" ")) {
-			JOptionPane.showMessageDialog(null, "PREENCHA O CAMPO DE BAIRRO",
-					"ATENÇÃO!!", JOptionPane.WARNING_MESSAGE);
+			Toast.makeText(frame, "Preencha o campo bairro.", 2000, Style.ERROR).display();
 			return false;
 		} else if (telefone.getText().length() == 0
 				|| telefone.getText().equals("(  )    -    ")) {
-			JOptionPane.showMessageDialog(null, "PREENCHA O CAMPO DE TELEFONE",
-					"ATENÇÃO!!", JOptionPane.WARNING_MESSAGE);
+			Toast.makeText(frame, "Preencha o campo telefone.", 2000, Style.ERROR).display();
 			return false;
 		} else if (celular.getText().length() == 0
 				|| celular.getText().equals("(  )    -    ")) {
-			JOptionPane.showMessageDialog(null, "PREENCHA O CAMPO DE CELULAR",
-					"ATENÇÃO!!", JOptionPane.WARNING_MESSAGE);
+			Toast.makeText(frame, "Preencha o campo celular.", 2000, Style.ERROR).display();
 			return false;
 		} else if (email.getText().length() == 0 || email.getText().equals(" ")) {
-			JOptionPane.showMessageDialog(null, "PREENCHA O CAMPO DE EMAIL",
-					"ATENÇÃO!!", JOptionPane.WARNING_MESSAGE);
+			Toast.makeText(frame, "Preencha o campo email.", 2000, Style.ERROR).display();
 			return false;
 		} else if (validarEmail(email.getText()) == false) {
-			JOptionPane.showMessageDialog(null,
-					"PREENCHA O CAMPO DE EMAIL NO FORMATO email@email.com",
-					"ATENÇÃO!!", JOptionPane.WARNING_MESSAGE);
+			Toast.makeText(frame, "Preencha o campo email no formato email@email.com.", 2000, Style.ERROR).display();
 			return false;
 		} else if (ativo == null || ativo.equals("")) {
-			JOptionPane.showMessageDialog(null,
-					"INFORME SE DESEJA ATIVAR O USUÁRIO", "ATENÇÃO!!",
-					JOptionPane.WARNING_MESSAGE);
+			Toast.makeText(frame, "Informe ativar/desativar usuário.", 2000, Style.ERROR).display();
 			return false;
 		} else {
 			return true;
@@ -539,10 +536,5 @@ public class AlterarCadastroAlunosForm extends JFrame {
 		}
 		return isEmailIdValid;
 	}
-	
-	public void msgToast(JFrame frame, String msg, int time, Style estilo){
-		Toast mensagem = new Toast(frame);
-		mensagem.makeText(frame, msg, time, estilo).display();
-		
-	}
+
 }

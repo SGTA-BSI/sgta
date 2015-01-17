@@ -130,14 +130,9 @@ public class MenuProfessor extends JFrame {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				try {
-					AlterarCadastroAlunosForm tela = new AlterarCadastroAlunosForm();
-					tela.setVisible(true);
-					setVisible(false);
-				} catch (ParseException e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
-				}
+				AlterarCadastroAlunosForm tela = new AlterarCadastroAlunosForm();
+				tela.setVisible(true);
+				setVisible(false);
 
 			}
 		});

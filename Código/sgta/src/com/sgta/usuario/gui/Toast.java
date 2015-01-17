@@ -116,7 +116,7 @@ public class Toast extends JDialog {
 	private Point getToastLocation() {
 		Point ownerLoc = mOwner.getLocation();
 		int x = (int) (ownerLoc.getX() + ((mOwner.getWidth() - this.getWidth()) / 2));
-		int y = (int) (ownerLoc.getY() + DISTANCE_FROM_PARENT_TOP);
+		int y = (int) (ownerLoc.getY() + (mOwner.getHeight() - 80));
 		return new Point(x, y);
 	}
 
