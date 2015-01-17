@@ -435,5 +435,32 @@ public class UsuarioDAO {
 
 		return listaAlunos;
 	}
+	
+	public void inserirMedidas(Pessoa pessoa){
+		try {
+			Connection con = bd.getConnection();
+			PreparedStatement prepared = con.prepareStatement("INSERT INTO medidas(id_aluno,altura,peso,bracos,peito,coxas,costas,"
+					+ "panturrilhas,trapezio,antebracos,cintura) VALUES (?,?,?,?,?,?,?,?,?,?,?)");
+			prepared.setInt(1, pessoa.getUsuario().getId());
+			prepared.setDouble(2, pessoa.getMedidas().getAltura());
+			prepared.setDouble(3, pessoa.getMedidas().getPeso());
+			prepared.setDouble(4, pessoa.getMedidas().getBracos());
+			prepared.setDouble(5, pessoa.getMedidas().getPeitoral());
+			prepared.setDouble(6, pessoa.getMedidas().getCoxas());
+			prepared.setDouble(7, pessoa.getMedidas().getCostas());
+			prepared.setDouble(8, pessoa.getMedidas().getPanturrilha());
+			prepared.setDouble(9, pessoa.getMedidas().getTrapezio());
+			prepared.setDouble(10, pessoa.getMedidas().getAntebracos());
+			prepared.setDouble(11, pessoa.getMedidas().getCintura());
+			
+			prepared.execute();
+			
+			bd.fecharConecaoMySQL();
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		
+	}
 
 }

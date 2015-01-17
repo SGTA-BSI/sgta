@@ -80,12 +80,21 @@ public class MenuAtendente extends JFrame {
 		});
 		
 		JButton btnPerfilDeAlunos = new JButton("Perfil de Alunos");
-		btnPerfilDeAlunos.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-			}
-		});
 		btnPerfilDeAlunos.setBounds(10, 172, 170, 84);
 		contentPane.add(btnPerfilDeAlunos);
+		btnPerfilDeAlunos.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				try {
+					PerfilUsuario tela = new PerfilUsuario();
+					tela.setVisible(true);
+					setVisible(false);
+				} catch (ParseException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+				
+			}
+		});
 		
 		JButton btnRelatoriosDeAluno = new JButton("Relat\u00F3rios de Alunos");
 		btnRelatoriosDeAluno.setBounds(10, 277, 225, 84);

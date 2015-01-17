@@ -104,5 +104,8 @@ public class UsuarioBusiness {
 	public void alterarFuncionario(Pessoa pessoa) {
 		dao.alterarFuncionario(pessoa);
 	}
+	public void inserirMedidas(Pessoa pessoa){
+		dao.inserirMedidas(pessoa);
+	}
 
 }

@@ -19,6 +19,7 @@ public class Pessoa {
 	private String observacoes;
 	private String cargo;
 	private String professorDoAluno;
+	private Medidas medidas;
 	
 	public Usuario getUsuario() {
 		return usuario;
@@ -127,6 +128,12 @@ public class Pessoa {
 	}
 	public void setProfessorDoAluno(String professorDoAluno) {
 		this.professorDoAluno = professorDoAluno;
+	}
+	public Medidas getMedidas() {
+		return this.medidas;
+	}
+	public void setMedidas(Medidas medidas) {
+		this.medidas = medidas;
 	}
 	
 	

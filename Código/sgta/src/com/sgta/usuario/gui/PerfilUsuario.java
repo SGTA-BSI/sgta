@@ -338,5 +338,16 @@ public class PerfilUsuario extends JFrame {
 		lblAtivo.setFont(new Font("Tahoma", Font.BOLD, 11));
 		lblAtivo.setBounds(405, 111, 86, 14);
 		contentPane.add(lblAtivo);
+		
+		JButton btnInserirMedidas = new JButton("Inserir Medidas");
+		btnInserirMedidas.setBounds(302, 416, 137, 23);
+		contentPane.add(btnInserirMedidas);
+		btnInserirMedidas.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				MenuMedidas tela = new MenuMedidas();
+				tela.setVisible(true);
+				setVisible(false);
+			}
+		});
 	}
 }

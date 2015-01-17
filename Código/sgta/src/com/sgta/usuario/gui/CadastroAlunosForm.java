@@ -281,11 +281,21 @@ public class CadastroAlunosForm extends JFrame {
 					try {
 						if (business.consultaCpfAluno(cpf.getText())) {
 							cadastrar();
-							tela = new MenuAtendente();
-							tela.setVisible(true);
-							setVisible(false);
-							MenuAtendente
-									.getLblInfo("Aluno Cadastrado com Sucesso!!");
+							if (SessaoUsuario.getInstancia().getUsuarioLogado()
+									.getUsuario().getCargo().equals("Atendente")) {
+								MenuAtendente tela1 = new MenuAtendente();
+								tela1.setVisible(true);
+								MenuAtendente
+								.getLblInfo("Aluno Cadastrado com Sucesso!!");
+							} else if (SessaoUsuario.getInstancia().getUsuarioLogado()
+									.getUsuario().getCargo().equals("Professor")) {
+								MenuProfessor tela2 = new MenuProfessor();
+								tela2.setVisible(true);
+								MenuProfessor
+								.getLblInfo("Aluno Cadastrado com Sucesso!!");
+							}
+							
+							dispose();
 
 							// lblInfo.setText("Usuario Cadastrado com sucesso");
 
