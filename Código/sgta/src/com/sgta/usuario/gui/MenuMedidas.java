@@ -10,6 +10,10 @@ import javax.swing.JLabel;
 import javax.swing.JTextField;
 import javax.swing.JButton;
 
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
+import java.text.ParseException;
+
 public class MenuMedidas extends JFrame {
 
 	private JPanel contentPane;
@@ -44,6 +48,7 @@ public class MenuMedidas extends JFrame {
 	 * Create the frame.
 	 */
 	public MenuMedidas() {
+		setTitle("SGTA - <Nome da Academia>");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 330, 370);
 		contentPane = new JPanel();
@@ -91,12 +96,25 @@ public class MenuMedidas extends JFrame {
 		contentPane.add(labelPeso);
 		
 		JButton btnCancelar = new JButton("Cancelar");
+		btnCancelar.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				try {
+					PerfilUsuario tela = new PerfilUsuario();
+					tela.setVisible(true);
+					dispose();
+				} catch (ParseException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+				
+			}
+		});
 		btnCancelar.setBounds(46, 287, 107, 25);
 		contentPane.add(btnCancelar);
 		
-		JLabel labelBraços = new JLabel("Braços (cm):");
-		labelBraços.setBounds(22, 115, 134, 15);
-		contentPane.add(labelBraços);
+		JLabel labelBracos = new JLabel("Bra\u00E7os (cm):");
+		labelBracos.setBounds(22, 115, 134, 15);
+		contentPane.add(labelBracos);
 		
 		JLabel labelCoxas = new JLabel("Coxas (cm):");
 		labelCoxas.setBounds(22, 157, 134, 15);
@@ -107,9 +125,9 @@ public class MenuMedidas extends JFrame {
 		textCoxas.setBounds(22, 174, 134, 19);
 		contentPane.add(textCoxas);
 		
-		JLabel lblAntebraços = new JLabel("Antebraços (cm):");
-		lblAntebraços.setBounds(22, 237, 134, 15);
-		contentPane.add(lblAntebraços);
+		JLabel lblAntebracos = new JLabel("Antebra\u00E7os (cm):");
+		lblAntebracos.setBounds(22, 237, 134, 15);
+		contentPane.add(lblAntebracos);
 		
 		textAntebracos = new JTextField();
 		textAntebracos.setColumns(10);
