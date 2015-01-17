@@ -7,8 +7,18 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 import javax.swing.JButton;
+
+import com.sgta.usuario.dominio.Medidas;
+import com.sgta.usuario.dominio.Pessoa;
+import com.sgta.usuario.negocio.SessaoUsuario;
+import com.sgta.usuario.negocio.UsuarioBusiness;
+
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
+import java.text.ParseException;
 
 public class MenuMedidas extends JFrame {
 
@@ -44,6 +54,7 @@ public class MenuMedidas extends JFrame {
 	 * Create the frame.
 	 */
 	public MenuMedidas() {
+		setTitle("SGTA - <Nome da Academia>");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 330, 370);
 		contentPane = new JPanel();
@@ -58,6 +69,8 @@ public class MenuMedidas extends JFrame {
 		JLabel lblCampoNome = new JLabel("");
 		lblCampoNome.setBounds(81, 12, 221, 15);
 		contentPane.add(lblCampoNome);
+		lblCampoNome.setText(SessaoUsuario.getInstancia().getAlunoSelecionado()
+				.getNome());
 
 		JLabel lblMedidas = new JLabel("Medidas:");
 		lblMedidas.setBounds(22, 42, 70, 15);
@@ -91,10 +104,24 @@ public class MenuMedidas extends JFrame {
 		contentPane.add(labelPeso);
 
 		JButton btnCancelar = new JButton("Cancelar");
+		btnCancelar.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				try {
+					PerfilUsuario tela = new PerfilUsuario();
+					tela.setVisible(true);
+					SessaoUsuario.getInstancia().setAlunoSelecionado(null);
+					dispose();
+				} catch (ParseException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+
+			}
+		});
 		btnCancelar.setBounds(46, 287, 107, 25);
 		contentPane.add(btnCancelar);
 
-		JLabel labelBracos = new JLabel("Bra√ßos (cm):");
+		JLabel labelBracos = new JLabel("Bra\u00E7os (cm):");
 		labelBracos.setBounds(22, 115, 134, 15);
 		contentPane.add(labelBracos);
 
@@ -107,7 +134,7 @@ public class MenuMedidas extends JFrame {
 		textCoxas.setBounds(22, 174, 134, 19);
 		contentPane.add(textCoxas);
 
-		JLabel lblAntebracos = new JLabel("Antebra√ßos (cm):");
+		JLabel lblAntebracos = new JLabel("Antebra\u00E7os (cm):");
 		lblAntebracos.setBounds(22, 237, 134, 15);
 		contentPane.add(lblAntebracos);
 
@@ -134,7 +161,7 @@ public class MenuMedidas extends JFrame {
 		textCostas.setBounds(168, 174, 134, 19);
 		contentPane.add(textCostas);
 
-		JLabel labelTrapezio = new JLabel("Trap√©zio (cm):");
+		JLabel labelTrapezio = new JLabel("Trap\u00E9zio (cm):");
 		labelTrapezio.setBounds(168, 195, 134, 15);
 		contentPane.add(labelTrapezio);
 
@@ -160,5 +187,102 @@ public class MenuMedidas extends JFrame {
 		JButton btnSalvar = new JButton("Salvar");
 		btnSalvar.setBounds(168, 287, 107, 25);
 		contentPane.add(btnSalvar);
+		btnSalvar.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				if (verificacaoPreenchimento()){
+					inserirMedidas();
+					try {
+						PerfilUsuario tela = new PerfilUsuario();
+						tela.setVisible(true);
+						PerfilUsuario.getLabelInfo("Medidas inseridas com sucesso!");
+						SessaoUsuario.getInstancia().setAlunoSelecionado(null);
+					} catch (ParseException e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					}
+					
+				}
+				
+				dispose();
+
+			}
+		});
+	}
+
+	public boolean verificacaoPreenchimento() {
+		if (textAltura.getText().length() == 0) {
+			JOptionPane.showMessageDialog(null, "PREENCHA O CAMPO ALTURA",
+					"ATEN«√O!!", JOptionPane.WARNING_MESSAGE);
+			return false;
+		} else if (textBracos.getText().length() == 0) {
+			JOptionPane.showMessageDialog(null, "PREENCHA O CAMPO BRA«OS",
+					"ATEN«√O!!", JOptionPane.WARNING_MESSAGE);
+			return false;
+		} else if (textCoxas.getText().length() == 0) {
+			JOptionPane.showMessageDialog(null, "PREENCHA O CAMPO COXAS",
+					"ATEN«√O!!", JOptionPane.WARNING_MESSAGE);
+			return false;
+		} else if (textPanturrilhas.getText().length() == 0) {
+			JOptionPane.showMessageDialog(null, "PREENCHA O CAMPO PANTURRILHAS",
+					"ATEN«√O!!", JOptionPane.WARNING_MESSAGE);
+			return false;
+		} else if (textAntebracos.getText().length() == 0) {
+			JOptionPane.showMessageDialog(null, "PREENCHA O CAMPO ANTEBRA«OS",
+					"ATEN«√O!!", JOptionPane.WARNING_MESSAGE);
+			return false;
+		}else if (textPeso.getText().length() == 0) {
+			JOptionPane.showMessageDialog(null, "PREENCHA O CAMPO PESO",
+					"ATEN«√O!!", JOptionPane.WARNING_MESSAGE);
+			return false;
+		}else if (textPeitoral.getText().length() == 0) {
+			JOptionPane.showMessageDialog(null, "PREENCHA O CAMPO PEITORAL",
+					"ATEN«√O!!", JOptionPane.WARNING_MESSAGE);
+			return false;
+		}else if (textCostas.getText().length() == 0) {
+			JOptionPane.showMessageDialog(null, "PREENCHA O CAMPO COSTAS",
+					"ATEN«√O!!", JOptionPane.WARNING_MESSAGE);
+			return false;
+		}else if (textTrapezio.getText().length() == 0) {
+			JOptionPane.showMessageDialog(null, "PREENCHA O CAMPO TRAPEZIO",
+					"ATEN«√O!!", JOptionPane.WARNING_MESSAGE);
+			return false;
+		}else if (textCintura.getText().length() == 0) {
+			JOptionPane.showMessageDialog(null, "PREENCHA O CAMPO CINTURA",
+					"ATEN«√O!!", JOptionPane.WARNING_MESSAGE);
+			return false;
+		}else{
+			return true;
+		}
+	}
+	public void inserirMedidas(){
+		Medidas medidas = new Medidas();
+		Double altura = Double.valueOf(textAltura.getText()).doubleValue();
+		Double bracos = Double.valueOf(textBracos.getText()).doubleValue();
+		Double coxas = Double.valueOf(textCoxas.getText()).doubleValue();
+		Double panturrilhas = Double.valueOf(textPanturrilhas.getText()).doubleValue();
+		Double antebracos = Double.valueOf(textAntebracos.getText()).doubleValue();
+		Double peso = Double.valueOf(textPeso.getText()).doubleValue();
+		Double peitoral = Double.valueOf(textPeitoral.getText()).doubleValue();
+		Double costas = Double.valueOf(textCostas.getText()).doubleValue();
+		Double trapezio = Double.valueOf(textTrapezio.getText()).doubleValue();
+		Double cintura = Double.valueOf(textCintura.getText()).doubleValue();
+		
+		medidas.setAltura(altura);
+		medidas.setAntebracos(antebracos);
+		medidas.setBracos(bracos);
+		medidas.setCintura(cintura);
+		medidas.setCostas(costas);
+		medidas.setCoxas(coxas);
+		medidas.setPanturrilha(panturrilhas);
+		medidas.setPeitoral(peitoral);
+		medidas.setPeso(peso);
+		medidas.setTrapezio(trapezio);
+		
+		Pessoa pessoa = SessaoUsuario.getInstancia().getAlunoSelecionado();
+		pessoa.setMedidas(medidas);
+		
+		UsuarioBusiness business = UsuarioBusiness.getInstancia();
+		business.inserirMedidas(pessoa);
+	
 	}
 }
