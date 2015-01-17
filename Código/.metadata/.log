@@ -176,3 +176,13 @@ java.lang.ArrayIndexOutOfBoundsException
 !MESSAGE Designer [1.7.0.r44x201405021445.201412060947]: java.lang.ArrayIndexOutOfBoundsException
 !STACK 0
 java.lang.ArrayIndexOutOfBoundsException
+!SESSION 2015-01-17 12:17:54.846 -----------------------------------------------
+eclipse.buildId=4.4.0.I20140606-1215
+java.version=1.8.0_25
+java.vendor=Oracle Corporation
+BootLoader constants: OS=win32, ARCH=x86_64, WS=win32, NL=pt_BR
+Framework arguments:  -product org.eclipse.epp.package.reporting.product
+Command-line arguments:  -os win32 -ws win32 -arch x86_64 -product org.eclipse.epp.package.reporting.product
+
+!ENTRY org.eclipse.core.resources 2 10035 2015-01-17 12:18:28.003
+!MESSAGE The workspace exited with unsaved changes in the previous session; refreshing workspace to recover changes.
