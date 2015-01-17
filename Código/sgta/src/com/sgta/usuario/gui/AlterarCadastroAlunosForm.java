@@ -10,6 +10,7 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.sql.SQLException;
 import java.text.ParseException;
+import java.util.logging.Handler;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -26,6 +27,7 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.text.MaskFormatter;
 
 import com.sgta.usuario.dominio.Pessoa;
+import com.sgta.usuario.gui.Toast.Style;
 import com.sgta.usuario.negocio.SessaoUsuario;
 import com.sgta.usuario.negocio.UsuarioBusiness;
 
@@ -58,6 +60,7 @@ public class AlterarCadastroAlunosForm extends JFrame {
 	private String sexo;
 	private String ativo;
 	private JTextField textField;
+	static AlterarCadastroAlunosForm frameAlterarAluno;
 
 	/**
 	 * Launch the application.
@@ -66,8 +69,8 @@ public class AlterarCadastroAlunosForm extends JFrame {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					AlterarCadastroAlunosForm frame = new AlterarCadastroAlunosForm();
-					frame.setVisible(true);
+					frameAlterarAluno = new AlterarCadastroAlunosForm();
+					frameAlterarAluno.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
@@ -120,7 +123,7 @@ public class AlterarCadastroAlunosForm extends JFrame {
 		contentPane.add(lblNome);
 
 		nome = new JTextField();
-		nome.setBounds(10, 110, 464, 20);
+		nome.setBounds(10, 110, 474, 20);
 		contentPane.add(nome);
 		nome.setColumns(10);
 
@@ -143,7 +146,7 @@ public class AlterarCadastroAlunosForm extends JFrame {
 		// Atribuir valores ao comboBox
 		String[] items = { "Selecione o Sexo", "Masculino", "Feminino" };
 		JComboBox comboBoxSexo = new JComboBox(items);
-		comboBoxSexo.setBounds(233, 159, 241, 20);
+		comboBoxSexo.setBounds(233, 159, 251, 20);
 		contentPane.add(comboBoxSexo);
 		// --------------
 		comboBoxSexo.addActionListener(new ActionListener() {
@@ -167,7 +170,7 @@ public class AlterarCadastroAlunosForm extends JFrame {
 		contentPane.add(lblIdentidade);
 
 		identidade = new JTextField();
-		identidade.setBounds(233, 206, 241, 20);
+		identidade.setBounds(233, 206, 251, 20);
 		contentPane.add(identidade);
 		identidade.setColumns(10);
 
@@ -176,7 +179,7 @@ public class AlterarCadastroAlunosForm extends JFrame {
 		contentPane.add(lblEndereco);
 
 		endereco = new JTextField();
-		endereco.setBounds(10, 251, 464, 20);
+		endereco.setBounds(10, 251, 474, 20);
 		contentPane.add(endereco);
 		endereco.setColumns(10);
 
@@ -194,7 +197,7 @@ public class AlterarCadastroAlunosForm extends JFrame {
 		contentPane.add(lblComplemento);
 
 		complemento = new JTextField();
-		complemento.setBounds(120, 297, 354, 20);
+		complemento.setBounds(120, 297, 364, 20);
 		contentPane.add(complemento);
 		complemento.setColumns(10);
 
@@ -221,7 +224,7 @@ public class AlterarCadastroAlunosForm extends JFrame {
 		contentPane.add(lblBairro);
 
 		bairro = new JTextField();
-		bairro.setBounds(325, 342, 149, 20);
+		bairro.setBounds(325, 342, 159, 20);
 		contentPane.add(bairro);
 		bairro.setColumns(10);
 
@@ -238,7 +241,7 @@ public class AlterarCadastroAlunosForm extends JFrame {
 		contentPane.add(lblEmail);
 
 		email = new JTextField();
-		email.setBounds(10, 434, 464, 20);
+		email.setBounds(10, 434, 474, 20);
 		contentPane.add(email);
 		email.setColumns(10);
 
@@ -247,7 +250,7 @@ public class AlterarCadastroAlunosForm extends JFrame {
 		contentPane.add(lblObservacoes);
 
 		observacoes = new JTextField();
-		observacoes.setBounds(10, 479, 464, 77);
+		observacoes.setBounds(10, 479, 474, 54);
 		contentPane.add(observacoes);
 		observacoes.setColumns(10);
 
@@ -267,11 +270,11 @@ public class AlterarCadastroAlunosForm extends JFrame {
 		// Formatação do celular
 		ftmCelular = new MaskFormatter("(##)####-####");
 		celular = new JFormattedTextField(ftmCelular);
-		celular.setBounds(233, 389, 241, 20);
+		celular.setBounds(233, 389, 251, 20);
 		contentPane.add(celular);
 
 		JButton btnCadastrar = new JButton("Alterar Cadastro");
-		btnCadastrar.setBounds(205, 578, 138, 23);
+		btnCadastrar.setBounds(215, 588, 138, 23);
 		contentPane.add(btnCadastrar);
 
 		btnCadastrar.addActionListener(new ActionListener() {
@@ -308,7 +311,7 @@ public class AlterarCadastroAlunosForm extends JFrame {
 		});
 
 		JButton btnCancelar = new JButton("Cancelar");
-		btnCancelar.setBounds(353, 578, 121, 23);
+		btnCancelar.setBounds(363, 588, 121, 23);
 		contentPane.add(btnCancelar);
 
 		btnCancelar.addActionListener(new ActionListener() {
@@ -318,6 +321,7 @@ public class AlterarCadastroAlunosForm extends JFrame {
 					MenuAtendente tela;
 					tela = new MenuAtendente();
 					tela.setVisible(true);
+
 				} else if (SessaoUsuario.getInstancia().getUsuarioLogado()
 						.getUsuario().getCargo().equals("Professor")) {
 					MenuProfessor tela;
@@ -351,7 +355,7 @@ public class AlterarCadastroAlunosForm extends JFrame {
 
 		String[] ativoItems = { "Selecione uma opção", "Ativar", "Desativar" };
 		JComboBox comboBoxAtivar = new JComboBox(ativoItems);
-		comboBoxAtivar.setBounds(325, 53, 149, 20);
+		comboBoxAtivar.setBounds(325, 53, 159, 20);
 		contentPane.add(comboBoxAtivar);
 		comboBoxAtivar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -446,8 +450,7 @@ public class AlterarCadastroAlunosForm extends JFrame {
 
 	public boolean validacaoPreenchimento() {
 		if (nome.getText().length() == 0 || nome.getText().equals(" ")) {
-			JOptionPane.showMessageDialog(null, "PREENCHA O CAMPO DE NOME",
-					"ATENÇÃO!!", JOptionPane.WARNING_MESSAGE);
+			this.msgToast(frameAlterarAluno, "Preencha o campo nome.", 2000, Toast.Style.ERROR);
 			nome.requestFocus();
 			return false;
 		} else if (data.getText().length() == 0 || data.getText().equals(" ")) {
@@ -535,5 +538,11 @@ public class AlterarCadastroAlunosForm extends JFrame {
 			}
 		}
 		return isEmailIdValid;
+	}
+	
+	public void msgToast(JFrame frame, String msg, int time, Style estilo){
+		Toast mensagem = new Toast(frame);
+		mensagem.makeText(frame, msg, time, estilo).display();
+		
 	}
 }
