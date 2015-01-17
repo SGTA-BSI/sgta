@@ -16,7 +16,11 @@ import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import java.awt.Color;
 import java.text.ParseException;
+
 import javax.swing.SwingConstants;
+
+import com.sgta.Login;
+import com.sgta.usuario.negocio.SessaoUsuario;
 
 public class MenuAtendente extends JFrame {
 
@@ -90,6 +94,16 @@ public class MenuAtendente extends JFrame {
 		JButton btnLogout = new JButton("Logout");
 		btnLogout.setBounds(419, 17, 89, 23);
 		contentPane.add(btnLogout);
+		btnLogout.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				SessaoUsuario.getInstancia().setUsuarioLogado(null);
+				Login tela = new Login();
+				tela.setVisible(true);
+				dispose();
+			}
+		});
 		
 		lblInfo = new JLabel("");
 		lblInfo.setBounds(10, 386, 581, 14);

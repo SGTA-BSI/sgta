@@ -1,35 +1,33 @@
 package com.sgta.usuario.gui;
 
-import java.awt.EventQueue;
-import java.awt.HeadlessException;
-
-import javax.swing.JFrame;
-import javax.swing.JPanel;
-import javax.swing.border.EmptyBorder;
-import javax.swing.text.MaskFormatter;
-import javax.swing.JLabel;
-
-import java.awt.Font;
-
-import javax.swing.JOptionPane;
-import javax.swing.JTextField;
-import javax.swing.JComboBox;
-import javax.swing.JButton;
-
-import com.sgta.usuario.dominio.Pessoa;
-import com.sgta.usuario.dominio.Usuario;
-import com.sgta.usuario.negocio.UsuarioBusiness;
-
 import java.awt.Component;
+import java.awt.EventQueue;
+import java.awt.Font;
+import java.awt.HeadlessException;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.sql.SQLException;
 import java.text.ParseException;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import javax.swing.JButton;
+import javax.swing.JComboBox;
 import javax.swing.JFormattedTextField;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
 import javax.swing.JSeparator;
+import javax.swing.JTextField;
+import javax.swing.border.EmptyBorder;
+import javax.swing.text.MaskFormatter;
+
+import com.sgta.usuario.dominio.Pessoa;
+import com.sgta.usuario.negocio.SessaoUsuario;
+import com.sgta.usuario.negocio.UsuarioBusiness;
 
 public class AlterarCadastroAlunosForm extends JFrame {
 
@@ -93,6 +91,23 @@ public class AlterarCadastroAlunosForm extends JFrame {
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
+		addWindowListener(new java.awt.event.WindowAdapter() {
+			public void windowClosing(java.awt.event.WindowEvent evt) {
+				setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
+				if (SessaoUsuario.getInstancia().getUsuarioLogado()
+						.getUsuario().getCargo().equals("Atendente")) {
+					MenuAtendente tela;
+					tela = new MenuAtendente();
+					tela.setVisible(true);
+				} else if (SessaoUsuario.getInstancia().getUsuarioLogado()
+						.getUsuario().getCargo().equals("Professor")) {
+					MenuProfessor tela;
+					tela = new MenuProfessor();
+					tela.setVisible(true);
+				}
+				dispose();
+			}
+		});
 
 		JLabel lblCadastroDeAlunos = new JLabel("Alterar Cadastro");
 		lblCadastroDeAlunos.setBounds(10, 11, 126, 14);
@@ -298,10 +313,18 @@ public class AlterarCadastroAlunosForm extends JFrame {
 
 		btnCancelar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				MenuAtendente tela;
-				tela = new MenuAtendente();
-				tela.setVisible(true);
-				setVisible(false);
+				if (SessaoUsuario.getInstancia().getUsuarioLogado()
+						.getUsuario().getCargo().equals("Atendente")) {
+					MenuAtendente tela;
+					tela = new MenuAtendente();
+					tela.setVisible(true);
+				} else if (SessaoUsuario.getInstancia().getUsuarioLogado()
+						.getUsuario().getCargo().equals("Professor")) {
+					MenuProfessor tela;
+					tela = new MenuProfessor();
+					tela.setVisible(true);
+				}
+				dispose();
 			}
 		});
 
@@ -413,7 +436,7 @@ public class AlterarCadastroAlunosForm extends JFrame {
 		pessoa.setNome(nome.getText());
 		pessoa.setNumero(numero.getText());
 		pessoa.setObservacoes(observacoes.getText());
-		pessoa.setSexo(sexo); 
+		pessoa.setSexo(sexo);
 		pessoa.setTelefone(telefone.getText());
 
 		UsuarioBusiness business = UsuarioBusiness.getInstancia();

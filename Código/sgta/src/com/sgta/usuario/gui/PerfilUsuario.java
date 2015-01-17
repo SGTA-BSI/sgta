@@ -17,6 +17,7 @@ import java.text.ParseException;
 import javax.swing.JFormattedTextField;
 import javax.swing.JButton;
 
+import com.sgta.usuario.negocio.SessaoUsuario;
 import com.sgta.usuario.negocio.UsuarioBusiness;
 
 import java.awt.event.ActionListener;
@@ -77,6 +78,23 @@ public class PerfilUsuario extends JFrame {
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
+		addWindowListener(new java.awt.event.WindowAdapter() {
+			public void windowClosing(java.awt.event.WindowEvent evt) {
+				setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
+				if (SessaoUsuario.getInstancia().getUsuarioLogado()
+						.getUsuario().getCargo().equals("Atendente")) {
+					MenuAtendente tela;
+					tela = new MenuAtendente();
+					tela.setVisible(true);
+				} else if (SessaoUsuario.getInstancia().getUsuarioLogado()
+						.getUsuario().getCargo().equals("Professor")) {
+					MenuProfessor tela;
+					tela = new MenuProfessor();
+					tela.setVisible(true);
+				}
+				dispose();
+			}
+		});
 
 		JLabel lblPerfilDeUsurio = new JLabel("Perfil de Usu\u00E1rio");
 		lblPerfilDeUsurio.setFont(new Font("Tahoma", Font.PLAIN, 15));
@@ -226,9 +244,18 @@ public class PerfilUsuario extends JFrame {
 		contentPane.add(btnFechar);
 		btnFechar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				MenuProfessor tela = new MenuProfessor();
-				tela.setVisible(true);
-				setVisible(false);
+				if (SessaoUsuario.getInstancia().getUsuarioLogado()
+						.getUsuario().getCargo().equals("Atendente")) {
+					MenuAtendente tela;
+					tela = new MenuAtendente();
+					tela.setVisible(true);
+				} else if (SessaoUsuario.getInstancia().getUsuarioLogado()
+						.getUsuario().getCargo().equals("Professor")) {
+					MenuProfessor tela;
+					tela = new MenuProfessor();
+					tela.setVisible(true);
+				}
+				dispose();
 			}
 		});
 
@@ -306,7 +333,7 @@ public class PerfilUsuario extends JFrame {
 		lblObs.setFont(new Font("Tahoma", Font.ITALIC, 11));
 		lblObs.setBounds(106, 328, 417, 14);
 		contentPane.add(lblObs);
-		
+
 		JLabel lblAtivo = new JLabel("Ativo");
 		lblAtivo.setFont(new Font("Tahoma", Font.BOLD, 11));
 		lblAtivo.setBounds(405, 111, 86, 14);

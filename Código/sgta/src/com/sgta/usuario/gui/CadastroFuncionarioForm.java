@@ -95,6 +95,15 @@ public class CadastroFuncionarioForm extends JFrame {
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
+		addWindowListener(new java.awt.event.WindowAdapter() {
+			public void windowClosing(java.awt.event.WindowEvent evt) {
+				setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
+				MenuAdm tela;
+				tela = new MenuAdm();
+				tela.setVisible(true);
+				dispose();
+			}
+		});
 
 		JLabel lblCadastroDeAlunos = new JLabel("Cadastro de Funcionarios");
 		lblCadastroDeAlunos.setBounds(10, 11, 221, 14);

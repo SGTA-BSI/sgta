@@ -14,6 +14,9 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
+import com.sgta.Login;
+import com.sgta.usuario.negocio.SessaoUsuario;
+
 public class MenuAdm extends JFrame {
 
 	private JPanel contentPane;
@@ -88,6 +91,16 @@ public class MenuAdm extends JFrame {
 		JButton btnLogout = new JButton("Logout");
 		btnLogout.setBounds(419, 17, 89, 23);
 		contentPane.add(btnLogout);
+		btnLogout.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				SessaoUsuario.getInstancia().setUsuarioLogado(null);
+				Login tela = new Login();
+				tela.setVisible(true);
+				dispose();
+			}
+		});
 
 		lblInfo = new JLabel("");
 		lblInfo.setBounds(22, 385, 539, 14);
@@ -100,7 +113,7 @@ public class MenuAdm extends JFrame {
 				try {
 					AlterarCadastroFuncionarioForm tela = new AlterarCadastroFuncionarioForm();
 					tela.setVisible(true);
-					setVisible(false);
+					dispose();
 				} catch (ParseException e1) {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();

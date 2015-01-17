@@ -126,8 +126,7 @@ public class Login extends JFrame {
 								.toString(), password)) {
 							MenuAdm tela = new MenuAdm();
 							tela.setVisible(true);
-							setVisible(false);
-
+							dispose();
 						} else {
 							JOptionPane
 									.showMessageDialog(null,
@@ -148,7 +147,7 @@ public class Login extends JFrame {
 																.toString()));
 								MenuAtendente tela = new MenuAtendente();
 								tela.setVisible(true);
-								setVisible(false);
+								dispose();
 
 							} else {
 								JOptionPane
@@ -175,7 +174,7 @@ public class Login extends JFrame {
 																.toString()));
 								MenuProfessor tela = new MenuProfessor();
 								tela.setVisible(true);
-								setVisible(false);
+								dispose();
 
 							} else {
 								JOptionPane

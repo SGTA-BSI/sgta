@@ -16,7 +16,11 @@ import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import java.awt.Color;
 import java.text.ParseException;
+
 import javax.swing.SwingConstants;
+
+import com.sgta.Login;
+import com.sgta.usuario.negocio.SessaoUsuario;
 
 public class MenuProfessor extends JFrame {
 
@@ -52,12 +56,12 @@ public class MenuProfessor extends JFrame {
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
-		
+
 		JLabel lblMenuProfessor = new JLabel("Menu Professor");
 		lblMenuProfessor.setFont(new Font("Tahoma", Font.PLAIN, 17));
 		lblMenuProfessor.setBounds(22, 11, 165, 28);
 		contentPane.add(lblMenuProfessor);
-		
+
 		JButton btnCadastrarAluno = new JButton("Cadastrar Novo Aluno");
 		btnCadastrarAluno.setBounds(10, 75, 213, 84);
 		contentPane.add(btnCadastrarAluno);
@@ -71,10 +75,10 @@ public class MenuProfessor extends JFrame {
 				} catch (ParseException e1) {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();
-				}  
+				}
 			}
 		});
-		
+
 		JButton btnPerfilDeAlunos = new JButton("Perfil de Alunos");
 		btnPerfilDeAlunos.setBounds(10, 172, 213, 84);
 		contentPane.add(btnPerfilDeAlunos);
@@ -89,31 +93,41 @@ public class MenuProfessor extends JFrame {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();
 				}
-				
+
 			}
 		});
-		
+
 		JButton btnRelatoriosDeAluno = new JButton("Relat\u00F3rios de Alunos");
 		btnRelatoriosDeAluno.setBounds(10, 277, 213, 84);
 		contentPane.add(btnRelatoriosDeAluno);
-		
+
 		JButton btnLogout = new JButton("Logout");
 		btnLogout.setBounds(419, 17, 89, 23);
 		contentPane.add(btnLogout);
-		
+		btnLogout.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				SessaoUsuario.getInstancia().setUsuarioLogado(null);
+				Login tela = new Login();
+				tela.setVisible(true);
+				dispose();
+			}
+		});
+
 		lblInfo = new JLabel("");
 		lblInfo.setBounds(10, 386, 581, 14);
 		contentPane.add(lblInfo);
-		
+
 		JButton btnCriarTreino = new JButton("Criar Treino");
 		btnCriarTreino.setBounds(261, 75, 177, 84);
 		contentPane.add(btnCriarTreino);
-		
+
 		JButton btnAlterarAluno = new JButton("Alterar Cadastro Aluno");
 		btnAlterarAluno.setBounds(261, 172, 177, 84);
 		contentPane.add(btnAlterarAluno);
 		btnAlterarAluno.addActionListener(new ActionListener() {
-			
+
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				try {
@@ -124,11 +138,12 @@ public class MenuProfessor extends JFrame {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();
 				}
-				
+
 			}
 		});
 	}
-	public static void getLblInfo(String mensagem){
+
+	public static void getLblInfo(String mensagem) {
 		lblInfo.setText(mensagem);
 	}
 }
