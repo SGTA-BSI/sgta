@@ -3,6 +3,8 @@ package com.sgta;
 import java.awt.BorderLayout;
 import java.awt.EventQueue;
 
+import javafx.scene.image.Image;
+
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
@@ -13,6 +15,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.SQLException;
 
+import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 import javax.swing.JComboBox;
@@ -22,8 +25,13 @@ import javax.swing.JButton;
 import com.sgta.usuario.gui.MenuAdm;
 import com.sgta.usuario.gui.MenuAtendente;
 import com.sgta.usuario.gui.MenuProfessor;
+import com.sgta.usuario.gui.Toast;
+import com.sgta.usuario.gui.Toast.Style;
 import com.sgta.usuario.negocio.SessaoUsuario;
 import com.sgta.usuario.negocio.UsuarioBusiness;
+
+import java.awt.Label;
+import java.awt.Color;
 
 public class Login extends JFrame {
 
@@ -31,6 +39,7 @@ public class Login extends JFrame {
 	private JTextField textField;
 	private JPasswordField passwordField;
 	private String cargoUsuario;
+	final static Login frame = new Login();
 
 	/**
 	 * Launch the application.
@@ -39,7 +48,6 @@ public class Login extends JFrame {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					Login frame = new Login();
 					frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -54,7 +62,7 @@ public class Login extends JFrame {
 	public Login() {
 		setTitle("SGTA - <Nome da Academia>");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 716, 460);
+		setBounds(100, 100, 528, 460);
 		setLocationRelativeTo(null);
 		setResizable(false);
 		contentPane = new JPanel();
@@ -74,7 +82,7 @@ public class Login extends JFrame {
 
 		textField = new JTextField();
 		textField.setFont(new Font("Arial", Font.PLAIN, 14));
-		textField.setBounds(29, 140, 184, 32);
+		textField.setBounds(29, 140, 209, 32);
 		contentPane.add(textField);
 		textField.setColumns(10);
 
@@ -82,7 +90,7 @@ public class Login extends JFrame {
 				"Atendente", "Professor" };
 
 		JComboBox comboBoxUsuario = new JComboBox(items);
-		comboBoxUsuario.setBounds(248, 140, 184, 32);
+		comboBoxUsuario.setBounds(268, 140, 184, 32);
 		contentPane.add(comboBoxUsuario);
 		comboBoxUsuario.addActionListener(new ActionListener() {
 
@@ -103,12 +111,12 @@ public class Login extends JFrame {
 		});
 
 		JLabel lblSenha = new JLabel("Senha");
-		lblSenha.setFont(new Font("Constantia", Font.BOLD, 14));
-		lblSenha.setBounds(29, 206, 87, 23);
+		lblSenha.setFont(new Font("Constantia", Font.BOLD, 18));
+		lblSenha.setBounds(29, 185, 87, 23);
 		contentPane.add(lblSenha);
 
 		passwordField = new JPasswordField();
-		passwordField.setBounds(29, 238, 184, 32);
+		passwordField.setBounds(29, 212, 214, 32);
 		contentPane.add(passwordField);
 
 		JButton btnEntrar = new JButton("Entrar");
@@ -128,9 +136,10 @@ public class Login extends JFrame {
 							tela.setVisible(true);
 							dispose();
 						} else {
-							JOptionPane
-									.showMessageDialog(null,
-											"Verifique o login ou senha do administrador.");
+							Toast.makeText(
+									frame,
+									"Verifique o login ou senha do administrador.",
+									2000, Style.ERROR).display();
 						}
 					} else if (cargoUsuario == "Atendente") {
 						if (business.validaFuncionarioLogin(textField.getText()
@@ -150,14 +159,16 @@ public class Login extends JFrame {
 								dispose();
 
 							} else {
-								JOptionPane
-										.showMessageDialog(null,
-												"O usuário informado está inativo. Contate o administrador do sistema.");
+								Toast.makeText(
+										frame,
+										"O usuário informado está inativo. Contate o administrador do sistema.",
+										2000, Style.ERROR).display();
 							}
 
 						} else {
-							JOptionPane.showMessageDialog(null,
-									"Verifique o login ou senha do atendente.");
+							Toast.makeText(frame,
+									"Verifique o login ou senha do atendente.",
+									2000, Style.ERROR).display();
 						}
 					} else if (cargoUsuario == "Professor") {
 						if (business.validaFuncionarioLogin(textField.getText()
@@ -177,21 +188,24 @@ public class Login extends JFrame {
 								dispose();
 
 							} else {
-								JOptionPane
-										.showMessageDialog(null,
-												"O usuário informado está inativo. Contate o administrador do sistema.");
+								Toast.makeText(
+										frame,
+										"O usuário informado está inativo. Contate o administrador do sistema.",
+										2000, Style.ERROR).display();
 							}
 						} else {
-							JOptionPane.showMessageDialog(null,
-									"Verifique o login ou senha do professor.");
+							Toast.makeText(frame,
+									"Verifique o login ou senha do professor.",
+									2000, Style.ERROR).display();
 						}
 					} else {
-						JOptionPane.showMessageDialog(null,
-								"Informe o tipo de usuário.");
+						Toast.makeText(frame, "Informe o tipo de usuário.",
+								2000, Style.ERROR).display();
 					}
 				} catch (SQLException e1) {
-					JOptionPane.showMessageDialog(null,
-							"Erro conectando com o banco de dados.");
+					Toast.makeText(frame,
+							"Erro conectando com o banco de dados.", 2000,
+							Style.ERROR).display();
 				}
 
 			}
@@ -200,8 +214,15 @@ public class Login extends JFrame {
 
 		JButton btnSair = new JButton("Sair");
 		btnSair.setFont(new Font("Tahoma", Font.BOLD, 12));
-		btnSair.setBounds(208, 305, 105, 32);
+		btnSair.setBounds(144, 305, 105, 32);
 		contentPane.add(btnSair);
+
+		JLabel label = new JLabel("");
+		java.awt.Image img = new ImageIcon(this.getClass().getResource(
+				"/man.png")).getImage();
+		label.setIcon(new ImageIcon(img));
+		label.setBounds(268, 11, 400, 410);
+		contentPane.add(label);
 		btnSair.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				dispose();
