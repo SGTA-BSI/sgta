@@ -188,12 +188,12 @@ public class MenuMedidas extends JFrame {
 		btnSalvar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				if (verificacaoPreenchimento()){
-					inserirMedidas();
 					try {
+						inserirMedidas();
 						PerfilUsuario tela = new PerfilUsuario();
 						tela.setVisible(true);
-						PerfilUsuario.getLabelInfo("Medidas inseridas com sucesso!");
 						SessaoUsuario.getInstancia().setAlunoSelecionado(null);
+						dispose();
 					} catch (ParseException e1) {
 						// TODO Auto-generated catch block
 						e1.printStackTrace();
@@ -201,7 +201,6 @@ public class MenuMedidas extends JFrame {
 					
 				}
 				
-				dispose();
 
 			}
 		});
