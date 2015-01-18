@@ -62,6 +62,9 @@ public class AlterarCadastroFuncionarioForm extends JFrame {
 	private String cargo;
 	private String status;
 	private Pessoa funcionario;
+	private JTextField textField;
+	private JPasswordField passwordField;
+	private JPasswordField passwordField_1;
 
 	/**
 	 * Launch the application.
@@ -117,7 +120,7 @@ public class AlterarCadastroFuncionarioForm extends JFrame {
 		contentPane.add(lblNome);
 
 		nome = new JTextField();
-		nome.setBounds(11, 130, 464, 20);
+		nome.setBounds(10, 119, 464, 20);
 		contentPane.add(nome);
 		nome.setColumns(10);
 
@@ -129,12 +132,12 @@ public class AlterarCadastroFuncionarioForm extends JFrame {
 		contentPane.add(data);
 
 		JLabel lblDataDeNascimento = new JLabel("Data de Nascimento");
-		lblDataDeNascimento.setBounds(11, 161, 148, 14);
+		lblDataDeNascimento.setBounds(10, 160, 148, 14);
 		lblDataDeNascimento.setToolTipText("");
 		contentPane.add(lblDataDeNascimento);
 
 		JLabel lblSexo = new JLabel("Sexo");
-		lblSexo.setBounds(235, 161, 39, 14);
+		lblSexo.setBounds(233, 160, 39, 14);
 		contentPane.add(lblSexo);
 
 		// Atribuir valores ao comboBox
@@ -259,7 +262,7 @@ public class AlterarCadastroFuncionarioForm extends JFrame {
 		contentPane.add(celular);
 
 		JButton btnCadastrar = new JButton("Alterar");
-		btnCadastrar.setBounds(210, 588, 126, 23);
+		btnCadastrar.setBounds(218, 588, 126, 23);
 		contentPane.add(btnCadastrar);
 		btnCadastrar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -405,6 +408,31 @@ public class AlterarCadastroFuncionarioForm extends JFrame {
 		cpf2 = new JFormattedTextField(ftmCpf);
 		cpf2.setBounds(10, 57, 177, 20);
 		contentPane.add(cpf2);
+		
+		textField = new JTextField();
+		textField.setBounds(10, 542, 158, 20);
+		contentPane.add(textField);
+		textField.setColumns(10);
+		
+		JLabel lblLogin = new JLabel("Login");
+		lblLogin.setBounds(10, 514, 91, 24);
+		contentPane.add(lblLogin);
+		
+		JLabel lblSenha = new JLabel("Senha");
+		lblSenha.setBounds(181, 519, 46, 14);
+		contentPane.add(lblSenha);
+		
+		JLabel lblConfirmarSenha = new JLabel("Confirmar Senha");
+		lblConfirmarSenha.setBounds(326, 519, 120, 14);
+		contentPane.add(lblConfirmarSenha);
+		
+		passwordField = new JPasswordField();
+		passwordField.setBounds(178, 542, 138, 20);
+		contentPane.add(passwordField);
+		
+		passwordField_1 = new JPasswordField();
+		passwordField_1.setBounds(326, 542, 148, 20);
+		contentPane.add(passwordField_1);
 
 	}
 
