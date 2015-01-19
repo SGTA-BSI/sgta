@@ -123,6 +123,17 @@ public class MenuAdm extends JFrame {
 		});
 		btnAlterarCadastroFuncionrio.setBounds(248, 75, 213, 84);
 		contentPane.add(btnAlterarCadastroFuncionrio);
+		
+		JButton btnRelatrios = new JButton("Relat\u00F3rio Aluno por Professor");
+		btnRelatrios.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				RelatorioAlunoByProfessor tela = new RelatorioAlunoByProfessor();
+				tela.setVisible(true);
+				dispose();
+			}
+		});
+		btnRelatrios.setBounds(248, 172, 225, 84);
+		contentPane.add(btnRelatrios);
 
 		JButton btnTeste = new JButton("Teste");
 		btnTeste.addActionListener(new ActionListener() {

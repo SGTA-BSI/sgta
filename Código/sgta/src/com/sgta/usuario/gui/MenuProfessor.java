@@ -20,6 +20,7 @@ import java.text.ParseException;
 import javax.swing.SwingConstants;
 
 import com.sgta.Login;
+import com.sgta.exercicio.gui.CadastroExercicio;
 import com.sgta.usuario.negocio.SessaoUsuario;
 
 public class MenuProfessor extends JFrame {
@@ -126,6 +127,18 @@ public class MenuProfessor extends JFrame {
 		JButton btnAlterarAluno = new JButton("Alterar Cadastro Aluno");
 		btnAlterarAluno.setBounds(261, 172, 177, 84);
 		contentPane.add(btnAlterarAluno);
+		
+		JButton btnCadastrarExercicio = new JButton("Cadastrar Exerc\u00EDcio");
+		btnCadastrarExercicio.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				CadastroExercicio tela = new CadastroExercicio();
+				tela.setVisible(true);
+				dispose();
+				
+			}
+		});
+		btnCadastrarExercicio.setBounds(261, 277, 177, 84);
+		contentPane.add(btnCadastrarExercicio);
 		btnAlterarAluno.addActionListener(new ActionListener() {
 
 			@Override

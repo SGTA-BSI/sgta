@@ -106,5 +106,7 @@ public class UsuarioBusiness {
 	public void inserirMedidas(Pessoa pessoa){
 		dao.inserirMedidas(pessoa);
 	}
-
+	public Pessoa buscarFuncionarioByLogin(String login) throws SQLException {
+		return dao.retornaFuncionarioByUsername(login);
+	}
 }
