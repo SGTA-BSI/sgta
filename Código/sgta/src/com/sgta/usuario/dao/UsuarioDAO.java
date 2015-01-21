@@ -16,6 +16,11 @@ import com.sgta.bd.BD;
 import com.sgta.usuario.dominio.Pessoa;
 import com.sgta.usuario.dominio.Usuario;
 import com.sgta.usuario.gui.Toast;
+import com.sgta.usuario.negocio.SessaoUsuario;
+
+import java.sql.PreparedStatement;
+import java.util.ArrayList;
+import java.util.List;
 
 public class UsuarioDAO {
 	private static UsuarioDAO instancia = new UsuarioDAO();
@@ -34,8 +39,8 @@ public class UsuarioDAO {
 			Connection con = bd.getConnection();
 			PreparedStatement prepared = con
 					.prepareStatement("INSERT INTO aluno (nome,data_nasc,sexo,cpf,identidade,endereco,"
-							+ "numero, complemento, cidade, estado, bairro, telefone, celular, email, observacao,status) VALUES (?,?,?,?,?,?,?,?,"
-							+ "?,?,?,?,?,?,?,?)");
+							+ "numero, complemento, cidade, estado, bairro, telefone, celular, email, observacao,status,professor) VALUES (?,?,?,?,?,?,?,?,"
+							+ "?,?,?,?,?,?,?,?,?)");
 			prepared.setString(1, pessoa.getNome());
 			prepared.setString(2, pessoa.getDataDeNascimento());
 			prepared.setString(3, pessoa.getSexo());
@@ -52,6 +57,14 @@ public class UsuarioDAO {
 			prepared.setString(14, pessoa.getEmail());
 			prepared.setString(15, pessoa.getObservacoes());
 			prepared.setString(16, pessoa.getUsuario().getAtivo());
+
+			if (SessaoUsuario.getInstancia().getUsuarioLogado().getUsuario()
+					.getCargo().equals("Atendente")) {
+				prepared.setString(17, "Sem professor ");
+			} else {
+				prepared.setString(17, SessaoUsuario.getInstancia()
+						.getUsuarioLogado().getUsuario().getUsername());
+			}
 
 			prepared.execute();
 
@@ -152,12 +165,13 @@ public class UsuarioDAO {
 
 	}
 
-	public Usuario findAdminByLogin(String login) throws SQLException {
+	public Pessoa findAdminByLogin(String login) throws SQLException {
 
 		Connection connection = null;
 		PreparedStatement statement = null;
 		ResultSet resultSet = null;
 		Usuario user = new Usuario();
+		Pessoa pessoa = new Pessoa();
 
 		try {
 			connection = bd.getConnection();
@@ -169,18 +183,37 @@ public class UsuarioDAO {
 				user.setId(resultSet.getInt("id"));
 				user.setSenha(resultSet.getString("senha"));
 				user.setUsername(resultSet.getString("login"));
+
+				pessoa.setUsuario(user);
+				pessoa.setUsuario(user);
+				pessoa.setNome(resultSet.getString("nome"));
+				pessoa.setDataDeNascimento(resultSet.getString("data_nasc"));
+				pessoa.setSexo(resultSet.getString("sexo"));
+				pessoa.setCpf(resultSet.getString("cpf"));
+				pessoa.setIdentidade(resultSet.getString("identidade"));
+				pessoa.setEndereco(resultSet.getString("endereco"));
+				pessoa.setNumero(resultSet.getString("numero"));
+				pessoa.setComplemento(resultSet.getString("complemento"));
+				pessoa.setCidade(resultSet.getString("cidade"));
+				pessoa.setEstado(resultSet.getString("estado"));
+				pessoa.setBairro(resultSet.getString("bairro"));
+				pessoa.setTelefone(resultSet.getString("telefone"));
+				pessoa.setCelular(resultSet.getString("celular"));
+				pessoa.setEmail(resultSet.getString("email"));
+
 			}
 
 		} catch (Exception e) {
 			JOptionPane.showMessageDialog(null,
-					"Erro de conexão com o servidor.", "Erro", JOptionPane.ERROR_MESSAGE);
+					"Erro de conexão com o servidor.", "Erro",
+					JOptionPane.ERROR_MESSAGE);
 			e.printStackTrace();
 		} finally {
 			resultSet.close();
 			bd.fecharConecaoMySQL();
 		}
 
-		return user;
+		return pessoa;
 	}
 
 	public Pessoa findFuncionarioByLogin(String login) throws SQLException {
@@ -224,7 +257,8 @@ public class UsuarioDAO {
 
 		} catch (Exception e) {
 			JOptionPane.showMessageDialog(null,
-					"Erro de conexão com o servidor.", "Erro", JOptionPane.ERROR_MESSAGE);
+					"Erro de conexão com o servidor.", "Erro",
+					JOptionPane.ERROR_MESSAGE);
 			e.printStackTrace();
 		} finally {
 			resultSet.close();
@@ -286,7 +320,7 @@ public class UsuarioDAO {
 			PreparedStatement prepared = con
 					.prepareStatement("UPDATE aluno SET nome=?, data_nasc=?, sexo=?, cpf=?,"
 							+ " identidade=?, endereco=?, numero=?, complemento=?, cidade=?,"
-							+ " estado=?, bairro=?, telefone=?, celular=?, email=?, observacao=?,status = ?"
+							+ " estado=?, bairro=?, telefone=?, celular=?, email=?, observacao=?,status = ?, professor = ?"
 							+ " WHERE id=?");
 			prepared.setString(1, pessoa.getNome());
 			prepared.setString(2, pessoa.getDataDeNascimento());
@@ -304,8 +338,13 @@ public class UsuarioDAO {
 			prepared.setString(14, pessoa.getEmail());
 			prepared.setString(15, pessoa.getObservacoes());
 			prepared.setString(16, pessoa.getUsuario().getAtivo());
-			prepared.setInt(17, pessoa.getUsuario().getId());
+			prepared.setInt(18, pessoa.getUsuario().getId());
 
+			if (SessaoUsuario.getInstancia().getUsuarioLogado().getUsuario()
+					.getCargo().equals("Professor")) {
+				prepared.setString(17, SessaoUsuario.getInstancia()
+						.getUsuarioLogado().getUsuario().getUsername());
+			}
 			prepared.execute();
 
 			bd.fecharConecaoMySQL();
@@ -396,7 +435,7 @@ public class UsuarioDAO {
 		}
 	}
 
-	public List<Pessoa> findAlunosByProfessor(String usernameProfessor)
+	public List<Pessoa> findAlunosByProfessor(String nomeProfessor)
 			throws SQLException {
 		Connection connection = null;
 		PreparedStatement statement = null;
@@ -409,7 +448,7 @@ public class UsuarioDAO {
 			connection = bd.getConnection();
 			statement = connection
 					.prepareStatement("SELECT * FROM aluno WHERE professor = ?");
-			statement.setString(1, usernameProfessor);
+			statement.setString(1, nomeProfessor);
 			resultSet = statement.executeQuery();
 			while (resultSet.next()) {
 				user.setId(resultSet.getInt("id"));
@@ -471,6 +510,112 @@ public class UsuarioDAO {
 			e.printStackTrace();
 		}
 
+	}
+
+	public Pessoa retornaFuncionarioByUsername(String username)
+			throws SQLException {
+
+		Connection connection = null;
+		PreparedStatement statement = null;
+		ResultSet resultSet = null;
+		Usuario user = new Usuario();
+		Pessoa pessoa = new Pessoa();
+
+		try {
+			connection = bd.getConnection();
+			statement = connection
+					.prepareStatement("SELECT * FROM func WHERE login = ?");
+			statement.setString(1, username);
+			resultSet = statement.executeQuery();
+			while (resultSet.next()) {
+				user.setId(resultSet.getInt("id"));
+				user.setCargo(resultSet.getString("cargo"));
+				user.setAtivo(resultSet.getString("status"));
+				user.setSenha(resultSet.getString("senha"));
+				user.setUsername(resultSet.getString("login"));
+
+				pessoa.setUsuario(user);
+				pessoa.setNome(resultSet.getString("nome"));
+				pessoa.setDataDeNascimento(resultSet.getString("data_nasc"));
+				pessoa.setSexo(resultSet.getString("sexo"));
+				pessoa.setCpf(resultSet.getString("cpf"));
+				pessoa.setIdentidade(resultSet.getString("identidade"));
+				pessoa.setEndereco(resultSet.getString("endereco"));
+				pessoa.setNumero(resultSet.getString("numero"));
+				pessoa.setComplemento(resultSet.getString("complemento"));
+				pessoa.setCidade(resultSet.getString("cidade"));
+				pessoa.setEstado(resultSet.getString("estado"));
+				pessoa.setBairro(resultSet.getString("bairro"));
+				pessoa.setTelefone(resultSet.getString("telefone"));
+				pessoa.setCelular(resultSet.getString("celular"));
+				pessoa.setEmail(resultSet.getString("email"));
+
+			}
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			resultSet.close();
+			bd.fecharConecaoMySQL();
+		}
+
+		return pessoa;
+	}
+
+	public List<Pessoa> retornaTodosProfessores() {
+		Connection connection = null;
+		PreparedStatement statement = null;
+		ResultSet resultSet = null;
+		Usuario user = new Usuario();
+		Pessoa pessoa = new Pessoa();
+		List<Pessoa> listaProfessores = new ArrayList<Pessoa>();
+
+		try {
+			connection = bd.getConnection();
+			statement = connection
+					.prepareStatement("SELECT * FROM func WHERE cargo = ? ORDER BY nome ASC");
+			statement.setString(1, "Professor");
+			resultSet = statement.executeQuery();
+			while (resultSet.next()) {
+				user.setId(resultSet.getInt("id"));
+				user.setAtivo(resultSet.getString("status"));
+				user.setCargo(resultSet.getString("cargo"));
+				user.setUsername(resultSet.getString("login"));
+				user.setSenha(resultSet.getString("senha"));
+
+				pessoa.setUsuario(user);
+				pessoa.setNome(resultSet.getString("nome"));
+				pessoa.setDataDeNascimento(resultSet.getString("data_nasc"));
+				pessoa.setSexo(resultSet.getString("sexo"));
+				pessoa.setCpf(resultSet.getString("cpf"));
+				pessoa.setIdentidade(resultSet.getString("identidade"));
+				pessoa.setEndereco(resultSet.getString("endereco"));
+				pessoa.setNumero(resultSet.getString("numero"));
+				pessoa.setComplemento(resultSet.getString("complemento"));
+				pessoa.setCidade(resultSet.getString("cidade"));
+				pessoa.setEstado(resultSet.getString("estado"));
+				pessoa.setBairro(resultSet.getString("bairro"));
+				pessoa.setTelefone(resultSet.getString("telefone"));
+				pessoa.setCelular(resultSet.getString("celular"));
+				pessoa.setEmail(resultSet.getString("email"));
+				listaProfessores.add(pessoa);
+				pessoa = new Pessoa();
+
+			}
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				resultSet.close();
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			bd.fecharConecaoMySQL();
+		}
+
+		return listaProfessores;
 	}
 
 }

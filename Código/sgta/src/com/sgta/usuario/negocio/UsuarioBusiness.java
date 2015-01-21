@@ -47,14 +47,14 @@ public class UsuarioBusiness {
 	public boolean validaAdminLogin(String usuario, String senha)
 			throws SQLException {
 
-		Usuario user = dao.findAdminByLogin(usuario);
+		Pessoa pessoa = dao.findAdminByLogin(usuario);
 
-		if (user == null) {
+		if (pessoa.getNome() == null) {
 			return false;
 		}
 
 		String informado = usuario + senha;
-		String esperado = user.getUsername() + user.getSenha();
+		String esperado = pessoa.getUsuario().getUsername() + pessoa.getUsuario().getSenha();
 		if (informado.equals(esperado)) {
 			return true;
 		} else {
@@ -87,9 +87,9 @@ public class UsuarioBusiness {
 		return dao.retornaAluno(cpf);
 	}
 
-	public List<Pessoa> alunosByProfessor(String usernameProfessor)
+	public List<Pessoa> alunosByProfessor(String nomeProfessor)
 			throws SQLException {
-		return dao.findAlunosByProfessor(usernameProfessor);
+		return dao.findAlunosByProfessor(nomeProfessor);
 	}
 
 	public void alterarAluno(Pessoa aluno) {

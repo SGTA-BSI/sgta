@@ -132,6 +132,11 @@ public class Login extends JFrame {
 					if (cargoUsuario == "Administrador") {
 						if (business.validaAdminLogin(textField.getText()
 								.toString(), password)) {
+							SessaoUsuario.getInstancia().setUsuarioLogado(
+									business.getDao()
+											.findAdminByLogin(
+													textField.getText()
+															.toString()));
 							MenuAdm tela = new MenuAdm();
 							tela.setVisible(true);
 							dispose();

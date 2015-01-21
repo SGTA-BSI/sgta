@@ -12,6 +12,7 @@ import javax.swing.JLabel;
 import java.awt.Font;
 import java.sql.SQLException;
 import java.text.ParseException;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.swing.JFormattedTextField;
@@ -24,17 +25,18 @@ import com.sgta.usuario.negocio.UsuarioBusiness;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 
+import javax.swing.ComboBoxModel;
 import javax.swing.JTextField;
 import javax.swing.JTextPane;
 import javax.swing.JTextArea;
+import javax.swing.JComboBox;
 
 public class RelatorioAlunoByProfessor extends JFrame {
 
 	private JPanel contentPane;
 	final static RelatorioAlunoByProfessor frame = new RelatorioAlunoByProfessor();
-	private JTextField usernameProfessor;
 	private JTextArea textArea;
-	private JLabel lblNomeProf;
+	UsuarioBusiness business = UsuarioBusiness.getInstancia();
 
 	/**
 	 * Launch the application.
@@ -61,6 +63,8 @@ public class RelatorioAlunoByProfessor extends JFrame {
 		setTitle("SGTA - <Nome da Academia>");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 507, 404);
+		setLocationRelativeTo(null);
+		setResizable(false);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
@@ -72,71 +76,13 @@ public class RelatorioAlunoByProfessor extends JFrame {
 		lblRelatrioDeAlunos.setBounds(10, 11, 290, 14);
 		contentPane.add(lblRelatrioDeAlunos);
 
-		JLabel lblUsernameProf = new JLabel("Username Professor");
-		lblUsernameProf.setBounds(8, 39, 153, 14);
-		contentPane.add(lblUsernameProf);
-
-		JButton btnBuscar = new JButton("Buscar");
-		btnBuscar.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				UsuarioBusiness business = UsuarioBusiness.getInstancia();
-				if (usernameProfessor.getText().length() == 0) {
-					Toast.makeText(frame, "Preencha o username do professor",
-							2000, Style.ERROR).display();
-				} else {
-					try {
-						Pessoa professor = business.buscarFuncionarioByLogin(usernameProfessor
-								.getText());
-						if (professor.getNome() == null) {
-							Toast.makeText(frame,
-									"Professor não cadastrado no sistema",
-									2000, Style.ERROR).display();
-						} else {
-							List<Pessoa> alunos = business
-									.alunosByProfessor(usernameProfessor
-											.getText());
-							if (alunos.isEmpty()) {
-								textArea.setText("O professor não possui alunos!");
-								lblNomeProf.setText(professor.getNome());
-							} else {
-								int cont = 0;
-								String nomeAlunos = new String();
-								for (Pessoa pessoa : alunos) {
-									cont = cont + 1;
-									nomeAlunos = nomeAlunos + cont + " - "
-											+ pessoa.getNome() + " \n";
-								}
-								textArea.setText(nomeAlunos);
-								lblNomeProf.setText(professor.getNome());
-							}
-						}
-					} catch (SQLException e1) {
-						// TODO Auto-generated catch block
-						e1.printStackTrace();
-					}
-				}
-			}
-		});
-		btnBuscar.setBounds(379, 35, 89, 23);
-		contentPane.add(btnBuscar);
-
-		JLabel lblProfessor = new JLabel("Professor:");
-		lblProfessor.setBounds(10, 84, 76, 14);
+		JLabel lblProfessor = new JLabel("Selecione o professor:");
+		lblProfessor.setBounds(10, 46, 166, 14);
 		contentPane.add(lblProfessor);
 
-		lblNomeProf = new JLabel("");
-		lblNomeProf.setFont(new Font("Tahoma", Font.ITALIC, 11));
-		lblNomeProf.setBounds(82, 84, 343, 14);
-		contentPane.add(lblNomeProf);
-
 		JLabel lblAlunos = new JLabel("Alunos:");
-		lblAlunos.setBounds(10, 123, 46, 14);
+		lblAlunos.setBounds(10, 94, 46, 14);
 		contentPane.add(lblAlunos);
-
-		usernameProfessor = new JTextField();
-		usernameProfessor.setBounds(147, 36, 222, 20);
-		contentPane.add(usernameProfessor);
-		usernameProfessor.setColumns(10);
 
 		JButton btnFechar = new JButton("Fechar");
 		btnFechar.addActionListener(new ActionListener() {
@@ -146,12 +92,55 @@ public class RelatorioAlunoByProfessor extends JFrame {
 				dispose();
 			}
 		});
-		btnFechar.setBounds(339, 331, 118, 23);
+		btnFechar.setBounds(373, 342, 118, 23);
 		contentPane.add(btnFechar);
 
 		textArea = new JTextArea();
 		textArea.setEditable(false);
-		textArea.setBounds(68, 118, 320, 174);
+		textArea.setBounds(10, 111, 481, 220);
 		contentPane.add(textArea);
+
+		List nomes = new ArrayList<String>();
+		List<Pessoa> professores = business.getDao().retornaTodosProfessores();
+		nomes.add("");
+		if (!professores.isEmpty()) {
+			for (Pessoa p : professores) {
+				nomes.add(p.getNome());
+			}
+		}
+		String[] items = (String[]) nomes.toArray(new String[nomes.size()]);
+		JComboBox comboBox = new JComboBox(items);
+		comboBox.setBounds(10, 63, 481, 20);
+		contentPane.add(comboBox);
+		comboBox.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				List<Pessoa> alunos = new ArrayList<Pessoa>();
+
+				if (comboBox.getSelectedItem() != "") {
+					try {
+						alunos = business.alunosByProfessor(comboBox
+								.getSelectedItem().toString());
+					} catch (SQLException e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					}
+
+					if (alunos.isEmpty()) {
+						textArea.setText("O professor não possui alunos!");
+					} else {
+						int cont = 0;
+						String nomeAlunos = new String();
+						for (Pessoa pessoa : alunos) {
+							cont = cont + 1;
+							nomeAlunos = nomeAlunos + cont + " - "
+									+ pessoa.getNome() + " \n";
+						}
+						textArea.setText(nomeAlunos);
+					}
+				}
+			}
+		});
 	}
 }

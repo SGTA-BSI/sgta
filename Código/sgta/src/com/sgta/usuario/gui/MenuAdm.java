@@ -2,10 +2,15 @@ package com.sgta.usuario.gui;
 
 import java.awt.EventQueue;
 import java.awt.Font;
+import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.IOException;
 import java.text.ParseException;
+import java.util.Date;
 
+import javax.imageio.ImageIO;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -42,23 +47,39 @@ public class MenuAdm extends JFrame {
 	public MenuAdm() {
 		setTitle("SGTA - <Nome da Academia>");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 665, 448);
+		setBounds(100, 100, 593, 408);
 		setLocationRelativeTo(null);
 		setResizable(false);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
-
+		
+		String nome = SessaoUsuario.getInstancia().getUsuarioLogado().getNome();
+		if(nome.indexOf(" ") != -1){
+			nome = nome.substring(0, nome.indexOf(" "));
+		}
+		Date data = new Date();
 		JLabel lblMenuAdministrador = new JLabel("Menu Administrador");
-		lblMenuAdministrador.setFont(new Font("Tahoma", Font.PLAIN, 17));
-		lblMenuAdministrador.setBounds(22, 11, 165, 28);
+		if (data.getHours() >= 0 && data.getHours() < 12) {
+			lblMenuAdministrador = new JLabel("Bom dia, " + nome + ".");
+					
+		} else if (data.getHours() >= 12 && data.getHours() < 18) {
+			lblMenuAdministrador = new JLabel("Boa tarde, " + nome + ".");
+		} else {
+			lblMenuAdministrador = new JLabel("Boa noite, " + nome + ".");
+		}
+		lblMenuAdministrador.setFont(new Font("Tahoma", Font.BOLD, 15));
+		lblMenuAdministrador.setBounds(10, 11, 165, 23);
 		contentPane.add(lblMenuAdministrador);
 
 		JButton btnCadastrarfuncionario = new JButton(
 				"Cadastrar Novo Funcion\u00E1rio");
-		btnCadastrarfuncionario.setBounds(10, 75, 213, 84);
+		btnCadastrarfuncionario.setBounds(10, 75, 279, 84);
 		contentPane.add(btnCadastrarfuncionario);
+		Image img = new ImageIcon(this.getClass().getResource("/add.png"))
+				.getImage();
+		btnCadastrarfuncionario.setIcon(new ImageIcon(img));
 		btnCadastrarfuncionario.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				CadastroFuncionarioForm tela;
@@ -74,20 +95,29 @@ public class MenuAdm extends JFrame {
 		});
 		JButton btnPerfilDeFuncionrios = new JButton(
 				"Perfil de Funcion\u00E1rios");
+		Image img1 = new ImageIcon(this.getClass().getResource("/func.png"))
+				.getImage();
+		btnPerfilDeFuncionrios.setIcon(new ImageIcon(img1));
 		btnPerfilDeFuncionrios.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 			}
 		});
-		btnPerfilDeFuncionrios.setBounds(10, 172, 170, 84);
+		btnPerfilDeFuncionrios.setBounds(10, 172, 279, 84);
 		contentPane.add(btnPerfilDeFuncionrios);
 
 		JButton btnRelatriosDaAcademia = new JButton(
 				"Relat\u00F3rios da Academia");
-		btnRelatriosDaAcademia.setBounds(0, 277, 225, 84);
+		Image img4 = new ImageIcon(this.getClass().getResource(
+				"/relatorio.png")).getImage();
+		btnRelatriosDaAcademia.setIcon(new ImageIcon(img4));
+		btnRelatriosDaAcademia.setBounds(10, 267, 279, 84);
 		contentPane.add(btnRelatriosDaAcademia);
 
-		JButton btnLogout = new JButton("Logout");
-		btnLogout.setBounds(419, 17, 89, 23);
+		JButton btnLogout = new JButton("");
+		btnLogout.setBounds(536, 8, 40, 40);
+		Image img5 = new ImageIcon(this.getClass().getResource(
+				"/logout.png")).getImage();
+		btnLogout.setIcon(new ImageIcon(img5));
 		contentPane.add(btnLogout);
 		btnLogout.addActionListener(new ActionListener() {
 
@@ -106,6 +136,9 @@ public class MenuAdm extends JFrame {
 
 		JButton btnAlterarCadastroFuncionrio = new JButton(
 				"Alterar Cadastro Funcion\u00E1rio");
+		Image img2 = new ImageIcon(this.getClass()
+				.getResource("/func_edit.png")).getImage();
+		btnAlterarCadastroFuncionrio.setIcon(new ImageIcon(img2));
 		btnAlterarCadastroFuncionrio.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				try {
@@ -119,10 +152,13 @@ public class MenuAdm extends JFrame {
 
 			}
 		});
-		btnAlterarCadastroFuncionrio.setBounds(248, 75, 213, 84);
+		btnAlterarCadastroFuncionrio.setBounds(297, 75, 279, 84);
 		contentPane.add(btnAlterarCadastroFuncionrio);
-		
+
 		JButton btnRelatrios = new JButton("Relat\u00F3rio Aluno por Professor");
+		Image img3 = new ImageIcon(this.getClass().getResource(
+				"/alunobyprofessor.png")).getImage();
+		btnRelatrios.setIcon(new ImageIcon(img3));
 		btnRelatrios.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				RelatorioAlunoByProfessor tela = new RelatorioAlunoByProfessor();
@@ -130,8 +166,13 @@ public class MenuAdm extends JFrame {
 				dispose();
 			}
 		});
-		btnRelatrios.setBounds(248, 172, 225, 84);
+		btnRelatrios.setBounds(297, 172, 279, 84);
 		contentPane.add(btnRelatrios);
+
+		JLabel lblVocEstLogado = new JLabel(
+				"Voc\u00EA est\u00E1 logado como administrador");
+		lblVocEstLogado.setBounds(10, 34, 255, 14);
+		contentPane.add(lblVocEstLogado);
 
 		JButton btnTeste = new JButton("Teste");
 		btnTeste.addActionListener(new ActionListener() {
