@@ -374,11 +374,11 @@ public class AlterarCadastroAlunosForm extends JFrame {
 		contentPane.add(comboBoxAtivar);
 		comboBoxAtivar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				if (comboBoxSexo.getSelectedItem() == "Selecione uma opção") {
+				if (comboBoxAtivar.getSelectedItem() == "Selecione uma opção") {
 					ativo = "";
-				} else if (comboBoxSexo.getSelectedItem() == "Ativar") {
+				} else if (comboBoxAtivar.getSelectedItem() == "Ativar") {
 					ativo = "Ativo";
-				} else if (comboBoxSexo.getSelectedItem() == "Desativar") {
+				} else if (comboBoxAtivar.getSelectedItem() == "Desativar") {
 					ativo = "Desativo";
 				}
 			}
