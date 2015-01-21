@@ -1,16 +1,21 @@
 package com.sgta.usuario.dao;
 
+import java.awt.Window;
 import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.swing.JFrame;
+import javax.swing.JOptionPane;
+import javax.swing.SwingUtilities;
 
 import com.sgta.bd.BD;
 import com.sgta.usuario.dominio.Pessoa;
 import com.sgta.usuario.dominio.Usuario;
-
-import java.sql.PreparedStatement;
-import java.util.ArrayList;
-import java.util.List;
+import com.sgta.usuario.gui.Toast;
 
 public class UsuarioDAO {
 	private static UsuarioDAO instancia = new UsuarioDAO();
@@ -167,6 +172,8 @@ public class UsuarioDAO {
 			}
 
 		} catch (Exception e) {
+			JOptionPane.showMessageDialog(null,
+					"Erro de conexão com o servidor.", "Erro", JOptionPane.ERROR_MESSAGE);
 			e.printStackTrace();
 		} finally {
 			resultSet.close();
@@ -216,6 +223,8 @@ public class UsuarioDAO {
 			}
 
 		} catch (Exception e) {
+			JOptionPane.showMessageDialog(null,
+					"Erro de conexão com o servidor.", "Erro", JOptionPane.ERROR_MESSAGE);
 			e.printStackTrace();
 		} finally {
 			resultSet.close();
@@ -435,12 +444,13 @@ public class UsuarioDAO {
 
 		return listaAlunos;
 	}
-	
-	public void inserirMedidas(Pessoa pessoa){
+
+	public void inserirMedidas(Pessoa pessoa) {
 		try {
 			Connection con = bd.getConnection();
-			PreparedStatement prepared = con.prepareStatement("INSERT INTO medidas(id_aluno,altura,peso,bracos,peito,coxas,costas,"
-					+ "panturrilhas,trapezio,antebracos,cintura) VALUES (?,?,?,?,?,?,?,?,?,?,?)");
+			PreparedStatement prepared = con
+					.prepareStatement("INSERT INTO medidas(id_aluno,altura,peso,bracos,peito,coxas,costas,"
+							+ "panturrilhas,trapezio,antebracos,cintura) VALUES (?,?,?,?,?,?,?,?,?,?,?)");
 			prepared.setInt(1, pessoa.getUsuario().getId());
 			prepared.setDouble(2, pessoa.getMedidas().getAltura());
 			prepared.setDouble(3, pessoa.getMedidas().getPeso());
@@ -452,15 +462,15 @@ public class UsuarioDAO {
 			prepared.setDouble(9, pessoa.getMedidas().getTrapezio());
 			prepared.setDouble(10, pessoa.getMedidas().getAntebracos());
 			prepared.setDouble(11, pessoa.getMedidas().getCintura());
-			
+
 			prepared.execute();
-			
+
 			bd.fecharConecaoMySQL();
-			
+
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-		
+
 	}
 
 }
