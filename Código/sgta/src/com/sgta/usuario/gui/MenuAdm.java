@@ -70,7 +70,7 @@ public class MenuAdm extends JFrame {
 			lblMenuAdministrador = new JLabel("Boa noite, " + nome + ".");
 		}
 		lblMenuAdministrador.setFont(new Font("Tahoma", Font.BOLD, 15));
-		lblMenuAdministrador.setBounds(10, 11, 165, 23);
+		lblMenuAdministrador.setBounds(10, 11, 454, 23);
 		contentPane.add(lblMenuAdministrador);
 
 		JButton btnCadastrarfuncionario = new JButton(

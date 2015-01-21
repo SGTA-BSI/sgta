@@ -2,7 +2,9 @@ package com.sgta.usuario.gui;
 
 import java.awt.BorderLayout;
 import java.awt.EventQueue;
+import java.awt.Image;
 
+import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
@@ -16,6 +18,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import java.awt.Color;
 import java.text.ParseException;
+import java.util.Date;
 
 import javax.swing.SwingConstants;
 
@@ -50,7 +53,7 @@ public class MenuProfessor extends JFrame {
 	public MenuProfessor() {
 		setTitle("SGTA - <Nome da Academia>");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 663, 449);
+		setBounds(100, 100, 593, 408);
 		setLocationRelativeTo(null);
 		setResizable(false);
 		contentPane = new JPanel();
@@ -58,13 +61,29 @@ public class MenuProfessor extends JFrame {
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
 
+		String nome = SessaoUsuario.getInstancia().getUsuarioLogado().getNome();
+		if (nome.indexOf(" ") != -1) {
+			nome = nome.substring(0, nome.indexOf(" "));
+		}
+		Date data = new Date();
 		JLabel lblMenuProfessor = new JLabel("Menu Professor");
-		lblMenuProfessor.setFont(new Font("Tahoma", Font.PLAIN, 17));
-		lblMenuProfessor.setBounds(22, 11, 165, 28);
+		if (data.getHours() >= 0 && data.getHours() < 12) {
+			lblMenuProfessor = new JLabel("Bom dia, " + nome + ".");
+
+		} else if (data.getHours() >= 12 && data.getHours() < 18) {
+			lblMenuProfessor = new JLabel("Boa tarde, " + nome + ".");
+		} else {
+			lblMenuProfessor = new JLabel("Boa noite, " + nome + ".");
+		}
+		lblMenuProfessor.setFont(new Font("Tahoma", Font.BOLD, 15));
+		lblMenuProfessor.setBounds(10, 11, 454, 28);
 		contentPane.add(lblMenuProfessor);
 
 		JButton btnCadastrarAluno = new JButton("Cadastrar Novo Aluno");
-		btnCadastrarAluno.setBounds(10, 75, 213, 84);
+		btnCadastrarAluno.setBounds(10, 75, 279, 84);
+		Image img1 = new ImageIcon(this.getClass().getResource("/add.png"))
+				.getImage();
+		btnCadastrarAluno.setIcon(new ImageIcon(img1));
 		contentPane.add(btnCadastrarAluno);
 		btnCadastrarAluno.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -81,7 +100,10 @@ public class MenuProfessor extends JFrame {
 		});
 
 		JButton btnPerfilDeAlunos = new JButton("Perfil de Alunos");
-		btnPerfilDeAlunos.setBounds(10, 172, 213, 84);
+		btnPerfilDeAlunos.setBounds(10, 267, 279, 84);
+		Image img2 = new ImageIcon(this.getClass().getResource("/func.png"))
+				.getImage();
+		btnPerfilDeAlunos.setIcon(new ImageIcon(img2));
 		contentPane.add(btnPerfilDeAlunos);
 		btnPerfilDeAlunos.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -99,11 +121,17 @@ public class MenuProfessor extends JFrame {
 		});
 
 		JButton btnRelatoriosDeAluno = new JButton("Relat\u00F3rios de Alunos");
-		btnRelatoriosDeAluno.setBounds(10, 277, 213, 84);
+		btnRelatoriosDeAluno.setBounds(297, 172, 279, 84);
+		Image img4 = new ImageIcon(this.getClass().getResource(
+				"/alunobyprofessor.png")).getImage();
+		btnRelatoriosDeAluno.setIcon(new ImageIcon(img4));
 		contentPane.add(btnRelatoriosDeAluno);
 
-		JButton btnLogout = new JButton("Logout");
-		btnLogout.setBounds(419, 17, 89, 23);
+		JButton btnLogout = new JButton("");
+		btnLogout.setBounds(536, 8, 40, 40);
+		Image img6 = new ImageIcon(this.getClass().getResource("/logout.png"))
+				.getImage();
+		btnLogout.setIcon(new ImageIcon(img6));
 		contentPane.add(btnLogout);
 		btnLogout.addActionListener(new ActionListener() {
 
@@ -121,11 +149,21 @@ public class MenuProfessor extends JFrame {
 		contentPane.add(lblInfo);
 
 		JButton btnCriarTreino = new JButton("Criar Treino");
-		btnCriarTreino.setBounds(261, 75, 177, 84);
+		Image img = new ImageIcon(this.getClass().getResource("/treino.png"))
+				.getImage();
+		btnCriarTreino.setIcon(new ImageIcon(img));
+		btnCriarTreino.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+			}
+		});
+		btnCriarTreino.setBounds(297, 75, 279, 84);
 		contentPane.add(btnCriarTreino);
 
 		JButton btnAlterarAluno = new JButton("Alterar Cadastro Aluno");
-		btnAlterarAluno.setBounds(261, 172, 177, 84);
+		btnAlterarAluno.setBounds(10, 172, 279, 84);
+		Image img3 = new ImageIcon(this.getClass()
+				.getResource("/func_edit.png")).getImage();
+		btnAlterarAluno.setIcon(new ImageIcon(img3));
 		contentPane.add(btnAlterarAluno);
 
 		JButton btnCadastrarExercicio = new JButton("Cadastrar Exerc\u00EDcio");
@@ -137,8 +175,16 @@ public class MenuProfessor extends JFrame {
 
 			}
 		});
-		btnCadastrarExercicio.setBounds(261, 277, 177, 84);
+		btnCadastrarExercicio.setBounds(297, 267, 279, 84);
+		Image img5 = new ImageIcon(this.getClass().getResource("/gym.png"))
+				.getImage();
+		btnCadastrarExercicio.setIcon(new ImageIcon(img5));
 		contentPane.add(btnCadastrarExercicio);
+
+		JLabel lblVocEstLogado = new JLabel(
+				"Voc\u00EA est\u00E1 logado como professor.");
+		lblVocEstLogado.setBounds(10, 34, 213, 14);
+		contentPane.add(lblVocEstLogado);
 		btnAlterarAluno.addActionListener(new ActionListener() {
 
 			@Override
