@@ -84,14 +84,9 @@ public class MenuAtendente extends JFrame {
 		btnCadastrarAluno.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				CadastroAlunosForm tela;
-				try {
-					tela = new CadastroAlunosForm();
-					tela.setVisible(true);
-					setVisible(false);
-				} catch (ParseException e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
-				}
+				tela = new CadastroAlunosForm();
+				tela.setVisible(true);
+				setVisible(false);
 			}
 		});
 
