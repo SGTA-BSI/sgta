@@ -113,4 +113,7 @@ public class UsuarioBusiness {
 	public List<Medidas> retornaMedidasByUsuario(int idAluno){
 		return dao.retornaMedidasByUsuario(idAluno);
 	}
+	public Medidas retornaMedidasDatas(String data) throws SQLException{
+		return dao.retornaMedidasDatas(data);
+	}
 }

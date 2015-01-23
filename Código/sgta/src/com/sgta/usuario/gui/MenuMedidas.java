@@ -197,7 +197,7 @@ public class MenuMedidas extends JFrame {
 		contentPane.add(label);
 
 		textAreaRelatorio = new JTextArea();
-		textAreaRelatorio.setBounds(72, 286, 298, 106);
+		textAreaRelatorio.setBounds(85, 286, 298, 106);
 		contentPane.add(textAreaRelatorio);
 		btnSalvar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
