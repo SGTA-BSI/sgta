@@ -22,6 +22,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.swing.JComboBox;
+import javax.swing.JOptionPane;
 import javax.swing.JTextArea;
 import javax.swing.JScrollBar;
 import javax.swing.JTextPane;
@@ -38,10 +39,11 @@ public class MenuRelatorio extends JFrame {
 	private JPanel contentPane;
 	private JFormattedTextField cpf;
 	private MaskFormatter ftmCpf;
-	//private JComboBox comboBoxData;
-	final static MenuRelatorio frame = new MenuRelatorio();
+	private JComboBox comboBoxData;
+	//final static MenuRelatorio frame = new MenuRelatorio();
 	private UsuarioBusiness business = UsuarioBusiness.getInstancia();
 	private JLabel lblNomeAluno;
+	private List<Medidas> listMedidas;
 	
 	
 	
@@ -94,32 +96,32 @@ public class MenuRelatorio extends JFrame {
 		btnBuscar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				if (cpf.getText().equals("   .   .   -  ")){
-					Toast.makeText(
-							frame,
-							"Informe o cpf do Aluno.",
-							2000, Style.ERROR).display();
+					JOptionPane.showMessageDialog(null, "PREENCHA O CAMPO CPF",
+							"ATENÇÃO!!", JOptionPane.WARNING_MESSAGE);
 				}else{
 					Pessoa aluno;
 					try {
 						aluno = business.buscarAluno(cpf.getText());
 						if (aluno.getNome() == null){
-							Toast.makeText(
-									frame,
-									"Esse CPF não está cadastrado no sistema",
-									2000, Style.ERROR).display();
+							JOptionPane.showMessageDialog(null, "Aluno não cadastrado!","Atenção", JOptionPane.WARNING_MESSAGE);
 						}else{
 						//listMedidas = business.retornaMedidasByUsuario(aluno.getUsuario().getId());
 						lblNomeAluno.setText(aluno.getNome());
 						List datas = new ArrayList<String>();
-						List<Medidas> listMedidas = business.retornaMedidasByUsuario(aluno.getUsuario().getId());
+						final List<Medidas> listMedidas = business.retornaMedidasByUsuario(aluno.getUsuario().getId());
 						datas.add("");
-						if (!listMedidas.isEmpty()) {
+						if (!(listMedidas.isEmpty())) {
 							for (Medidas p : listMedidas) {
 								datas.add(p.getData().toString());
 								System.out.println(p.getData().toString());
+								System.out.println(p.getBracos());
 							}
 						}
 						final String[] items = (String[]) datas.toArray(new String[datas.size()]);
+						comboBoxData = new JComboBox(items);
+						comboBoxData.setBounds(66, 64, 252, 20);
+						contentPane.add(comboBoxData);
+						
 						
 						}
 					} catch (SQLException e) {
@@ -141,18 +143,7 @@ public class MenuRelatorio extends JFrame {
 		lblData_2.setBounds(10, 64, 46, 14);
 		contentPane.add(lblData_2);
 		
-		/*List datas = new ArrayList<String>();
-		List<Medidas> listMedidas = business.retornaMedidasByUsuario(aluno.getUsuario().getId());
-		datas.add("");
-		if (!listMedidas.isEmpty()) {
-			for (Medidas p : listMedidas) {
-				datas.add(p.getData().toString());
-			}
-		}
-		String[] items = (String[]) datas.toArray(new String[datas.size()]);*/
-		JComboBox comboBoxData = new JComboBox();
-		comboBoxData.setBounds(66, 64, 86, 20);
-		contentPane.add(comboBoxData);
+		
 		
 		JLabel lblAltura = new JLabel("Altura (m):");
 		lblAltura.setBounds(10, 261, 81, 14);

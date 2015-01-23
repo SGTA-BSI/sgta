@@ -626,9 +626,7 @@ public class UsuarioDAO {
 		Connection connection = null;
 		PreparedStatement statement = null;
 		ResultSet resultSet = null;
-		Medidas medidas = new Medidas();
 		List<Medidas> listaMedidas = new ArrayList<Medidas>();
-		SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
 
 		try {
 			connection = bd.getConnection();
@@ -636,7 +634,9 @@ public class UsuarioDAO {
 					.prepareStatement("SELECT * FROM medidas WHERE id_aluno = ?");
 			statement.setInt(1, idAluno);
 			resultSet = statement.executeQuery();
+			SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
 			while (resultSet.next()) {
+				Medidas medidas = new Medidas();
 				medidas.setAltura(resultSet.getDouble("altura"));
 				medidas.setPeso(resultSet.getDouble("peso"));
 				medidas.setBracos(resultSet.getDouble("bracos"));
