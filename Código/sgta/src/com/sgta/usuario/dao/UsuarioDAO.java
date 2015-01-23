@@ -13,12 +13,14 @@ import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
 
 import com.sgta.bd.BD;
+import com.sgta.usuario.dominio.Medidas;
 import com.sgta.usuario.dominio.Pessoa;
 import com.sgta.usuario.dominio.Usuario;
 import com.sgta.usuario.gui.Toast;
 import com.sgta.usuario.negocio.SessaoUsuario;
 
 import java.sql.PreparedStatement;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -489,7 +491,8 @@ public class UsuarioDAO {
 			Connection con = bd.getConnection();
 			PreparedStatement prepared = con
 					.prepareStatement("INSERT INTO medidas(id_aluno,altura,peso,bracos,peito,coxas,costas,"
-							+ "panturrilhas,trapezio,antebracos,cintura) VALUES (?,?,?,?,?,?,?,?,?,?,?)");
+							+ "panturrilhas,trapezio,antebracos,cintura, data,relatorio) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?)");
+			SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
 			prepared.setInt(1, pessoa.getUsuario().getId());
 			prepared.setDouble(2, pessoa.getMedidas().getAltura());
 			prepared.setDouble(3, pessoa.getMedidas().getPeso());
@@ -501,6 +504,8 @@ public class UsuarioDAO {
 			prepared.setDouble(9, pessoa.getMedidas().getTrapezio());
 			prepared.setDouble(10, pessoa.getMedidas().getAntebracos());
 			prepared.setDouble(11, pessoa.getMedidas().getCintura());
+			prepared.setString(12,formatter.format(pessoa.getMedidas().getData()));
+			prepared.setString(13,pessoa.getMedidas().getRelatorio());
 
 			prepared.execute();
 
@@ -616,6 +621,54 @@ public class UsuarioDAO {
 		}
 
 		return listaProfessores;
+	}
+	public List<Medidas> retornaMedidasByUsuario(int idAluno) {
+		Connection connection = null;
+		PreparedStatement statement = null;
+		ResultSet resultSet = null;
+		Medidas medidas = new Medidas();
+		List<Medidas> listaMedidas = new ArrayList<Medidas>();
+		SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
+
+		try {
+			connection = bd.getConnection();
+			statement = connection
+					.prepareStatement("SELECT * FROM medidas WHERE id_aluno = ?");
+			statement.setInt(1, idAluno);
+			resultSet = statement.executeQuery();
+			while (resultSet.next()) {
+				medidas.setAltura(resultSet.getDouble("altura"));
+				medidas.setPeso(resultSet.getDouble("peso"));
+				medidas.setBracos(resultSet.getDouble("bracos"));
+				medidas.setPeitoral(resultSet.getDouble("peito"));
+				medidas.setCoxas(resultSet.getDouble("coxas"));
+				medidas.setCostas(resultSet.getDouble("costas"));
+				medidas.setPanturrilha(resultSet.getDouble("panturrilhas"));
+				medidas.setTrapezio(resultSet.getDouble("trapezio"));
+				medidas.setAntebracos(resultSet.getDouble("antebracos"));
+				medidas.setCintura(resultSet.getDouble("cintura"));
+				String data = resultSet.getString("data");
+				System.out.println("Data: "+ data);
+				medidas.setData(formatter.parse(data));
+				medidas.setRelatorio(resultSet.getString("relatorio"));
+				
+				listaMedidas.add(medidas);
+
+			}
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				resultSet.close();
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			bd.fecharConecaoMySQL();
+		}
+
+		return listaMedidas;
 	}
 
 }

@@ -15,6 +15,7 @@ public class Medidas {
 	private Double peso;
 	private Double altura;
 	private Date data;
+	private String relatorio;
 
 	public Double getBracos() {
 		return bracos;
@@ -102,6 +103,14 @@ public class Medidas {
 
 	public void setData(Date data) {
 		this.data = data;
+	}
+
+	public String getRelatorio() {
+		return this.relatorio;
+	}
+
+	public void setRelatorio(String relatorio) {
+		this.relatorio = relatorio;
 	}
 
 }

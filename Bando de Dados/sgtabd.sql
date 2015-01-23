@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: 17-Jan-2015 às 16:27
+-- Generation Time: 23-Jan-2015 às 01:38
 -- Versão do servidor: 5.6.16
 -- PHP Version: 5.5.9
 
@@ -82,7 +82,7 @@ CREATE TABLE IF NOT EXISTS `aluno` (
   `status` varchar(25) NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `cpf` (`cpf`,`identidade`,`email`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=10 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=12 ;
 
 --
 -- Extraindo dados da tabela `aluno`
@@ -95,7 +95,9 @@ INSERT INTO `aluno` (`id`, `nome`, `data_nasc`, `sexo`, `cpf`, `identidade`, `en
 (6, 'teste', '11/11/1111', 'Masculino', '121.111.111-11', '11111', '11111', '111', '1111', '1111', '1111', '1111', '(22)2222-2222', '(22)2222-2222', '22@hotmail.com', '', '', ''),
 (7, 'teste', '22/22/2222', 'Masculino', '111.111.111-22', '1111', '111', '111', '111', '111', '111', '111', '(11)1111-1111', '(11)1111-1111', '1111@111.com', '', '', ''),
 (8, 'novo teste', '22/22/1987', 'Masculino', '222.222.222-22', '1212121', 'Rua Teste', '123', '', 'Teste', 'Teste', 'Teste', '(87)3214-5698', '(78)9874-5632', 'teste@teste.com.br', '', 'Ultimo Teste bem sucedido', ''),
-(9, '1111', '11/11/1111', 'Masculino', '888.888.888-88', '88888', '88888', '8888', '88888', '8888', '8888', '888', '(88)8888-8888', '(  )    -    ', '888888888@8888.com', '', '', '');
+(9, '1111', '11/11/1111', 'Masculino', '888.888.888-88', '88888', '88888', '8888', '88888', '8888', '8888', '888', '(88)8888-8888', '(  )    -    ', '888888888@8888.com', '', '', ''),
+(10, 'aluno1', '13/12/1985', 'Feminino', '555.555.555-55', '555555', 'Rua Aluno1', '555', '', '01', '01', '01', '(55)5555-5555', '(55)5555-5555', 'aluno01@sgta.com', 'professor', '', 'Ativo'),
+(11, 'Aluno2', '14/12/1987', 'Masculino', '555.555.555-57', '78787', 'Rua Aluno 02', '02', '', '02', '02', '02', '(02)2222-2222', '(02)2222-2222', 'aluno2@sgta.com', 'professor', '', 'Desativo');
 
 -- --------------------------------------------------------
 
@@ -108,7 +110,16 @@ CREATE TABLE IF NOT EXISTS `exercicios` (
   `nome` varchar(25) NOT NULL,
   `musculo` varchar(25) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=4 ;
+
+--
+-- Extraindo dados da tabela `exercicios`
+--
+
+INSERT INTO `exercicios` (`id`, `nome`, `musculo`) VALUES
+(1, 'Supino', 'Peitoral'),
+(2, 'Rosca Direta', 'Bíceps'),
+(3, 'Barra fixa', 'Costas');
 
 -- --------------------------------------------------------
 
@@ -170,8 +181,19 @@ CREATE TABLE IF NOT EXISTS `medidas` (
   `trapezio` double NOT NULL,
   `antebracos` double NOT NULL,
   `cintura` double NOT NULL,
+  `data` text NOT NULL,
+  `relatorio` text NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=6 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=13 ;
+
+--
+-- Extraindo dados da tabela `medidas`
+--
+
+INSERT INTO `medidas` (`id`, `id_aluno`, `altura`, `peso`, `bracos`, `peito`, `coxas`, `costas`, `panturrilhas`, `trapezio`, `antebracos`, `cintura`, `data`, `relatorio`) VALUES
+(10, 4, 181, 12, 12, 12, 21, 21, 21, 21, 21, 21, '22/01/2015 04:26:08', ''),
+(11, 4, 187, 12, 12, 12, 12, 12, 2, 21, 21, 21, '22/01/2015 16:27:27', ''),
+(12, 4, 181, 81, 81, 81, 81, 81, 81, 81, 81, 81, '22/01/2015 17:13:49', 'Teste\nTeste\nTeste');
 
 -- --------------------------------------------------------
 

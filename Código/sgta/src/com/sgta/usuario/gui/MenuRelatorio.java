@@ -3,25 +3,48 @@ package com.sgta.usuario.gui;
 import java.awt.BorderLayout;
 import java.awt.EventQueue;
 
+import javafx.scene.control.ComboBox;
+
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
+import javax.swing.text.MaskFormatter;
 import javax.swing.JLabel;
 import javax.swing.JTextField;
 import javax.swing.JEditorPane;
 import javax.swing.JButton;
+
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
+import java.sql.SQLException;
+import java.text.ParseException;
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.swing.JComboBox;
 import javax.swing.JTextArea;
 import javax.swing.JScrollBar;
 import javax.swing.JTextPane;
+import javax.swing.JFormattedTextField;
+
+import com.sgta.Login;
+import com.sgta.usuario.dominio.Pessoa;
+import com.sgta.usuario.gui.Toast.Style;
+import com.sgta.usuario.negocio.UsuarioBusiness;
+import com.sgta.usuario.dominio.Medidas;
 
 public class MenuRelatorio extends JFrame {
 
 	private JPanel contentPane;
-	private JTextField textCPF;
-	private JTextField textField;
+	private JFormattedTextField cpf;
+	private MaskFormatter ftmCpf;
+	//private JComboBox comboBoxData;
+	final static MenuRelatorio frame = new MenuRelatorio();
+	private UsuarioBusiness business = UsuarioBusiness.getInstancia();
+	private JLabel lblNomeAluno;
+	
+	
+	
 
 	/**
 	 * Launch the application.
@@ -45,7 +68,7 @@ public class MenuRelatorio extends JFrame {
 	public MenuRelatorio() {
 		setTitle("SGTA - <Nome da Academia>");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 450, 460);
+		setBounds(100, 100, 462, 506);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
@@ -55,62 +78,81 @@ public class MenuRelatorio extends JFrame {
 		lblCPF.setBounds(10, 11, 46, 14);
 		contentPane.add(lblCPF);
 		
-		textCPF = new JTextField();
-		textCPF.setText("   .   .   -  ");
-		textCPF.setToolTipText("  ");
-		textCPF.setBounds(66, 8, 100, 20);
-		contentPane.add(textCPF);
-		textCPF.setColumns(10);
-		
 		JLabel lblAluno = new JLabel("Aluno:");
 		lblAluno.setBounds(10, 39, 46, 14);
 		contentPane.add(lblAluno);
 		
-		JLabel lblNomeAluno = new JLabel("");
+		lblNomeAluno = new JLabel("");
 		lblNomeAluno.setBounds(66, 39, 238, 14);
 		contentPane.add(lblNomeAluno);
 		
 		JLabel lblRelatorio = new JLabel("Relat\u00F3rio:");
-		lblRelatorio.setBounds(10, 64, 58, 14);
+		lblRelatorio.setBounds(10, 116, 58, 14);
 		contentPane.add(lblRelatorio);
 		
 		JButton btnBuscar = new JButton("Buscar");
 		btnBuscar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
+				if (cpf.getText().equals("   .   .   -  ")){
+					Toast.makeText(
+							frame,
+							"Informe o cpf do Aluno.",
+							2000, Style.ERROR).display();
+				}else{
+					Pessoa aluno;
+					try {
+						aluno = business.buscarAluno(cpf.getText());
+						if (aluno.getNome() == null){
+							Toast.makeText(
+									frame,
+									"Esse CPF não está cadastrado no sistema",
+									2000, Style.ERROR).display();
+						}else{
+						//listMedidas = business.retornaMedidasByUsuario(aluno.getUsuario().getId());
+						lblNomeAluno.setText(aluno.getNome());
+						List datas = new ArrayList<String>();
+						List<Medidas> listMedidas = business.retornaMedidasByUsuario(aluno.getUsuario().getId());
+						datas.add("");
+						if (!listMedidas.isEmpty()) {
+							for (Medidas p : listMedidas) {
+								datas.add(p.getData().toString());
+								System.out.println(p.getData().toString());
+							}
+						}
+						final String[] items = (String[]) datas.toArray(new String[datas.size()]);
+						
+						}
+					} catch (SQLException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+					
+				}
 			}
 		});
 		btnBuscar.setBounds(335, 7, 89, 23);
 		contentPane.add(btnBuscar);
 		
-		JLabel lblData = new JLabel("Data:");
-		lblData.setBounds(10, 177, 46, 14);
-		contentPane.add(lblData);
-		
-		textField = new JTextField();
-		textField.setText("  /  /    ");
-		textField.setBounds(66, 174, 86, 20);
-		contentPane.add(textField);
-		textField.setColumns(10);
-		
-		JButton btnSalvar = new JButton("Salvar");
-		btnSalvar.setBounds(335, 177, 89, 23);
-		contentPane.add(btnSalvar);
-		
 		JLabel lblHistoricoDeMedidas = new JLabel("Historico de Medidas:");
-		lblHistoricoDeMedidas.setBounds(10, 202, 116, 14);
+		lblHistoricoDeMedidas.setBounds(10, 225, 116, 14);
 		contentPane.add(lblHistoricoDeMedidas);
 		
 		JLabel lblData_2 = new JLabel("Data:");
-		lblData_2.setBounds(10, 230, 46, 14);
+		lblData_2.setBounds(10, 64, 46, 14);
 		contentPane.add(lblData_2);
 		
-		JComboBox comboBox = new JComboBox();
-		comboBox.setBounds(66, 227, 86, 20);
-		contentPane.add(comboBox);
-		
-		JButton btnRecuperar = new JButton("Recuperar");
-		btnRecuperar.setBounds(335, 226, 89, 23);
-		contentPane.add(btnRecuperar);
+		/*List datas = new ArrayList<String>();
+		List<Medidas> listMedidas = business.retornaMedidasByUsuario(aluno.getUsuario().getId());
+		datas.add("");
+		if (!listMedidas.isEmpty()) {
+			for (Medidas p : listMedidas) {
+				datas.add(p.getData().toString());
+			}
+		}
+		String[] items = (String[]) datas.toArray(new String[datas.size()]);*/
+		JComboBox comboBoxData = new JComboBox();
+		comboBoxData.setBounds(66, 64, 86, 20);
+		contentPane.add(comboBoxData);
 		
 		JLabel lblAltura = new JLabel("Altura (m):");
 		lblAltura.setBounds(10, 261, 81, 14);
@@ -173,7 +215,7 @@ public class MenuRelatorio extends JFrame {
 		contentPane.add(lblPeso);
 		
 		JButton btnVoltar = new JButton("Voltar");
-		btnVoltar.setBounds(335, 386, 89, 23);
+		btnVoltar.setBounds(335, 433, 89, 23);
 		contentPane.add(btnVoltar);
 		
 		JLabel lblCampoCintura = new JLabel("");
@@ -195,9 +237,34 @@ public class MenuRelatorio extends JFrame {
 		JLabel lblCampoPeso = new JLabel("");
 		lblCampoPeso.setBounds(314, 261, 68, 14);
 		contentPane.add(lblCampoPeso);
+	// --- formatar cpf e data
+		try {
+			ftmCpf = new MaskFormatter("###.###.###-##");
+		} catch (ParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		
-		JTextPane textPane = new JTextPane();
-		textPane.setBounds(66, 64, 358, 99);
-		contentPane.add(textPane);
+		cpf = new JFormattedTextField(ftmCpf);
+		cpf.setBounds(62, 8, 136, 20);
+		contentPane.add(cpf);
+		
+		JLabel lblImc = new JLabel("IMC:");
+		lblImc.setBounds(10, 388, 46, 14);
+		contentPane.add(lblImc);
+		
+		JLabel labelIMC = new JLabel("");
+		labelIMC.setBounds(46, 388, 89, 14);
+		contentPane.add(labelIMC);
+		
+		JLabel labelInfoIMC = new JLabel("");
+		labelInfoIMC.setBounds(173, 388, 231, 14);
+		contentPane.add(labelInfoIMC);
+		
+		JTextArea textAreaRelatorio = new JTextArea();
+		textAreaRelatorio.setEditable(false);
+		textAreaRelatorio.setBounds(76, 111, 348, 103);
+		contentPane.add(textAreaRelatorio);
 	}
+	
 }

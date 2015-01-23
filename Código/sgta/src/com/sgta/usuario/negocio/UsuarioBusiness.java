@@ -4,6 +4,7 @@ import java.sql.SQLException;
 import java.util.List;
 
 import com.sgta.usuario.dao.UsuarioDAO;
+import com.sgta.usuario.dominio.Medidas;
 import com.sgta.usuario.dominio.Pessoa;
 import com.sgta.usuario.dominio.Usuario;
 
@@ -108,5 +109,8 @@ public class UsuarioBusiness {
 	}
 	public Pessoa buscarFuncionarioByLogin(String login) throws SQLException {
 		return dao.retornaFuncionarioByUsername(login);
+	}
+	public List<Medidas> retornaMedidasByUsuario(int idAluno){
+		return dao.retornaMedidasByUsuario(idAluno);
 	}
 }
