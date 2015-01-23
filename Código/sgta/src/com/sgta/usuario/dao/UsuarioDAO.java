@@ -287,6 +287,7 @@ public class UsuarioDAO {
 			resultSet = statement.executeQuery();
 			while (resultSet.next()) {
 				user.setId(resultSet.getInt("id"));
+				user.setAtivo(resultSet.getString("status"));
 
 				pessoa.setUsuario(user);
 				pessoa.setNome(resultSet.getString("nome"));
@@ -411,7 +412,7 @@ public class UsuarioDAO {
 			PreparedStatement prepared = con
 					.prepareStatement("UPDATE func SET nome=?, data_nasc=?, sexo=?, cpf=?,"
 							+ " identidade=?, endereco=?, numero=?, complemento=?, cidade=?,"
-							+ " estado=?, bairro=?, telefone=?, celular=?, email=?,status = ?"
+							+ " estado=?, bairro=?, telefone=?, celular=?, email=?,status = ?, login = ?, senha = ?"
 							+ " WHERE id=?");
 			prepared.setString(1, pessoa.getNome());
 			prepared.setString(2, pessoa.getDataDeNascimento());
@@ -428,7 +429,9 @@ public class UsuarioDAO {
 			prepared.setString(13, pessoa.getCelular());
 			prepared.setString(14, pessoa.getEmail());
 			prepared.setString(15, pessoa.getUsuario().getAtivo());
-			prepared.setInt(16, pessoa.getUsuario().getId());
+			prepared.setString(16, pessoa.getUsuario().getUsername());
+			prepared.setString(17, pessoa.getUsuario().getSenha());
+			prepared.setInt(18, pessoa.getUsuario().getId());
 
 			prepared.execute();
 

@@ -46,6 +46,7 @@ public class PerfilUsuario extends JFrame {
 	private JLabel lblCelular;
 	private JLabel lblEmail;
 	private JLabel lblObs;
+	private JLabel labelStatus;
 
 	private static JLabel lblInfo;
 
@@ -182,6 +183,7 @@ public class PerfilUsuario extends JFrame {
 							lblCelular.setText(aluno.getCelular());
 							lblEmail.setText(aluno.getEmail());
 							lblObs.setText(aluno.getObservacoes());
+							labelStatus.setText(aluno.getUsuario().getAtivo());
 						}
 					} catch (SQLException e1) {
 						e1.printStackTrace();
@@ -266,7 +268,7 @@ public class PerfilUsuario extends JFrame {
 
 		lblNome = new JLabel("");
 		lblNome.setFont(new Font("Tahoma", Font.ITALIC, 11));
-		lblNome.setBounds(50, 111, 501, 14);
+		lblNome.setBounds(50, 111, 338, 14);
 		contentPane.add(lblNome);
 
 		lblData = new JLabel("");
@@ -339,10 +341,10 @@ public class PerfilUsuario extends JFrame {
 		lblObs.setBounds(106, 328, 417, 14);
 		contentPane.add(lblObs);
 
-		JLabel lblAtivo = new JLabel("Ativo");
-		lblAtivo.setFont(new Font("Tahoma", Font.BOLD, 11));
-		lblAtivo.setBounds(405, 111, 86, 14);
-		contentPane.add(lblAtivo);
+		JLabel lblStatus = new JLabel("Status");
+		lblStatus.setFont(new Font("Tahoma", Font.BOLD, 11));
+		lblStatus.setBounds(405, 111, 86, 14);
+		contentPane.add(lblStatus);
 
 		JButton btnInserirMedidas = new JButton("Inserir Medidas");
 		btnInserirMedidas.setBounds(302, 403, 137, 23);
@@ -378,6 +380,11 @@ public class PerfilUsuario extends JFrame {
 		lblInfo = new JLabel("");
 		lblInfo.setBounds(10, 446, 530, 14);
 		contentPane.add(lblInfo);
+		
+		labelStatus = new JLabel("");
+		labelStatus.setFont(new Font("Tahoma", Font.ITALIC, 11));
+		labelStatus.setBounds(460, 111, 46, 14);
+		contentPane.add(labelStatus);
 	}
 
 	public static void getLabelInfo(String mensagem) {
