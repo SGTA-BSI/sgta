@@ -17,6 +17,7 @@ import javax.swing.JButton;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import java.sql.SQLException;
+import java.text.DecimalFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -34,7 +35,9 @@ import com.sgta.usuario.dominio.Pessoa;
 import com.sgta.usuario.gui.Toast.Style;
 import com.sgta.usuario.negocio.UsuarioBusiness;
 import com.sgta.usuario.dominio.Medidas;
+
 import java.awt.Font;
+import java.awt.Color;
 
 public class MenuRelatorio extends JFrame {
 
@@ -166,6 +169,34 @@ public class MenuRelatorio extends JFrame {
 													lblCampoTrapezio.setText(""+medidas.getTrapezio().toString());
 													lblCampoPeitoral.setText(""+medidas.getPeitoral().toString());
 													lblCampoPanturrilhas.setText(""+medidas.getPanturrilha().toString());
+													
+													Double imc = (medidas.getPeso())/Math.pow(medidas.getAltura(),2);
+													DecimalFormat fmt = new DecimalFormat("0.00");
+													labelIMC.setText(""+ fmt.format(imc));
+													
+													if(imc<17){
+														labelInfoIMC.setText("Aluno Muito Abaixo do peso!!!");
+														labelInfoIMC.setForeground(Color.RED);
+													} else if(imc>17 && imc<18.49){
+														labelInfoIMC.setText("Aluno Abaixo do peso");
+														labelInfoIMC.setForeground(Color.YELLOW);
+													} else if(imc>18.5 && imc<24.99){
+														labelInfoIMC.setText("Aluno com Peso Normal");
+														labelInfoIMC.setForeground(Color.GREEN);
+													} else if (imc>25 && imc<29.99){
+														labelInfoIMC.setText("Aluno Acima do peso");
+														labelInfoIMC.setForeground(Color.YELLOW);
+													} else if (imc>30 && imc<34.99){
+														labelInfoIMC.setText("Atenção!! Aluno com OBESIDADE I");
+														labelInfoIMC.setForeground(Color.RED);
+													} else if (imc>35 && imc<39.99){
+														labelInfoIMC.setText("Atenção!! Aluno com OBESIDADE II (SEVERA)");
+														labelInfoIMC.setForeground(Color.RED);
+													} else if (imc>40){
+														labelInfoIMC.setText("Atenção!! Aluno com OBESIDADE Mórbida!!!");
+														labelInfoIMC.setForeground(Color.RED);	
+														labelInfoIMC.setFont(new Font("Tahoma", Font.BOLD | Font.ITALIC, 11));
+														}
 													
 												} catch (SQLException e1) {
 													// TODO Auto-generated catch

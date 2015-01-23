@@ -14,17 +14,19 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.border.EmptyBorder;
+import javax.swing.text.MaskFormatter;
 
 import com.sgta.usuario.dominio.Medidas;
 import com.sgta.usuario.dominio.Pessoa;
 import com.sgta.usuario.negocio.SessaoUsuario;
 import com.sgta.usuario.negocio.UsuarioBusiness;
+
 import javax.swing.JTextArea;
+import javax.swing.JFormattedTextField;
 
 public class MenuMedidas extends JFrame {
 
 	private JPanel contentPane;
-	private JTextField textAltura;
 	private JTextField textPanturrilhas;
 	private JTextField textBracos;
 	private JTextField textCoxas;
@@ -35,6 +37,8 @@ public class MenuMedidas extends JFrame {
 	private JTextField textCintura;
 	private JTextField textPeso;
 	private JTextArea textAreaRelatorio;
+	private JFormattedTextField textAltura;
+	private MaskFormatter ftmAltura;
 
 	/**
 	 * Launch the application.
@@ -83,11 +87,6 @@ public class MenuMedidas extends JFrame {
 		JLabel lblAltura = new JLabel("Altura (m):");
 		lblAltura.setBounds(22, 75, 134, 15);
 		contentPane.add(lblAltura);
-
-		textAltura = new JTextField();
-		textAltura.setBounds(22, 93, 134, 19);
-		contentPane.add(textAltura);
-		textAltura.setColumns(10);
 
 		textPanturrilhas = new JTextField();
 		textPanturrilhas.setBounds(22, 215, 134, 19);
@@ -199,6 +198,16 @@ public class MenuMedidas extends JFrame {
 		textAreaRelatorio = new JTextArea();
 		textAreaRelatorio.setBounds(85, 286, 298, 106);
 		contentPane.add(textAreaRelatorio);
+		
+		try {
+			ftmAltura = new MaskFormatter("#.##");
+		} catch (ParseException e2) {
+			// TODO Auto-generated catch block
+			e2.printStackTrace();
+		}
+		textAltura = new JFormattedTextField(ftmAltura);
+		textAltura.setBounds(22, 93, 134, 20);
+		contentPane.add(textAltura);
 		btnSalvar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				if (verificacaoPreenchimento()) {
@@ -220,7 +229,7 @@ public class MenuMedidas extends JFrame {
 	}
 
 	public boolean verificacaoPreenchimento() {
-		if (textAltura.getText().length() == 0) {
+		if (textAltura.getText().equals(" .  ")) {
 			JOptionPane.showMessageDialog(null, "PREENCHA O CAMPO ALTURA",
 					"ATENÇÃO!!", JOptionPane.WARNING_MESSAGE);
 			return false;
