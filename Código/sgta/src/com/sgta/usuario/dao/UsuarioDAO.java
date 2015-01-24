@@ -492,7 +492,8 @@ public class UsuarioDAO {
 			PreparedStatement prepared = con
 					.prepareStatement("INSERT INTO medidas(id_aluno,altura,peso,bracos,peito,coxas,costas,"
 							+ "panturrilhas,trapezio,antebracos,cintura, data,relatorio) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?)");
-			SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
+			SimpleDateFormat formatter = new SimpleDateFormat(
+					"dd/MM/yyyy HH:mm:ss");
 			prepared.setInt(1, pessoa.getUsuario().getId());
 			prepared.setDouble(2, pessoa.getMedidas().getAltura());
 			prepared.setDouble(3, pessoa.getMedidas().getPeso());
@@ -504,8 +505,9 @@ public class UsuarioDAO {
 			prepared.setDouble(9, pessoa.getMedidas().getTrapezio());
 			prepared.setDouble(10, pessoa.getMedidas().getAntebracos());
 			prepared.setDouble(11, pessoa.getMedidas().getCintura());
-			prepared.setString(12,formatter.format(pessoa.getMedidas().getData()));
-			prepared.setString(13,pessoa.getMedidas().getRelatorio());
+			prepared.setString(12,
+					formatter.format(pessoa.getMedidas().getData()));
+			prepared.setString(13, pessoa.getMedidas().getRelatorio());
 
 			prepared.execute();
 
@@ -622,6 +624,7 @@ public class UsuarioDAO {
 
 		return listaProfessores;
 	}
+
 	public List<Medidas> retornaMedidasByUsuario(int idAluno) {
 		Connection connection = null;
 		PreparedStatement statement = null;
@@ -648,11 +651,11 @@ public class UsuarioDAO {
 				medidas.setAntebracos(resultSet.getDouble("antebracos"));
 				medidas.setCintura(resultSet.getDouble("cintura"));
 				String data = resultSet.getString("data");
-				System.out.println("Data: "+ data);
 				medidas.setData(formatter.parse(data));
 				medidas.setRelatorio(resultSet.getString("relatorio"));
-				
+
 				listaMedidas.add(medidas);
+				medidas = new Medidas();
 
 			}
 
