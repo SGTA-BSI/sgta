@@ -100,6 +100,9 @@ public class MenuAdm extends JFrame {
 		btnPerfilDeFuncionrios.setIcon(new ImageIcon(img1));
 		btnPerfilDeFuncionrios.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				PerfilFuncionario tela = new PerfilFuncionario();
+				tela.setVisible(true);
+				dispose();
 			}
 		});
 		btnPerfilDeFuncionrios.setBounds(10, 172, 279, 84);

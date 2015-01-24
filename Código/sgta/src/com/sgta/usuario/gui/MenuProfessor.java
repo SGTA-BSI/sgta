@@ -116,6 +116,13 @@ public class MenuProfessor extends JFrame {
 		});
 
 		JButton btnRelatoriosDeAluno = new JButton("Relat\u00F3rios de Alunos");
+		btnRelatoriosDeAluno.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				MenuRelatorio tela = new MenuRelatorio();
+				tela.setVisible(true);
+				dispose();
+			}
+		});
 		btnRelatoriosDeAluno.setBounds(297, 172, 279, 84);
 		Image img4 = new ImageIcon(this.getClass().getResource(
 				"/alunobyprofessor.png")).getImage();

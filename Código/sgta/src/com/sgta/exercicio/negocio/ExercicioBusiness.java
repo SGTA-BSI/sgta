@@ -1,5 +1,7 @@
 package com.sgta.exercicio.negocio;
 
+import java.util.List;
+
 import com.sgta.exercicio.dao.ExercicioDAO;
 import com.sgta.exercicio.dominio.Exercicio;
 
@@ -14,5 +16,8 @@ public class ExercicioBusiness {
 	}
 	public void inserirExercicio(Exercicio exercicio){
 		exercicioDao.inserirExercicio(exercicio);
+	}
+	public List<Exercicio> retornaTodosExercicios() {
+		return exercicioDao.retornaTodosExercicios();
 	}
 }

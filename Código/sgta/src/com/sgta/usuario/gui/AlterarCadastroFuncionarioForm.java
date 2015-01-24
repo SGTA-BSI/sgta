@@ -62,9 +62,9 @@ public class AlterarCadastroFuncionarioForm extends JFrame {
 	private String cargo;
 	private String status;
 	private Pessoa funcionario;
-	private JTextField textField;
-	private JPasswordField passwordField;
-	private JPasswordField passwordField_1;
+	private JTextField textFieldLogin;
+	private JPasswordField passwordFieldSenha;
+	private JPasswordField passwordFieldConfirmSenha;
 
 	/**
 	 * Launch the application.
@@ -364,6 +364,9 @@ public class AlterarCadastroFuncionarioForm extends JFrame {
 						telefone.setText("");
 						celular.setText("");
 						email.setText("");
+						textFieldLogin.setText("");
+						passwordFieldSenha.setText("");
+						passwordFieldConfirmSenha.setText("");
 					} else {
 						nome.setText(funcionario.getNome());
 						data.setText(funcionario.getDataDeNascimento());
@@ -378,6 +381,7 @@ public class AlterarCadastroFuncionarioForm extends JFrame {
 						telefone.setText(funcionario.getTelefone());
 						celular.setText(funcionario.getCelular());
 						email.setText(funcionario.getEmail());
+						textFieldLogin.setText(funcionario.getUsuario().getUsername());
 
 					}
 				} catch (SQLException e1) {
@@ -409,10 +413,10 @@ public class AlterarCadastroFuncionarioForm extends JFrame {
 		cpf2.setBounds(10, 57, 177, 20);
 		contentPane.add(cpf2);
 		
-		textField = new JTextField();
-		textField.setBounds(10, 542, 158, 20);
-		contentPane.add(textField);
-		textField.setColumns(10);
+		textFieldLogin = new JTextField();
+		textFieldLogin.setBounds(10, 542, 158, 20);
+		contentPane.add(textFieldLogin);
+		textFieldLogin.setColumns(10);
 		
 		JLabel lblLogin = new JLabel("Login");
 		lblLogin.setBounds(10, 514, 91, 24);
@@ -426,18 +430,19 @@ public class AlterarCadastroFuncionarioForm extends JFrame {
 		lblConfirmarSenha.setBounds(326, 519, 120, 14);
 		contentPane.add(lblConfirmarSenha);
 		
-		passwordField = new JPasswordField();
-		passwordField.setBounds(178, 542, 138, 20);
-		contentPane.add(passwordField);
+		passwordFieldSenha = new JPasswordField();
+		passwordFieldSenha.setBounds(178, 542, 138, 20);
+		contentPane.add(passwordFieldSenha);
 		
-		passwordField_1 = new JPasswordField();
-		passwordField_1.setBounds(326, 542, 148, 20);
-		contentPane.add(passwordField_1);
+		passwordFieldConfirmSenha = new JPasswordField();
+		passwordFieldConfirmSenha.setBounds(326, 542, 148, 20);
+		contentPane.add(passwordFieldConfirmSenha);
 
 	}
 
 	public boolean validacaoPreenchimento() {
-
+		String password = new String(passwordFieldSenha.getPassword());
+		String confirmPassword = new String(passwordFieldConfirmSenha.getPassword());
 		if (nome.getText().length() == 0 || nome.getText().equals(" ")) {
 			JOptionPane.showMessageDialog(null, "PREENCHA O CAMPO DE NOME",
 					"ATENÇÃO!!", JOptionPane.WARNING_MESSAGE);
@@ -519,7 +524,14 @@ public class AlterarCadastroFuncionarioForm extends JFrame {
 					"INFORME SE O FUNCIONÁRIO ESTÁ ATIVO", "ATENÇÃO!!",
 					JOptionPane.WARNING_MESSAGE);
 			return false;
-		} else {
+		} else if (password == null || password.equals("") || password.length() == 0) {
+			JOptionPane.showMessageDialog(null, "PREENCHA O CAMPO SENHA","ATENÇÃO!!", JOptionPane.WARNING_MESSAGE);
+			return false;
+		}else if (!(password.equals(confirmPassword))){
+			JOptionPane.showMessageDialog(null, "PREENCHA DUAS SENHAS IGUAIS!","ATENÇÃO!!", JOptionPane.WARNING_MESSAGE);
+			return false;
+		}else {
+		
 			return true;
 		}
 	}
@@ -540,10 +552,13 @@ public class AlterarCadastroFuncionarioForm extends JFrame {
 
 	private void alterarCadastro() {
 		Pessoa pessoa = new Pessoa();
+		String password = new String(passwordFieldSenha.getPassword());
 
 		pessoa.setUsuario(funcionario.getUsuario());
 		pessoa.getUsuario().setId(funcionario.getUsuario().getId());
 		pessoa.getUsuario().setAtivo(status);
+		pessoa.getUsuario().setUsername(textFieldLogin.getText());
+		pessoa.getUsuario().setSenha(password);
 
 		pessoa.setBairro(bairro.getText());
 		pessoa.setCelular(celular.getText());
