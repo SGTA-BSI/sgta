@@ -5,14 +5,15 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import javax.swing.JOptionPane;
 
 import com.sgta.bd.BD;
 import com.sgta.treino.dominio.RelacaoTreinoExercicio;
 import com.sgta.treino.dominio.Treino;
-import com.sgta.usuario.negocio.SessaoUsuario;
 
 public class TreinoDAO {
 	private static TreinoDAO instancia = new TreinoDAO();
@@ -110,4 +111,96 @@ public class TreinoDAO {
 			e.printStackTrace();
 		}
 	}
+
+	public List<RelacaoTreinoExercicio> buscarRelacao(int idAluno) {
+		Connection connection = null;
+		PreparedStatement statement = null;
+		ResultSet resultSet = null;
+		RelacaoTreinoExercicio relacao = new RelacaoTreinoExercicio();
+		List<RelacaoTreinoExercicio> listaRelacao = new ArrayList<RelacaoTreinoExercicio>();
+
+		try {
+			connection = bd.getConnection();
+			statement = connection
+					.prepareStatement("SELECT * FROM relac_exerc_treino_aluno WHERE id_aluno = ?");
+			statement.setInt(1, idAluno);
+			resultSet = statement.executeQuery();
+			while (resultSet.next()) {
+				relacao.setId(resultSet.getInt("id"));
+				relacao.setIdAluno(idAluno);
+				relacao.setIdTreino(resultSet.getInt("id_treino"));
+				relacao.setIdExercicio(resultSet.getInt("id_exercicio"));
+				relacao.setRepeticao(resultSet.getInt("repeticao"));
+				relacao.setSerie(resultSet.getInt("serie"));
+				relacao.setCarga(resultSet.getInt("carga"));
+
+				listaRelacao.add(relacao);
+
+				relacao = new RelacaoTreinoExercicio();
+			}
+
+		} catch (Exception e) {
+			JOptionPane.showMessageDialog(null,
+					"Erro de conexão com o servidor.", "Erro",
+					JOptionPane.ERROR_MESSAGE);
+			e.printStackTrace();
+		} finally {
+			try {
+				resultSet.close();
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			bd.fecharConecaoMySQL();
+		}
+
+		return listaRelacao;
+	}
+
+	public List<Treino> listaTreinos(int idAluno) {
+		Connection connection = null;
+		PreparedStatement statement = null;
+		ResultSet resultSet = null;
+		Treino treino = new Treino();
+		List<Treino> listaTreinos = new ArrayList<Treino>();
+
+		try {
+			connection = bd.getConnection();
+			statement = connection
+					.prepareStatement("SELECT * FROM treino WHERE id_usuario = ?");
+			statement.setInt(1, idAluno);
+			resultSet = statement.executeQuery();
+			SimpleDateFormat formatter = new SimpleDateFormat();
+			while (resultSet.next()) {
+				treino.setId(resultSet.getInt("id"));
+				treino.setNome(resultSet.getString("nome"));
+				Date dataInicio = formatter.parse(resultSet
+						.getString("data_inicio"));
+				treino.setDataInicio(dataInicio);
+				Date dataFim = formatter.parse(resultSet.getString("data_fim"));
+				treino.setDataFim(dataFim);
+
+				listaTreinos.add(treino);
+
+				treino = new Treino();
+			}
+
+		} catch (Exception e) {
+			JOptionPane.showMessageDialog(null,
+					"Erro de conexão com o servidor.", "Erro",
+					JOptionPane.ERROR_MESSAGE);
+			e.printStackTrace();
+		} finally {
+			try {
+				resultSet.close();
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			bd.fecharConecaoMySQL();
+		}
+
+		return listaTreinos;
+	}
+
 }

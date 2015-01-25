@@ -18,6 +18,7 @@ import javax.swing.JFormattedTextField;
 import javax.swing.JButton;
 
 import com.sgta.treino.gui.CriarTreino;
+import com.sgta.treino.gui.VisualizarTreino;
 import com.sgta.usuario.negocio.SessaoUsuario;
 import com.sgta.usuario.negocio.UsuarioBusiness;
 
@@ -151,6 +152,15 @@ public class PerfilUsuario extends JFrame {
 		JButton btnVisualizarTreinos = new JButton("Visualizar Treinos");
 		btnVisualizarTreinos.setBounds(139, 403, 150, 23);
 		btnVisualizarTreinos.setEnabled(false);
+		btnVisualizarTreinos.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				VisualizarTreino tela = new VisualizarTreino();
+				tela.setVisible(true);
+				dispose();
+			}
+		});
 		contentPane.add(btnVisualizarTreinos);
 
 		JButton btnInserirMedidas = new JButton("Inserir Medidas");
