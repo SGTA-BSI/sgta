@@ -20,4 +20,8 @@ public class ExercicioBusiness {
 	public List<Exercicio> retornaTodosExercicios() {
 		return exercicioDao.retornaTodosExercicios();
 	}
+	
+	public Exercicio retornaExercicio(String nomeExercicio){
+		return exercicioDao.retornaExercicio(nomeExercicio);
+	}
 }

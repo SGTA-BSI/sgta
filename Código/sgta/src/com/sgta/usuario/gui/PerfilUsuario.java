@@ -17,6 +17,7 @@ import java.text.ParseException;
 import javax.swing.JFormattedTextField;
 import javax.swing.JButton;
 
+import com.sgta.treino.gui.CriarTreino;
 import com.sgta.usuario.negocio.SessaoUsuario;
 import com.sgta.usuario.negocio.UsuarioBusiness;
 
@@ -147,6 +148,54 @@ public class PerfilUsuario extends JFrame {
 		cpf.setBounds(10, 80, 182, 20);
 		contentPane.add(cpf);
 
+		JButton btnVisualizarTreinos = new JButton("Visualizar Treinos");
+		btnVisualizarTreinos.setBounds(139, 403, 150, 23);
+		btnVisualizarTreinos.setEnabled(false);
+		contentPane.add(btnVisualizarTreinos);
+
+		JButton btnInserirMedidas = new JButton("Inserir Medidas");
+		btnInserirMedidas.setBounds(302, 403, 137, 23);
+		btnInserirMedidas.setEnabled(false);
+		contentPane.add(btnInserirMedidas);
+		btnInserirMedidas.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				if (SessaoUsuario.getInstancia().getAlunoSelecionado() == null) {
+					JOptionPane.showMessageDialog(null,
+							"FAÇA UMA BUSCA DE PERFIL", "ATENÇÃO!!",
+							JOptionPane.WARNING_MESSAGE);
+				} else {
+					if (SessaoUsuario.getInstancia().getUsuarioLogado()
+							.getUsuario().getCargo().equals("Atendente")) {
+						JOptionPane
+								.showMessageDialog(
+										null,
+										"VOCÊ NÃO TEM AUTORIZAÇÃO PRA EXECUTAR ESSA FUNÇÃO",
+										"ATENÇÃO!!",
+										JOptionPane.WARNING_MESSAGE);
+					} else {
+						MenuMedidas tela = new MenuMedidas();
+						tela.setVisible(true);
+						setVisible(false);
+
+					}
+				}
+			}
+		});
+
+		JButton btnCriarTreino = new JButton("Criar Treino");
+		btnCriarTreino.setBounds(10, 403, 101, 23);
+		btnCriarTreino.setEnabled(false);
+		btnCriarTreino.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				CriarTreino tela = new CriarTreino();
+				tela.setVisible(true);
+				dispose();
+			}
+		});
+		contentPane.add(btnCriarTreino);
+
 		JButton buttonBuscar = new JButton("Buscar");
 		buttonBuscar.setBounds(359, 79, 107, 23);
 		contentPane.add(buttonBuscar);
@@ -184,6 +233,11 @@ public class PerfilUsuario extends JFrame {
 							lblEmail.setText(aluno.getEmail());
 							lblObs.setText(aluno.getObservacoes());
 							labelStatus.setText(aluno.getUsuario().getAtivo());
+
+							btnCriarTreino.setEnabled(true);
+							btnInserirMedidas.setEnabled(true);
+							btnVisualizarTreinos.setEnabled(true);
+
 						}
 					} catch (SQLException e1) {
 						e1.printStackTrace();
@@ -236,14 +290,6 @@ public class PerfilUsuario extends JFrame {
 		label_15.setFont(new Font("Tahoma", Font.BOLD, 11));
 		label_15.setBounds(10, 328, 86, 14);
 		contentPane.add(label_15);
-
-		JButton btnCriarTreino = new JButton("Criar Treino");
-		btnCriarTreino.setBounds(10, 403, 101, 23);
-		contentPane.add(btnCriarTreino);
-
-		JButton btnVisualizarTreinos = new JButton("Visualizar Treinos");
-		btnVisualizarTreinos.setBounds(139, 403, 150, 23);
-		contentPane.add(btnVisualizarTreinos);
 
 		JButton btnFechar = new JButton("Fechar");
 		btnFechar.setBounds(473, 403, 89, 23);
@@ -346,41 +392,10 @@ public class PerfilUsuario extends JFrame {
 		lblStatus.setBounds(405, 111, 86, 14);
 		contentPane.add(lblStatus);
 
-		JButton btnInserirMedidas = new JButton("Inserir Medidas");
-		btnInserirMedidas.setBounds(302, 403, 137, 23);
-		contentPane.add(btnInserirMedidas);
-
-		btnInserirMedidas.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				if (SessaoUsuario.getInstancia().getAlunoSelecionado() == null) {
-					JOptionPane
-					.showMessageDialog(
-							null,
-							"FAÇA UMA BUSCA DE PERFIL",
-							"ATENÇÃO!!",
-							JOptionPane.WARNING_MESSAGE);
-				} else {
-					if (SessaoUsuario.getInstancia().getUsuarioLogado()
-							.getUsuario().getCargo().equals("Atendente")) {
-						JOptionPane
-								.showMessageDialog(
-										null,
-										"VOCÊ NÃO TEM AUTORIZAÇÃO PRA EXECUTAR ESSA FUNÇÃO",
-										"ATENÇÃO!!",
-										JOptionPane.WARNING_MESSAGE);
-					} else {
-						MenuMedidas tela = new MenuMedidas();
-						tela.setVisible(true);
-						setVisible(false);
-
-					}
-				}
-			}
-		});
 		lblInfo = new JLabel("");
 		lblInfo.setBounds(10, 446, 530, 14);
 		contentPane.add(lblInfo);
-		
+
 		labelStatus = new JLabel("");
 		labelStatus.setFont(new Font("Tahoma", Font.ITALIC, 11));
 		labelStatus.setBounds(460, 111, 46, 14);

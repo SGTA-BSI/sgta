@@ -1,6 +1,7 @@
 package com.sgta.treino.negocio;
 
 import com.sgta.treino.dao.TreinoDAO;
+import com.sgta.treino.dominio.RelacaoTreinoExercicio;
 import com.sgta.treino.dominio.Treino;
 
 public class TreinoBusiness {
@@ -14,6 +15,13 @@ public class TreinoBusiness {
 	}
 	public void inserirTreino(Treino treino){
 		treinoDao.inserirTreino(treino);
+	} 
+	
+	public Treino buscarTreino(String nomeTreino){
+		return treinoDao.buscarTreino(nomeTreino);
 	}
-
+	
+	public void inserirExerciciosTreino(RelacaoTreinoExercicio relacao){
+		treinoDao.inserirExerciciosTreino(relacao);
+	}
 }
