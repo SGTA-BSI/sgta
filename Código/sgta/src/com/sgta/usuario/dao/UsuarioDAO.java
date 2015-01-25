@@ -6,6 +6,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import javax.swing.JFrame;
@@ -631,7 +632,7 @@ public class UsuarioDAO {
 		ResultSet resultSet = null;
 		Medidas medidas = new Medidas();
 		List<Medidas> listaMedidas = new ArrayList<Medidas>();
-		SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
+		SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy HH:mm");
 
 		try {
 			connection = bd.getConnection();
@@ -672,6 +673,47 @@ public class UsuarioDAO {
 		}
 
 		return listaMedidas;
+	}
+	public Medidas retornaMedidasDatas(String data) throws SQLException{
+		Connection connection = null;
+		PreparedStatement statement = null;
+		ResultSet resultSet = null;
+		Medidas medidas = new Medidas();
+
+		try {
+			connection = bd.getConnection();
+			statement = connection
+					.prepareStatement("SELECT * FROM medidas WHERE data = ?");
+			statement.setString(1, data);
+			resultSet = statement.executeQuery();
+			SimpleDateFormat formatter = new SimpleDateFormat();
+			while (resultSet.next()) {
+				medidas.setAltura(resultSet.getDouble("altura"));
+				medidas.setPeso(resultSet.getDouble("peso"));
+				medidas.setBracos(resultSet.getDouble("bracos"));
+				medidas.setPeitoral(resultSet.getDouble("peito"));
+				medidas.setCoxas(resultSet.getDouble("coxas"));
+				medidas.setCostas(resultSet.getDouble("costas"));
+				medidas.setPanturrilha(resultSet.getDouble("panturrilhas"));
+				medidas.setTrapezio(resultSet.getDouble("trapezio"));
+				medidas.setAntebracos(resultSet.getDouble("antebracos"));
+				medidas.setCintura(resultSet.getDouble("cintura"));
+				String data1 = resultSet.getString("data");
+				Date date =formatter.parse(data1);
+				System.out.println("Data: "+ data);
+				medidas.setData(date);
+				medidas.setRelatorio(resultSet.getString("relatorio"));
+
+			}
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			resultSet.close();
+			bd.fecharConecaoMySQL();
+		}
+
+		return medidas;
 	}
 
 }
