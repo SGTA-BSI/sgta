@@ -8,6 +8,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.SQLException;
 import java.text.ParseException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -58,7 +60,9 @@ public class AlterarCadastroAlunosForm extends JFrame {
 	private String ativo;
 	private JTextField textField;
 	final static AlterarCadastroAlunosForm frame = new AlterarCadastroAlunosForm();
-
+	private String professor;
+	private UsuarioBusiness business = UsuarioBusiness.getInstancia();
+	private JComboBox comboBox;
 	/**
 	 * Launch the application.
 	 */
@@ -247,11 +251,11 @@ public class AlterarCadastroAlunosForm extends JFrame {
 		email.setColumns(10);
 
 		JLabel lblObservacoes = new JLabel("Observa\u00E7\u00F5es");
-		lblObservacoes.setBounds(10, 465, 86, 14);
+		lblObservacoes.setBounds(10, 498, 86, 14);
 		contentPane.add(lblObservacoes);
 
 		observacoes = new JTextField();
-		observacoes.setBounds(10, 479, 474, 54);
+		observacoes.setBounds(10, 523, 474, 54);
 		contentPane.add(observacoes);
 		observacoes.setColumns(10);
 
@@ -383,6 +387,23 @@ public class AlterarCadastroAlunosForm extends JFrame {
 				}
 			}
 		});
+		List nomes = new ArrayList<String>();
+		List<Pessoa> professores = business.getDao().retornaTodosProfessores();
+		nomes.add("");
+		if (!professores.isEmpty()) {
+			for (Pessoa p : professores) {
+				nomes.add(p.getNome());
+			}
+		}
+		String[] items1 = (String[]) nomes.toArray(new String[nomes.size()]);
+		comboBox = new JComboBox(items1);
+		comboBox.setBounds(95, 465, 190, 20);
+		contentPane.add(comboBox);
+		
+		JLabel lblProfessor = new JLabel("Professor");
+		lblProfessor.setBounds(10, 465, 86, 14);
+		contentPane.add(lblProfessor);
+		
 
 		btnBuscar.addActionListener(new ActionListener() {
 
@@ -426,6 +447,8 @@ public class AlterarCadastroAlunosForm extends JFrame {
 						email.setText(aluno.getEmail());
 						observacoes.setText(aluno.getObservacoes());
 						comboBoxSexo.setSelectedItem(aluno.getSexo());
+						comboBox.setSelectedItem(aluno.getProfessorDoAluno());
+						
 						if(aluno.getUsuario().getAtivo().equals("Ativo")){
 							comboBoxAtivar.setSelectedItem("Ativar");
 						}else{
@@ -438,6 +461,9 @@ public class AlterarCadastroAlunosForm extends JFrame {
 				}
 			}
 		});
+		
+
+	
 
 	}
 
@@ -463,6 +489,7 @@ public class AlterarCadastroAlunosForm extends JFrame {
 		pessoa.setObservacoes(observacoes.getText());
 		pessoa.setSexo(sexo);
 		pessoa.setTelefone(telefone.getText());
+		pessoa.setProfessorDoAluno(comboBox.getSelectedItem().toString());
 
 		UsuarioBusiness business = UsuarioBusiness.getInstancia();
 		business.alterarAluno(pessoa);
@@ -524,7 +551,12 @@ public class AlterarCadastroAlunosForm extends JFrame {
 		} else if (ativo == null || ativo.equals("")) {
 			Toast.makeText(frame, "Informe ativar/desativar usuário.", 2000, Style.ERROR).display();
 			return false;
-		} else {
+		} else if (comboBox.getSelectedItem() == "") {
+			Toast.makeText(frame,
+					"Selecione um professor", 2000,
+					Style.ERROR).display();
+			return false; 
+		}else {
 			return true;
 		}
 	}

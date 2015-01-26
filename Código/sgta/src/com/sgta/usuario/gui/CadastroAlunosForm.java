@@ -27,6 +27,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.SQLException;
 import java.text.ParseException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -59,7 +61,10 @@ public class CadastroAlunosForm extends JFrame {
 	private JLabel lblInfo;
 
 	private String sexo;
+	private String professor;
 	final static CadastroAlunosForm frame = new CadastroAlunosForm();
+	UsuarioBusiness business = UsuarioBusiness.getInstancia();
+	private JComboBox comboBox; 
 
 	/**
 	 * Launch the application.
@@ -84,7 +89,7 @@ public class CadastroAlunosForm extends JFrame {
 	public CadastroAlunosForm() {
 		setTitle("SGTA - <Nome da Academia>");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 500, 599);
+		setBounds(100, 100, 504, 633);
 		setLocationRelativeTo(null);
 		setResizable(false);
 		contentPane = new JPanel();
@@ -249,11 +254,11 @@ public class CadastroAlunosForm extends JFrame {
 		email.setColumns(10);
 
 		JLabel lblObservacoes = new JLabel("Observa\u00E7\u00F5es");
-		lblObservacoes.setBounds(10, 409, 86, 14);
+		lblObservacoes.setBounds(10, 440, 86, 14);
 		contentPane.add(lblObservacoes);
 
 		observacoes = new JTextField();
-		observacoes.setBounds(10, 423, 464, 77);
+		observacoes.setBounds(10, 465, 464, 77);
 		contentPane.add(observacoes);
 		observacoes.setColumns(10);
 
@@ -292,7 +297,7 @@ public class CadastroAlunosForm extends JFrame {
 		contentPane.add(celular);
 
 		JButton btnCadastrar = new JButton("Cadastrar");
-		btnCadastrar.setBounds(205, 522, 138, 23);
+		btnCadastrar.setBounds(204, 570, 138, 23);
 		contentPane.add(btnCadastrar);
 		btnCadastrar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -339,7 +344,7 @@ public class CadastroAlunosForm extends JFrame {
 		});
 
 		JButton btnCancelar = new JButton("Cancelar");
-		btnCancelar.setBounds(353, 522, 121, 23);
+		btnCancelar.setBounds(353, 570, 121, 23);
 		contentPane.add(btnCancelar);
 
 		btnCancelar.addActionListener(new ActionListener() {
@@ -361,7 +366,24 @@ public class CadastroAlunosForm extends JFrame {
 		lblInfo = new JLabel("");
 		lblInfo.setBounds(15, 373, 547, 14);
 		contentPane.add(lblInfo);
-
+		
+		JLabel lblProfessor = new JLabel("Professor");
+		lblProfessor.setBounds(10, 409, 86, 14);
+		contentPane.add(lblProfessor);
+		
+		List nomes = new ArrayList<String>();
+		List<Pessoa> professores = business.getDao().retornaTodosProfessores();
+		nomes.add("");
+		if (!professores.isEmpty()) {
+			for (Pessoa p : professores) {
+				nomes.add(p.getNome());
+			}
+		}
+		String[] items1 = (String[]) nomes.toArray(new String[nomes.size()]);
+		comboBox = new JComboBox(items1);
+		comboBox.setBounds(82, 409, 190, 20);
+		contentPane.add(comboBox);
+		
 	}
 
 	private void cadastrar() {
@@ -385,6 +407,7 @@ public class CadastroAlunosForm extends JFrame {
 		pessoa.setTelefone(telefone.getText());
 		pessoa.setUsuario(usuario);
 		pessoa.getUsuario().setAtivo("Ativo");
+		pessoa.setProfessorDoAluno(comboBox.getSelectedItem().toString());
 
 		UsuarioBusiness business = UsuarioBusiness.getInstancia();
 		business.inserirAluno(pessoa);
@@ -453,12 +476,17 @@ public class CadastroAlunosForm extends JFrame {
 			Toast.makeText(frame, "Preencha o campo email.", 2000, Style.ERROR)
 					.display();
 			return false;
-		} else if (validarEmail(email.getText()) == false) {
+		}else if (validarEmail(email.getText()) == false) {
 			Toast.makeText(frame,
 					"Preencha o campo email no formato email@email.com.", 2000,
 					Style.ERROR).display();
-			return false;
-		} else {
+			return false; 
+		} else if (comboBox.getSelectedItem() == "") {
+			Toast.makeText(frame,
+					"Selecione um professor", 2000,
+					Style.ERROR).display();
+			return false; 
+		}else {
 			return true;
 		}
 	}

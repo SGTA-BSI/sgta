@@ -60,14 +60,7 @@ public class UsuarioDAO {
 			prepared.setString(14, pessoa.getEmail());
 			prepared.setString(15, pessoa.getObservacoes());
 			prepared.setString(16, pessoa.getUsuario().getAtivo());
-
-			if (SessaoUsuario.getInstancia().getUsuarioLogado().getUsuario()
-					.getCargo().equals("Atendente")) {
-				prepared.setString(17, "Sem professor ");
-			} else {
-				prepared.setString(17, SessaoUsuario.getInstancia()
-						.getUsuarioLogado().getUsuario().getUsername());
-			}
+			prepared.setString(17, pessoa.getProfessorDoAluno());
 
 			prepared.execute();
 
@@ -343,12 +336,7 @@ public class UsuarioDAO {
 			prepared.setString(15, pessoa.getObservacoes());
 			prepared.setString(16, pessoa.getUsuario().getAtivo());
 			prepared.setInt(18, pessoa.getUsuario().getId());
-
-			if (SessaoUsuario.getInstancia().getUsuarioLogado().getUsuario()
-					.getCargo().equals("Professor")) {
-				prepared.setString(17, SessaoUsuario.getInstancia()
-						.getUsuarioLogado().getUsuario().getUsername());
-			}
+			prepared.setString(17, pessoa.getProfessorDoAluno());
 			prepared.execute();
 
 			bd.fecharConecaoMySQL();
