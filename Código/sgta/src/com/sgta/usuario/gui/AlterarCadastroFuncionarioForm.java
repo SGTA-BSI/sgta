@@ -73,7 +73,7 @@ public class AlterarCadastroFuncionarioForm extends JFrame {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					CadastroFuncionarioForm frame = new CadastroFuncionarioForm();
+					AlterarCadastroFuncionarioForm frame = new AlterarCadastroFuncionarioForm();
 					frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -338,6 +338,22 @@ public class AlterarCadastroFuncionarioForm extends JFrame {
 		lblInformeOCpf.setBounds(10, 36, 222, 25);
 		contentPane.add(lblInformeOCpf);
 
+		String[] ativoItems = { "Selecione uma opção", "Ativar", "Desativar" };
+		JComboBox comboBox = new JComboBox(ativoItems);
+		comboBox.setBounds(341, 56, 133, 23);
+		contentPane.add(comboBox);
+		comboBox.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				if (comboBox.getSelectedItem() == "Selecione uma opção") {
+					status = "";
+				} else if (comboBox.getSelectedItem() == "Ativar") {
+					status = "Ativo";
+				} else if (comboBox.getSelectedItem() == "Desativar") {
+					status = "Desativo";
+				}
+			}
+		});
+
 		JButton btnBuscar = new JButton("Buscar");
 		contentPane.add(btnBuscar);
 		btnBuscar.setBounds(197, 56, 89, 23);
@@ -381,26 +397,20 @@ public class AlterarCadastroFuncionarioForm extends JFrame {
 						telefone.setText(funcionario.getTelefone());
 						celular.setText(funcionario.getCelular());
 						email.setText(funcionario.getEmail());
-						textFieldLogin.setText(funcionario.getUsuario().getUsername());
+						textFieldLogin.setText(funcionario.getUsuario()
+								.getUsername());
+						comboBoxSexo.setSelectedItem(funcionario.getSexo());
+						if (funcionario.getUsuario().getAtivo().equals("Ativo")) {
+							comboBox.setSelectedItem("Ativar");
+						} else {
+							comboBox.setSelectedItem("Desativar");
+						}
+						comboBoxCargo.setSelectedItem(funcionario.getUsuario()
+								.getCargo());
 
 					}
 				} catch (SQLException e1) {
 					e1.printStackTrace();
-				}
-			}
-		});
-		String[] ativoItems = { "Selecione uma opção", "Ativar", "Desativar" };
-		JComboBox comboBox = new JComboBox(ativoItems);
-		comboBox.setBounds(341, 56, 133, 23);
-		contentPane.add(comboBox);
-		comboBox.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				if (comboBox.getSelectedItem() == "Selecione uma opção") {
-					status = "";
-				} else if (comboBox.getSelectedItem() == "Ativar") {
-					status = "Ativo";
-				} else if (comboBox.getSelectedItem() == "Desativar") {
-					status = "Desativo";
 				}
 			}
 		});
@@ -412,28 +422,28 @@ public class AlterarCadastroFuncionarioForm extends JFrame {
 		cpf2 = new JFormattedTextField(ftmCpf);
 		cpf2.setBounds(10, 57, 177, 20);
 		contentPane.add(cpf2);
-		
+
 		textFieldLogin = new JTextField();
 		textFieldLogin.setBounds(10, 542, 158, 20);
 		contentPane.add(textFieldLogin);
 		textFieldLogin.setColumns(10);
-		
+
 		JLabel lblLogin = new JLabel("Login");
 		lblLogin.setBounds(10, 514, 91, 24);
 		contentPane.add(lblLogin);
-		
+
 		JLabel lblSenha = new JLabel("Senha");
 		lblSenha.setBounds(181, 519, 46, 14);
 		contentPane.add(lblSenha);
-		
+
 		JLabel lblConfirmarSenha = new JLabel("Confirmar Senha");
 		lblConfirmarSenha.setBounds(326, 519, 120, 14);
 		contentPane.add(lblConfirmarSenha);
-		
+
 		passwordFieldSenha = new JPasswordField();
 		passwordFieldSenha.setBounds(178, 542, 138, 20);
 		contentPane.add(passwordFieldSenha);
-		
+
 		passwordFieldConfirmSenha = new JPasswordField();
 		passwordFieldConfirmSenha.setBounds(326, 542, 148, 20);
 		contentPane.add(passwordFieldConfirmSenha);
@@ -442,7 +452,8 @@ public class AlterarCadastroFuncionarioForm extends JFrame {
 
 	public boolean validacaoPreenchimento() {
 		String password = new String(passwordFieldSenha.getPassword());
-		String confirmPassword = new String(passwordFieldConfirmSenha.getPassword());
+		String confirmPassword = new String(
+				passwordFieldConfirmSenha.getPassword());
 		if (nome.getText().length() == 0 || nome.getText().equals(" ")) {
 			JOptionPane.showMessageDialog(null, "PREENCHA O CAMPO DE NOME",
 					"ATENÇÃO!!", JOptionPane.WARNING_MESSAGE);
@@ -524,14 +535,17 @@ public class AlterarCadastroFuncionarioForm extends JFrame {
 					"INFORME SE O FUNCIONÁRIO ESTÁ ATIVO", "ATENÇÃO!!",
 					JOptionPane.WARNING_MESSAGE);
 			return false;
-		} else if (password == null || password.equals("") || password.length() == 0) {
-			JOptionPane.showMessageDialog(null, "PREENCHA O CAMPO SENHA","ATENÇÃO!!", JOptionPane.WARNING_MESSAGE);
+		} else if (password == null || password.equals("")
+				|| password.length() == 0) {
+			JOptionPane.showMessageDialog(null, "PREENCHA O CAMPO SENHA",
+					"ATENÇÃO!!", JOptionPane.WARNING_MESSAGE);
 			return false;
-		}else if (!(password.equals(confirmPassword))){
-			JOptionPane.showMessageDialog(null, "PREENCHA DUAS SENHAS IGUAIS!","ATENÇÃO!!", JOptionPane.WARNING_MESSAGE);
+		} else if (!(password.equals(confirmPassword))) {
+			JOptionPane.showMessageDialog(null, "PREENCHA DUAS SENHAS IGUAIS!",
+					"ATENÇÃO!!", JOptionPane.WARNING_MESSAGE);
 			return false;
-		}else {
-		
+		} else {
+
 			return true;
 		}
 	}

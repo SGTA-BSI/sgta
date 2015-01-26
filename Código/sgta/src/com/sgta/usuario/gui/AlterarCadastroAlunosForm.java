@@ -425,6 +425,12 @@ public class AlterarCadastroAlunosForm extends JFrame {
 						celular.setText(aluno.getCelular());
 						email.setText(aluno.getEmail());
 						observacoes.setText(aluno.getObservacoes());
+						comboBoxSexo.setSelectedItem(aluno.getSexo());
+						if(aluno.getUsuario().getAtivo().equals("Ativo")){
+							comboBoxAtivar.setSelectedItem("Ativar");
+						}else{
+							comboBoxAtivar.setSelectedItem("Desativar");
+						}
 
 					}
 				} catch (SQLException e1) {

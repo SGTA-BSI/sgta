@@ -287,6 +287,7 @@ public class UsuarioDAO {
 			resultSet = statement.executeQuery();
 			while (resultSet.next()) {
 				user.setId(resultSet.getInt("id"));
+				user.setAtivo(resultSet.getString("status"));
 
 				pessoa.setUsuario(user);
 				pessoa.setNome(resultSet.getString("nome"));
@@ -401,8 +402,8 @@ public class UsuarioDAO {
 			resultSet.close();
 			bd.fecharConecaoMySQL();
 		}
-
 		return pessoa;
+
 	}
 
 	public void alterarFuncionario(Pessoa pessoa) {
@@ -674,7 +675,8 @@ public class UsuarioDAO {
 
 		return listaMedidas;
 	}
-	public Medidas retornaMedidasDatas(String data) throws SQLException{
+
+	public Medidas retornaMedidasDatas(String data) throws SQLException {
 		Connection connection = null;
 		PreparedStatement statement = null;
 		ResultSet resultSet = null;
@@ -699,8 +701,8 @@ public class UsuarioDAO {
 				medidas.setAntebracos(resultSet.getDouble("antebracos"));
 				medidas.setCintura(resultSet.getDouble("cintura"));
 				String data1 = resultSet.getString("data");
-				Date date =formatter.parse(data1);
-				System.out.println("Data: "+ data);
+				Date date = formatter.parse(data1);
+				System.out.println("Data: " + data);
 				medidas.setData(date);
 				medidas.setRelatorio(resultSet.getString("relatorio"));
 
