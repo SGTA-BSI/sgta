@@ -118,7 +118,7 @@ public class MenuProfessor extends JFrame {
 		JButton btnRelatoriosDeAluno = new JButton("Relat\u00F3rios de Alunos");
 		btnRelatoriosDeAluno.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				MenuRelatorio tela = new MenuRelatorio();
+				BuscaCpfRelatorio tela = new BuscaCpfRelatorio();
 				tela.setVisible(true);
 				dispose();
 			}

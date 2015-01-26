@@ -33,6 +33,7 @@ import javax.swing.JFormattedTextField;
 import com.sgta.Login;
 import com.sgta.usuario.dominio.Pessoa;
 import com.sgta.usuario.gui.Toast.Style;
+import com.sgta.usuario.negocio.SessaoUsuario;
 import com.sgta.usuario.negocio.UsuarioBusiness;
 import com.sgta.usuario.dominio.Medidas;
 
@@ -42,13 +43,13 @@ import java.awt.Color;
 public class MenuRelatorio extends JFrame {
 
 	private JPanel contentPane;
-	private JFormattedTextField cpf;
 	private MaskFormatter ftmCpf;
 	private JComboBox comboBoxData;
+	private JComboBox comboBoxData1;
 	// final static MenuRelatorio frame = new MenuRelatorio();
 	private UsuarioBusiness business = UsuarioBusiness.getInstancia();
 	private JLabel lblNomeAluno;
-	private List<Medidas> listMedidas;
+	private List<Medidas> listMedidas = new ArrayList<Medidas>();
 	private JTextArea textAreaRelatorio;
 	private JLabel lblCampoAltura;
 	private JLabel labelCampoAntebraco;
@@ -62,6 +63,8 @@ public class MenuRelatorio extends JFrame {
 	private JLabel lblCampoPeso;
 	private JLabel labelIMC;
 	private JLabel labelInfoIMC;
+	private List<String> datas = new ArrayList<String>();
+	private String[] items;
 	/**
 	 * Launch the application.
 	 */
@@ -90,10 +93,6 @@ public class MenuRelatorio extends JFrame {
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
 
-		JLabel lblCPF = new JLabel("CPF:");
-		lblCPF.setBounds(10, 11, 46, 14);
-		contentPane.add(lblCPF);
-
 		JLabel lblAluno = new JLabel("Aluno:");
 		lblAluno.setBounds(10, 39, 46, 14);
 		contentPane.add(lblAluno);
@@ -106,152 +105,6 @@ public class MenuRelatorio extends JFrame {
 		JLabel lblRelatorio = new JLabel("Relat\u00F3rio:");
 		lblRelatorio.setBounds(10, 116, 58, 14);
 		contentPane.add(lblRelatorio);
-
-		JButton btnBuscar = new JButton("Buscar");
-		btnBuscar.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-				if (cpf.getText().equals("   .   .   -  ")) {
-					JOptionPane.showMessageDialog(null, "PREENCHA O CAMPO CPF",
-							"ATENÇÃO!!", JOptionPane.WARNING_MESSAGE);
-				} else {
-					Pessoa aluno;
-					try {
-						aluno = business.buscarAluno(cpf.getText());
-						if (aluno.getNome() == null) {
-							JOptionPane.showMessageDialog(null,
-									"Aluno não cadastrado!", "Atenção",
-									JOptionPane.WARNING_MESSAGE);
-							textAreaRelatorio.setText("");
-							lblCampoAltura.setText("");
-							lblCampoPeso.setText("");
-							lblCampoBraco.setText("");
-							labelCampoAntebraco.setText("");
-							lblCampoCintura.setText("");
-							lblCampoCoxas.setText("");
-							lblCampoCostas.setText("");
-							lblCampoTrapezio.setText("");
-							lblCampoPeitoral.setText("");
-							lblCampoPanturrilhas.setText("");
-							labelIMC.setText("");
-							labelInfoIMC.setText("");
-							lblNomeAluno.setText("");
-							
-							
-							
-							
-							
-						} else {
-							// listMedidas =
-							// business.retornaMedidasByUsuario(aluno.getUsuario().getId());
-							lblNomeAluno.setText(aluno.getNome());
-							List datas = new ArrayList<String>();
-							List<Medidas> listMedidas = business
-									.retornaMedidasByUsuario(aluno.getUsuario()
-											.getId());
-							
-							datas.add("");
-							SimpleDateFormat formatter = new SimpleDateFormat(
-									"dd/MM/yyyy HH:mm");
-							if (!(listMedidas.isEmpty())) {
-								for (Medidas p : listMedidas) {
-									datas.add(formatter.format(p.getData()));
-								}
-							}
-							String[] items = (String[]) datas
-									.toArray(new String[datas.size()]);
-							comboBoxData = new JComboBox(items);
-							comboBoxData.setBounds(66, 64, 252, 20);
-							contentPane.add(comboBoxData);
-							comboBoxData
-									.addActionListener(new ActionListener() {
-
-										@Override
-										public void actionPerformed(
-												ActionEvent e) {
-											//Medidas medidas = new Medidas();
-
-											if (comboBoxData.getSelectedItem() != "") {
-												try {
-													Medidas medidas = business
-															.retornaMedidasDatas(comboBoxData
-																	.getSelectedItem().toString());
-													System.out
-															.println(comboBoxData
-																	.getSelectedItem().toString());
-													textAreaRelatorio.setText(medidas.getRelatorio());
-													lblCampoAltura.setText(""+medidas.getAltura().toString());
-													lblCampoPeso.setText(""+medidas.getPeso().toString());
-													lblCampoBraco.setText(""+medidas.getBracos().toString());
-													labelCampoAntebraco.setText(""+medidas.getAntebracos().toString());
-													lblCampoCintura.setText(""+medidas.getCintura().toString());
-													lblCampoCoxas.setText(""+medidas.getCoxas().toString());
-													lblCampoCostas.setText(""+medidas.getCostas().toString());
-													lblCampoTrapezio.setText(""+medidas.getTrapezio().toString());
-													lblCampoPeitoral.setText(""+medidas.getPeitoral().toString());
-													lblCampoPanturrilhas.setText(""+medidas.getPanturrilha().toString());
-													
-													Double imc = (medidas.getPeso())/Math.pow(medidas.getAltura(),2);
-													DecimalFormat fmt = new DecimalFormat("0.00");
-													labelIMC.setText(""+ fmt.format(imc));
-													
-													if(imc<17){
-														labelInfoIMC.setText("Aluno Muito Abaixo do peso!!!");
-														labelInfoIMC.setForeground(Color.RED);
-													} else if(imc>17 && imc<18.49){
-														labelInfoIMC.setText("Aluno Abaixo do peso");
-														labelInfoIMC.setForeground(Color.YELLOW);
-													} else if(imc>18.5 && imc<24.99){
-														labelInfoIMC.setText("Aluno com Peso Normal");
-														labelInfoIMC.setForeground(Color.GREEN);
-													} else if (imc>25 && imc<29.99){
-														labelInfoIMC.setText("Aluno Acima do peso");
-														labelInfoIMC.setForeground(Color.YELLOW);
-													} else if (imc>30 && imc<34.99){
-														labelInfoIMC.setText("Atenção!! Aluno com OBESIDADE I");
-														labelInfoIMC.setForeground(Color.RED);
-													} else if (imc>35 && imc<39.99){
-														labelInfoIMC.setText("Atenção!! Aluno com OBESIDADE II (SEVERA)");
-														labelInfoIMC.setForeground(Color.RED);
-													} else if (imc>40){
-														labelInfoIMC.setText("Atenção!! Aluno com OBESIDADE Mórbida!!!");
-														labelInfoIMC.setForeground(Color.RED);	
-														labelInfoIMC.setFont(new Font("Tahoma", Font.BOLD | Font.ITALIC, 11));
-														}
-													
-												} catch (SQLException e1) {
-													// TODO Auto-generated catch
-													// block
-													e1.printStackTrace();
-												}
-											}else{
-												textAreaRelatorio.setText("");
-												lblCampoAltura.setText("");
-												lblCampoPeso.setText("");
-												lblCampoBraco.setText("");
-												labelCampoAntebraco.setText("");
-												lblCampoCintura.setText("");
-												lblCampoCoxas.setText("");
-												lblCampoCostas.setText("");
-												lblCampoTrapezio.setText("");
-												lblCampoPeitoral.setText("");
-												lblCampoPanturrilhas.setText("");
-												labelIMC.setText("");
-												labelInfoIMC.setText("");
-											}
-										}
-									});
-
-						}
-					} catch (SQLException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					}
-
-				}
-			}
-		});
-		btnBuscar.setBounds(335, 7, 89, 23);
-		contentPane.add(btnBuscar);
 
 		JLabel lblHistoricoDeMedidas = new JLabel("Historico de Medidas:");
 		lblHistoricoDeMedidas.setBounds(10, 225, 155, 14);
@@ -329,7 +182,7 @@ public class MenuRelatorio extends JFrame {
 		JButton btnVoltar = new JButton("Voltar");
 		btnVoltar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				MenuProfessor tela = new MenuProfessor();
+				BuscaCpfRelatorio tela = new BuscaCpfRelatorio();
 				tela.setVisible(true);
 				dispose();
 			}
@@ -362,16 +215,7 @@ public class MenuRelatorio extends JFrame {
 		lblCampoPeso.setBounds(314, 261, 68, 14);
 		contentPane.add(lblCampoPeso);
 		// --- formatar cpf e data
-		try {
-			ftmCpf = new MaskFormatter("###.###.###-##");
-		} catch (ParseException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-
-		cpf = new JFormattedTextField(ftmCpf);
-		cpf.setBounds(62, 8, 136, 20);
-		contentPane.add(cpf);
+		
 
 		JLabel lblImc = new JLabel("IMC:");
 		lblImc.setBounds(10, 388, 46, 14);
@@ -391,6 +235,111 @@ public class MenuRelatorio extends JFrame {
 		textAreaRelatorio.setEditable(false);
 		textAreaRelatorio.setBounds(76, 111, 348, 103);
 		contentPane.add(textAreaRelatorio);
+		
+		Pessoa aluno = SessaoUsuario.getInstancia().getAlunoSelecionado();
+		
+			listMedidas =
+			business.retornaMedidasByUsuario(aluno.getUsuario().getId());
+			lblNomeAluno.setText(aluno.getNome());
+			//List datas = new ArrayList<String>();
+			
+			/*List<Medidas> listMedidas = business
+					.retornaMedidasByUsuario(aluno.getUsuario()
+							.getId());*/
+			
+			datas.add("");
+			SimpleDateFormat formatter = new SimpleDateFormat(
+					"dd/MM/yyyy HH:mm");
+			if (!(listMedidas.isEmpty())) {
+				for (Medidas p : listMedidas) {
+					datas.add(formatter.format(p.getData()));
+				}
+			}
+			items = (String[]) datas
+					.toArray(new String[datas.size()]);
+			comboBoxData = new JComboBox(items);
+			comboBoxData.setBounds(66, 64, 252, 20);
+			contentPane.add(comboBoxData);
+			comboBoxData
+					.addActionListener(new ActionListener() {
+
+						@Override
+						public void actionPerformed(
+								ActionEvent e) {
+							//Medidas medidas = new Medidas();
+
+							if (comboBoxData.getSelectedItem() != "") {
+								try {
+									Medidas medidas = business
+											.retornaMedidasDatas(comboBoxData
+													.getSelectedItem().toString());
+									System.out
+											.println(comboBoxData
+													.getSelectedItem().toString());
+									textAreaRelatorio.setText(medidas.getRelatorio());
+									lblCampoAltura.setText(""+medidas.getAltura().toString());
+									lblCampoPeso.setText(""+medidas.getPeso().toString());
+									lblCampoBraco.setText(""+medidas.getBracos().toString());
+									labelCampoAntebraco.setText(""+medidas.getAntebracos().toString());
+									lblCampoCintura.setText(""+medidas.getCintura().toString());
+									lblCampoCoxas.setText(""+medidas.getCoxas().toString());
+									lblCampoCostas.setText(""+medidas.getCostas().toString());
+									lblCampoTrapezio.setText(""+medidas.getTrapezio().toString());
+									lblCampoPeitoral.setText(""+medidas.getPeitoral().toString());
+									lblCampoPanturrilhas.setText(""+medidas.getPanturrilha().toString());
+									
+									Double imc = (medidas.getPeso())/Math.pow(medidas.getAltura(),2);
+									DecimalFormat fmt = new DecimalFormat("0.00");
+									labelIMC.setText(""+ fmt.format(imc));
+									
+									if(imc<17){
+										labelInfoIMC.setText("Aluno Muito Abaixo do peso!!!");
+										labelInfoIMC.setForeground(Color.RED);
+									} else if(imc>17 && imc<18.49){
+										labelInfoIMC.setText("Aluno Abaixo do peso");
+										labelInfoIMC.setForeground(Color.YELLOW);
+									} else if(imc>18.5 && imc<24.99){
+										labelInfoIMC.setText("Aluno com Peso Normal");
+										labelInfoIMC.setForeground(Color.GREEN);
+									} else if (imc>25 && imc<29.99){
+										labelInfoIMC.setText("Aluno Acima do peso");
+										labelInfoIMC.setForeground(Color.YELLOW);
+									} else if (imc>30 && imc<34.99){
+										labelInfoIMC.setText("Atenção!! Aluno com OBESIDADE I");
+										labelInfoIMC.setForeground(Color.RED);
+									} else if (imc>35 && imc<39.99){
+										labelInfoIMC.setText("Atenção!! Aluno com OBESIDADE II (SEVERA)");
+										labelInfoIMC.setForeground(Color.RED);
+									} else if (imc>40){
+										labelInfoIMC.setText("Atenção!! Aluno com OBESIDADE Mórbida!!!");
+										labelInfoIMC.setForeground(Color.RED);	
+										labelInfoIMC.setFont(new Font("Tahoma", Font.BOLD | Font.ITALIC, 11));
+										}
+									
+								} catch (SQLException e1) {
+									// TODO Auto-generated catch
+									// block
+									e1.printStackTrace();
+								}
+							}else{
+								textAreaRelatorio.setText("");
+								lblCampoAltura.setText("");
+								lblCampoPeso.setText("");
+								lblCampoBraco.setText("");
+								labelCampoAntebraco.setText("");
+								lblCampoCintura.setText("");
+								lblCampoCoxas.setText("");
+								lblCampoCostas.setText("");
+								lblCampoTrapezio.setText("");
+								lblCampoPeitoral.setText("");
+								lblCampoPanturrilhas.setText("");
+								labelIMC.setText("");
+								labelInfoIMC.setText("");
+							}
+						}
+					});
+
+		}
 	}
 
-}
+

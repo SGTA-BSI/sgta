@@ -111,6 +111,13 @@ public class MenuAtendente extends JFrame {
 		});
 
 		JButton btnRelatoriosDeAluno = new JButton("Relat\u00F3rios de Alunos");
+		btnRelatoriosDeAluno.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				BuscaCpfRelatorio tela = new BuscaCpfRelatorio();
+				tela.setVisible(true);
+				dispose();
+			}
+		});
 		btnRelatoriosDeAluno.setBounds(299, 172, 279, 84);
 		Image img1 = new ImageIcon(this.getClass().getResource(
 				"/alunobyprofessor.png")).getImage();
