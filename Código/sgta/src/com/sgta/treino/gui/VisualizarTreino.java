@@ -4,6 +4,7 @@ import java.awt.EventQueue;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.print.PrinterException;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
@@ -110,9 +111,12 @@ public class VisualizarTreino extends JFrame {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				String exerc = "";
+				String cabecalho ="SGTA - <Nome da Academia>\n"+"Aluno: "+ SessaoUsuario.getInstancia().getAlunoSelecionado().getNome()+"\n";
+				String nomeTreino = "";
 				for (Treino t : treinos) {
 					if (comboBoxTreinos.getSelectedItem().toString()
 							.equals(t.getNome())) {
+						nomeTreino = "Treino: "+nomeTreino + t.getNome() + "\n";
 						for (RelacaoTreinoExercicio r : relacaoTreinos) {
 							if (r.getIdTreino() == t.getId()) {
 								ExercicioBusiness exercicioBusiness = ExercicioBusiness
@@ -120,9 +124,9 @@ public class VisualizarTreino extends JFrame {
 								Exercicio exercicio = exercicioBusiness
 										.retornaExercicioByID(r
 												.getIdExercicio());
-								String text = exercicio.getNome() + "\n"
-										+ "Carga: " + r.getCarga() + "\n"
-										+ "Séries: " + r.getSerie() + "\n"
+								String text ="Exercicio: "+exercicio.getNome() + "\n"
+										+ "Carga: " + r.getCarga() + " \\ "
+										+ "Séries: " + r.getSerie() + " \\ "
 										+ "Repeticões: " + r.getRepeticao()
 										+ "\n\n";
 								exerc = exerc + text;
@@ -130,7 +134,7 @@ public class VisualizarTreino extends JFrame {
 						}
 					}
 				}
-				textArea.setText(exerc);
+				textArea.setText(cabecalho+nomeTreino+exerc);
 			}
 		});
 		contentPane.add(comboBoxTreinos);
@@ -157,5 +161,19 @@ public class VisualizarTreino extends JFrame {
 			}
 		});
 		contentPane.add(btnFechar);
+		
+		JButton btnImprimir = new JButton("Imprimir");
+		btnImprimir.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				try {
+					textArea.print();
+				} catch (PrinterException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+		});
+		btnImprimir.setBounds(229, 352, 89, 23);
+		contentPane.add(btnImprimir);
 	}
 }

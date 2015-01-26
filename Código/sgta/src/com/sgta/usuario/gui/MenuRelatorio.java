@@ -121,14 +121,34 @@ public class MenuRelatorio extends JFrame {
 							JOptionPane.showMessageDialog(null,
 									"Aluno não cadastrado!", "Atenção",
 									JOptionPane.WARNING_MESSAGE);
+							textAreaRelatorio.setText("");
+							lblCampoAltura.setText("");
+							lblCampoPeso.setText("");
+							lblCampoBraco.setText("");
+							labelCampoAntebraco.setText("");
+							lblCampoCintura.setText("");
+							lblCampoCoxas.setText("");
+							lblCampoCostas.setText("");
+							lblCampoTrapezio.setText("");
+							lblCampoPeitoral.setText("");
+							lblCampoPanturrilhas.setText("");
+							labelIMC.setText("");
+							labelInfoIMC.setText("");
+							lblNomeAluno.setText("");
+							
+							
+							
+							
+							
 						} else {
 							// listMedidas =
 							// business.retornaMedidasByUsuario(aluno.getUsuario().getId());
 							lblNomeAluno.setText(aluno.getNome());
 							List datas = new ArrayList<String>();
-							final List<Medidas> listMedidas = business
+							List<Medidas> listMedidas = business
 									.retornaMedidasByUsuario(aluno.getUsuario()
 											.getId());
+							
 							datas.add("");
 							SimpleDateFormat formatter = new SimpleDateFormat(
 									"dd/MM/yyyy HH:mm");
@@ -137,7 +157,7 @@ public class MenuRelatorio extends JFrame {
 									datas.add(formatter.format(p.getData()));
 								}
 							}
-							final String[] items = (String[]) datas
+							String[] items = (String[]) datas
 									.toArray(new String[datas.size()]);
 							comboBoxData = new JComboBox(items);
 							comboBoxData.setBounds(66, 64, 252, 20);
@@ -203,6 +223,20 @@ public class MenuRelatorio extends JFrame {
 													// block
 													e1.printStackTrace();
 												}
+											}else{
+												textAreaRelatorio.setText("");
+												lblCampoAltura.setText("");
+												lblCampoPeso.setText("");
+												lblCampoBraco.setText("");
+												labelCampoAntebraco.setText("");
+												lblCampoCintura.setText("");
+												lblCampoCoxas.setText("");
+												lblCampoCostas.setText("");
+												lblCampoTrapezio.setText("");
+												lblCampoPeitoral.setText("");
+												lblCampoPanturrilhas.setText("");
+												labelIMC.setText("");
+												labelInfoIMC.setText("");
 											}
 										}
 									});

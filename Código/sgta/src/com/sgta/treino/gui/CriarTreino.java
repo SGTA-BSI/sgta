@@ -305,7 +305,7 @@ public class CriarTreino extends JFrame {
 				}
 			}
 		});
-		btnCriarTreino.setBounds(264, 57, 89, 51);
+		btnCriarTreino.setBounds(247, 57, 121, 51);
 		contentPane.add(btnCriarTreino);
 
 	}
