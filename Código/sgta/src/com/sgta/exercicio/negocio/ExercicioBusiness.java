@@ -24,4 +24,8 @@ public class ExercicioBusiness {
 	public Exercicio retornaExercicio(String nomeExercicio){
 		return exercicioDao.retornaExercicio(nomeExercicio);
 	}
+	
+	public Exercicio retornaExercicioByID(int idExercicio){
+		return exercicioDao.retornaExercicioByID(idExercicio);
+	}
 }

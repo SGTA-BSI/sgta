@@ -2,6 +2,8 @@ package com.sgta.treino.gui;
 
 import java.awt.EventQueue;
 import java.awt.Font;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
@@ -14,10 +16,14 @@ import javax.swing.JPanel;
 import javax.swing.JTextArea;
 import javax.swing.border.EmptyBorder;
 import javax.swing.text.MaskFormatter;
+import javax.swing.text.html.HTML;
 
+import com.sgta.exercicio.dominio.Exercicio;
+import com.sgta.exercicio.negocio.ExercicioBusiness;
 import com.sgta.treino.dominio.RelacaoTreinoExercicio;
 import com.sgta.treino.dominio.Treino;
 import com.sgta.treino.negocio.TreinoBusiness;
+import com.sgta.usuario.gui.PerfilUsuario;
 import com.sgta.usuario.negocio.SessaoUsuario;
 
 public class VisualizarTreino extends JFrame {
@@ -91,28 +97,65 @@ public class VisualizarTreino extends JFrame {
 
 		String[] items = (String[]) nomeTreinos.toArray(new String[nomeTreinos
 				.size()]);
-		
-		
-		JComboBox comboBoxTreinos = new JComboBox(items);
-		comboBoxTreinos.setBounds(10, 52, 442, 20);
-		contentPane.add(comboBoxTreinos);
-		
-
-		JComboBox comboBoxExercicios = new JComboBox();
-		comboBoxExercicios.setBounds(10, 98, 442, 20);
-		contentPane.add(comboBoxExercicios);
-
-		JLabel lblExercicios = new JLabel("Exerc\u00EDcios");
-		lblExercicios.setBounds(10, 83, 116, 14);
-		contentPane.add(lblExercicios);
 
 		JTextArea textArea = new JTextArea();
-		textArea.setBounds(10, 144, 442, 175);
+		textArea.setBounds(10, 83, 442, 258);
+		textArea.setEditable(false);
 		contentPane.add(textArea);
 
-		JButton btnFechar = new JButton("Fechar");
-		btnFechar.setBounds(340, 341, 89, 23);
-		contentPane.add(btnFechar);
+		JComboBox comboBoxTreinos = new JComboBox(items);
+		comboBoxTreinos.setBounds(10, 52, 442, 20);
+		comboBoxTreinos.addActionListener(new ActionListener() {
 
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				String exerc = "";
+				for (Treino t : treinos) {
+					if (comboBoxTreinos.getSelectedItem().toString()
+							.equals(t.getNome())) {
+						for (RelacaoTreinoExercicio r : relacaoTreinos) {
+							if (r.getIdTreino() == t.getId()) {
+								ExercicioBusiness exercicioBusiness = ExercicioBusiness
+										.getInstancia();
+								Exercicio exercicio = exercicioBusiness
+										.retornaExercicioByID(r
+												.getIdExercicio());
+								String text = exercicio.getNome() + "\n"
+										+ "Carga: " + r.getCarga() + "\n"
+										+ "Séries: " + r.getSerie() + "\n"
+										+ "Repeticões: " + r.getRepeticao()
+										+ "\n\n";
+								exerc = exerc + text;
+							}
+						}
+					}
+				}
+				textArea.setText(exerc);
+			}
+		});
+		contentPane.add(comboBoxTreinos);
+
+		JButton btnFechar = new JButton("Fechar");
+		btnFechar.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+			}
+		});
+		btnFechar.setBounds(363, 352, 89, 23);
+		btnFechar.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				try {
+					PerfilUsuario tela = new PerfilUsuario();
+					tela.setVisible(true);
+					dispose();
+				} catch (ParseException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+
+			}
+		});
+		contentPane.add(btnFechar);
 	}
 }
