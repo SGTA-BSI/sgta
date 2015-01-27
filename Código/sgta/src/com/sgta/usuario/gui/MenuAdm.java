@@ -107,14 +107,8 @@ public class MenuAdm extends JFrame {
 		});
 		btnPerfilDeFuncionrios.setBounds(10, 172, 279, 84);
 		contentPane.add(btnPerfilDeFuncionrios);
-
-		JButton btnRelatriosDaAcademia = new JButton(
-				"Relat\u00F3rios da Academia");
 		Image img4 = new ImageIcon(this.getClass().getResource(
 				"/relatorio.png")).getImage();
-		btnRelatriosDaAcademia.setIcon(new ImageIcon(img4));
-		btnRelatriosDaAcademia.setBounds(10, 267, 279, 84);
-		contentPane.add(btnRelatriosDaAcademia);
 
 		JButton btnLogout = new JButton("");
 		btnLogout.setBounds(536, 8, 40, 40);

@@ -123,7 +123,7 @@ public class MenuProfessor extends JFrame {
 				dispose();
 			}
 		});
-		btnRelatoriosDeAluno.setBounds(297, 172, 279, 84);
+		btnRelatoriosDeAluno.setBounds(297, 75, 279, 84);
 		Image img4 = new ImageIcon(this.getClass().getResource(
 				"/alunobyprofessor.png")).getImage();
 		btnRelatoriosDeAluno.setIcon(new ImageIcon(img4));
@@ -149,17 +149,8 @@ public class MenuProfessor extends JFrame {
 		lblInfo = new JLabel("");
 		lblInfo.setBounds(10, 386, 581, 14);
 		contentPane.add(lblInfo);
-
-		JButton btnCriarTreino = new JButton("Criar Treino");
 		Image img = new ImageIcon(this.getClass().getResource("/treino.png"))
 				.getImage();
-		btnCriarTreino.setIcon(new ImageIcon(img));
-		btnCriarTreino.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-			}
-		});
-		btnCriarTreino.setBounds(297, 75, 279, 84);
-		contentPane.add(btnCriarTreino);
 
 		JButton btnAlterarAluno = new JButton("Alterar Cadastro Aluno");
 		btnAlterarAluno.setBounds(10, 172, 279, 84);
@@ -177,7 +168,7 @@ public class MenuProfessor extends JFrame {
 
 			}
 		});
-		btnCadastrarExercicio.setBounds(297, 267, 279, 84);
+		btnCadastrarExercicio.setBounds(297, 170, 279, 84);
 		Image img5 = new ImageIcon(this.getClass().getResource("/gym.png"))
 				.getImage();
 		btnCadastrarExercicio.setIcon(new ImageIcon(img5));

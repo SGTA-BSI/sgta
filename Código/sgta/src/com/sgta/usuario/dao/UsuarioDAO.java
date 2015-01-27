@@ -483,7 +483,7 @@ public class UsuarioDAO {
 					.prepareStatement("INSERT INTO medidas(id_aluno,altura,peso,bracos,peito,coxas,costas,"
 							+ "panturrilhas,trapezio,antebracos,cintura, data,relatorio) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?)");
 			SimpleDateFormat formatter = new SimpleDateFormat(
-					"dd/MM/yyyy HH:mm:ss");
+					"dd/MM/yyyy HH:mm");
 			prepared.setInt(1, pessoa.getUsuario().getId());
 			prepared.setDouble(2, pessoa.getMedidas().getAltura());
 			prepared.setDouble(3, pessoa.getMedidas().getPeso());
